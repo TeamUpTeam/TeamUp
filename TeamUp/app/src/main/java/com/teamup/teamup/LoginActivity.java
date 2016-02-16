@@ -1,4 +1,4 @@
-package com.example.chan96.teamup;
+package com.teamup.teamup;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

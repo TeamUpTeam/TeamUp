@@ -192,11 +192,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
+        //Check the email in the database, if it is there, proceed to isPasswordValid otherwise return false.
+        //Access the database here.
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
+        //Check the password by confirming it with the database. Return true if it confirms, false otherwise.
+        //Access the database here also.
         return password.length() > 4;
     }
 

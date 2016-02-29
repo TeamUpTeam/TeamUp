@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">TeamUp</string>
+    <string name="proj_name">Project Name</string>
     <string name="action_Profile">Profile</string>
     <string name="action_settings">Settings</string>
     <string name="action_LogOut">Log Out</string>

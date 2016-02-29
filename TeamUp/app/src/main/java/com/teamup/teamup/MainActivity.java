@@ -7,14 +7,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private LinearLayout mLayout;
+    private EditText mEditText;
+    private Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +29,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+
+        fab.setOnClickListener(onClick());
+        //TextView textView = new TextView(this);
+        //textView.setText("New text");
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                builder.setView(inflater.inflate(R.layout.activity_main, null));
+                builder.setPositiveButton(android.R.string.ok, null);
                 AlertDialog ad = builder.create();
                 final EditText input = new EditText(MainActivity.this);
+                input.setSingleLine();
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
@@ -41,8 +55,15 @@ public class MainActivity extends AppCompatActivity {
                 ad.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                if(input.getText().toString().matches("")){
+                                    input.setError("This field is required");
+                                }else {
+                                    mLayout.addView(createNewTextView(input.getText().toString()));
+
+                                }
                             }
                         });
+
                 ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -74,5 +95,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private View.OnClickListener onClick() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mLayout.addView(createNewTextView(mEditText.getText().toString()));
+            }
+        };
+    }
+
+    private TextView createNewTextView(String text) {
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final Button button = new Button(this);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.linearLayout);
+        //textView.setLayoutParams(lparams);
+        button.setWidth(ll.getWidth());
+        button.setHeight(200);
+        button.setText(text);
+        return button;
     }
 }

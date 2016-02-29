@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="45dp"
+        android:id="@+id/linearLayout">
 
         <EditText
             android:layout_width="match_parent"
@@ -46,11 +47,32 @@
             android:textColor="#d2d2d2"
             android:text="End Date" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/editText4"
+            android:text="Description"
+            android:textColor="#d2d2d2" />
+
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Allow only admin to add/remove members"
+            android:text="Allow only admin to add/remove tasks/members"
             android:id="@+id/checkBox" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm!!"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignBottom="@+id/linearLayout"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView" />
+
     </LinearLayout>
 
     <TextView
@@ -61,4 +83,5 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

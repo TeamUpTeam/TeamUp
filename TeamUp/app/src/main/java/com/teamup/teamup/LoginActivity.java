@@ -57,6 +57,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private PrintWriter out;
     private int portNumber = 1234;
 
+    final TextView mTextView = (TextView) findViewById(R.id.text);
+
     public void start()
     {
         try {
@@ -72,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
             String message = in.readLine();
 
-
+            mTextView.setText("Hello");
 
         }
         // Catches
@@ -81,6 +83,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void main(String [] args)
+    {
+        LoginActivity CLIENT = new LoginActivity();
+        CLIENT.start();
     }
 
     private static final int REQUEST_READ_CONTACTS = 0;

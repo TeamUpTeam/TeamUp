@@ -49,6 +49,20 @@ public class User {
         return false;
     }
 
+    /*
+     *  Returns true if the project was removed, and false if there was a problem
+     */
+    public boolean deleteAccount ()
+    {
+        //httpclient request here
+        if(true) {
+            // Remove User from DB
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public String toString()
     {

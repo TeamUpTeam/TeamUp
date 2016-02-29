@@ -34,6 +34,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.net.Socket;
+import java.net.ServerSocket;
+import java.net.UnknownHostException;
+import java.io.*;
+
+
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -44,6 +51,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+    private Socket cSocket;
+    private ServerSocket sSocket;
+    private BufferedReader in;
+    private PrintWriter out;
+    private int portNumber = 1234;
+
+    public void start()
+    {
+        try {
+
+            // Setup socket
+            sSocket = new ServerSocket(portNumber);
+            cSocket = sSocket.accept();
+
+            // Setup output
+            out = new PrintWriter(cSocket.getOutputStream(), true);
+
+            // Setup input
+            in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+            String message = in.readLine();
+
+
+
+        }
+        // Catches
+        catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**

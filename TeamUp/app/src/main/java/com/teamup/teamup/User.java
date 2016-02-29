@@ -1,5 +1,8 @@
 package com.teamup.teamup;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -7,32 +10,50 @@ import java.util.ArrayList;
  */
 public class User {
     public String userName;
+    public String firstName;
+    public String lastName;
     public int userID;
     public String userEmail;
+    public String contactPhone;
     public ArrayList <Project> projectList = new ArrayList<>();
 
-    public User(String userName, int userID, String userEmail, ArrayList <Project> projectList)
+    public String server_URL = "teamupserver3.mybluemix.net/api/query?query=";
+
+    public User(String userName, String firstName, String lastName, int userID, String userEmail, String contactPhone, ArrayList <Project> projectList)
     {
         this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userID = userID;
         this.userEmail = userEmail;
+        this.contactPhone = contactPhone;
         this.projectList = projectList;
     }
 
     /*
-     *  Returns true if the new project was created, and false if there was a problem
+     *  Returns the projectID if the new project was created, and 0 if there was a problem
+     * (String projectName, int projectID, String projectDescription, User teamLeader, ArrayList<User> teamMembers, ArrayList<Task> currentTasks, boolean TLaddMems, boolean TLaddTasks) {
+
      */
-    public boolean createProject (String pName, String pDescription)
+    public int createProject (String pName, String pDescription, User creator)
     {
-        //httpclient request here
-        if(true) {
-            // Project newProject = new Project(pName,pDescription);
-            // newProject.projectName = pName;
-            // Will finish this portion once I can get ProjectID from database
-            return true;
+        //String query = server_URL + "insert^into^project^(project_name,project_manager_user_id)^values^('"+pName+"','"+creator.userID+");";
+        JSONObject projectRequest = new JSONObject();
+
+        try{
+            projectRequest.put("project_name",pName);
+        }catch(JSONException e){
+            e.printStackTrace();
         }
 
-        return false;
+        try{
+            projectRequest.put("project_manager_user_id",creator.userID);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+        return 0;
     }
 
     /*
@@ -48,6 +69,10 @@ public class User {
 
         return false;
     }
+
+    /*
+     *  View list of projects given user
+     */
 
     /*
      *  Returns true if the project was removed, and false if there was a problem

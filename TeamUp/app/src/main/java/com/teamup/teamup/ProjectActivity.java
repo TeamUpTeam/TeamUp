@@ -5,35 +5,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Edwin Prakarsa on 2/28/2016.
+ */
+public class ProjectActivity extends AppCompatActivity{
     private LinearLayout mLayout;
     private EditText mEditText;
-    private Button mButton;
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        setContentView(R.layout.activity_project);
 
-        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
+
+        mLayout = (LinearLayout) findViewById(R.id.linearlayout2);
 
         fab.setOnClickListener(onClick());
         //TextView textView = new TextView(this);
@@ -43,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProjectActivity.this);
                 builder.setPositiveButton(android.R.string.ok, null);
                 AlertDialog ad = builder.create();
-                final EditText input = new EditText(MainActivity.this);
+                final EditText input = new EditText(ProjectActivity.this);
                 input.setSingleLine();
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -71,32 +66,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                ad.show();
+
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     private View.OnClickListener onClick() {
         return new View.OnClickListener() {
 
@@ -115,17 +89,6 @@ public class MainActivity extends AppCompatActivity {
         button.setWidth(ll.getWidth());
         button.setHeight(200);
         button.setText(text);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("clicks", "You Clicked B1");
-                Intent i = new Intent(
-                        MainActivity.this,
-                        ProjectActivity.class);
-                startActivity(i);
-            }
-        });
         return button;
     }
 }

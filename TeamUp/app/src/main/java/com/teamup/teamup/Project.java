@@ -67,19 +67,8 @@ public class Project {
     {
         return proj.currentTasks;
     }
-    /*
-     *  Returns true if the member was added to the group, and false if there was a problem
-     */
-    public boolean setProjectDescription (String newDescription)
-    {
-        //httpclient request here
-        if(true) {
-            this.projectDescription = newDescription;
-            return true;
-        }
 
-        return false;
-    }
+
 
     /*
      *  Returns true if the member was added to the group, and false if there was a problem

@@ -105,12 +105,12 @@ public class Server {
     /*
      *  Sets the project description
      */
-    public int setProjectDescription (Project proj, String newDescription, Context context)
+    public int setProjectDescription (int project_ID, String newDescription, Context context)
     {
         final String projectDesc = newDescription;
-        final int project_id = proj.projectID;
+        final String projectID = Integer.toString(project_ID);
 
-        String url = server_URL + "update^project^set^project_description='"+projectDesc+"'^where^project_id='"+project_id+"';";
+        String url = server_URL + "update^project^set^project_description='"+projectDesc+"'^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -141,6 +141,46 @@ public class Server {
         return 0;
     }
 
+    /*
+     *  Adds a User to a specific Project's TeamMembers ArrayList
+     */
+    public int addMember (int project_ID, int user_ID, Context context)
+    {
+        final String projectID = Integer.toString(project_ID);
+        final String userID = Integer.toString(user_ID);
+
+
+        String url = server_URL + "insert^into^projectteammember^(user_id,project_id)^values^('"+projectID+"','"+userID+");";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_id", projectID);
+                params.put("user_id",userID );
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        return 0;
+    }
 
     /*
      *  Returns true if the project was removed, and false if there was a problem
@@ -156,12 +196,9 @@ public class Server {
         return false;
     }
 
-    /*
-     *  View list of projects given user
-     */
 
     /*
-     *  Returns true if the project was removed, and false if there was a problem
+     *  Returns true if the account was removed, and false if there was a problem
      */
     public boolean deleteAccount ()
     {

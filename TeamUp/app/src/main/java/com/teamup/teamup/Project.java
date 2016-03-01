@@ -70,19 +70,7 @@ public class Project {
 
 
 
-    /*
-     *  Returns true if the member was added to the group, and false if there was a problem
-     */
-    public boolean addMember (User newMember)
-    {
-        //httpclient request here
-        if(true) {
-            this.teamMembers.add(newMember);
-            return true;
-        }
 
-        return false;
-    }
 
     /*
      *  Returns true if the member was removed from the group, and false if there was a problem

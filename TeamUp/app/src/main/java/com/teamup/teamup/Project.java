@@ -25,12 +25,7 @@ public class Project {
         this.TLaddMems = TLaddMems;
         this.TLaddTasks = TLaddTasks;
     }
-    /*
-     *  Returns the project name
-     */
-    public String getProjectName(Project proj) {
-        return proj.projectName;
-    }
+
 
     /*
      *  Returns the project id

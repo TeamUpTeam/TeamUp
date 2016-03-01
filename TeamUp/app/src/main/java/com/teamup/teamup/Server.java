@@ -40,9 +40,9 @@ public class Server {
     {
         final String projectName = pName;
         final String projectMangerUserID = Integer.toString(creator.userID);
+        final String projectDescription = pDescription;
 
-
-        String url = server_URL + "insert^into^project^(project_name,project_manager_user_id)^values^('"+projectName+"','"+projectMangerUserID+");";
+        String url = server_URL + "insert^into^project^(project_name,project_description,project_manager_user_id)^values^('"+projectName+"','"+projectDescription+"','"+projectMangerUserID+"');";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -65,6 +65,7 @@ public class Server {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
                 params.put("project_name", projectName);
+                params.put("project_description", projectDescription);
                 params.put("project_manager_user_id",projectMangerUserID );
                 return params;
             }
@@ -179,6 +180,48 @@ public class Server {
         };
         queue.add(postRequest);
 
+        return 0;
+    }
+
+    /*
+     *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
+     */
+    public int getProjectName(int project_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("project_id");
+                            Log.d("project_id: ",projectID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
         return 0;
     }
 

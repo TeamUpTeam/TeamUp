@@ -50,46 +50,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
 
 
-    private Socket cSocket;
-    private ServerSocket sSocket;
-    private BufferedReader in;
-    private PrintWriter out;
-    private int portNumber = 1234;
-
-    final TextView mTextView = (TextView) findViewById(R.id.text);
-
-    public void start()
-    {
-        try {
-
-            // Setup socket
-            sSocket = new ServerSocket(portNumber);
-            cSocket = sSocket.accept();
-
-            // Setup output
-            out = new PrintWriter(cSocket.getOutputStream(), true);
-
-            // Setup input
-            in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
-            String message = in.readLine();
-
-            mTextView.setText(message);
-
-        }
-        // Catches
-        catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    public static void main(String [] args)
-    {
-        LoginActivity CLIENT = new LoginActivity();
-        CLIENT.start();
-    }
 
     private static final int REQUEST_READ_CONTACTS = 0;
 

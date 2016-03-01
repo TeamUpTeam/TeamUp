@@ -10,9 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+
+
 public class MainActivity extends AppCompatActivity {
     Button b;
-
+    //TODO will need to store this value
+    static short loggedin = 0;
 
 
     @Override
@@ -23,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //b = (Button)findViewById(R.id.fab);
         // b.setOnClickListener(this);
+
+        Intent login = new Intent(this, LoginActivity.class);
+        if (loggedin == 0) {
+            //TODO allow login for now
+            loggedin = 1;
+            startActivity(login);
+        }
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

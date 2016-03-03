@@ -21,23 +21,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     private EditText mEditText;
     private Button mButton;
     final Context context = this;
-    String projName;
+    String TaskName;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
         //result = (EditText) findViewById(R.id.editTextResult);
 
@@ -47,17 +46,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 LayoutInflater li = LayoutInflater.from(context);
-                View promptsView = li.inflate(R.layout.activity_project, null);
+                View promptsView = li.inflate(R.layout.prompts, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setView(promptsView);
-                final EditText ProjName = (EditText) promptsView.findViewById(R.id.editText);
-                ProjName.setSingleLine();
-                final EditText StartDate = (EditText) promptsView.findViewById(R.id.editText2);
-                StartDate.setSingleLine();
-                final EditText EndDate = (EditText) promptsView.findViewById(R.id.editText3);
-                EndDate.setSingleLine();
-                final EditText ProjDesc = (EditText) promptsView.findViewById(R.id.editText4);
-                ProjDesc.setSingleLine();
+                final EditText userInput1 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput1);
+                userInput1.setSingleLine();
+                final EditText userInput2 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput2);
+                userInput2.setSingleLine();
+                final EditText userInput3 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
+                userInput3.setSingleLine();
+                final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
+                userInput4.setSingleLine();
 
                 // set dialog message
                 alertDialogBuilder
@@ -66,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
                                                         int id) {
-
-                                        mLayout.addView(createNewTextView(ProjName.getText().toString()));
+                                        // get user input and set it to result
+                                        // edit text
+                                        TaskName = userInput1.toString();
                                     }
                                 })
                         .setNegativeButton("Cancel",

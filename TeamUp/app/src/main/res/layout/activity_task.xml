@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.chan96.teamup.MainActivity">
+    tools:context="com.example.chan96.teamup.TaskActivity">
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -29,14 +28,13 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             </android.support.design.widget.AppBarLayout>
-
         </LinearLayout>
     </ScrollView>
 
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

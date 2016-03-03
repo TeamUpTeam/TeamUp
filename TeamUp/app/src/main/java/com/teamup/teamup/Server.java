@@ -531,8 +531,27 @@ public class Server {
     /*
      *  Returns true if the account was removed, and false if there was a problem
      */
-    public boolean deleteAccount ()
+    public boolean deleteAccount (int oldMember_ID, Context context)
     {
+        final String UserID = Integer.toString(oldMember_ID);
+
+        String url = server_URL + "delete^User^where^usert_id='"+UserID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                });
+        queue.add(postRequest);
         //httpclient request here
         if(true) {
             // Remove User from DB

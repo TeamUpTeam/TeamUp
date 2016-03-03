@@ -230,6 +230,36 @@ public class Server {
      */
     public boolean deleteProject (Project proj)
     {
+        /*
+                final String projectID = Integer.toString(project_ID);
+                RequestQueue queue = Volley.newRequestQueue(context);
+                String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
+                 JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("project_id");
+                            Log.d("project_id: ",projectID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+
+         */
         //httpclient request here
         if(true) {
             //projectList.remove(proj);

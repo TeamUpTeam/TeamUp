@@ -73,6 +73,39 @@ public class Project {
     public boolean removeMember (User oldMember)
     {
         //httpclient request here
+        /*
+        final String projectID = Integer.toString(this.project_ID);
+        final String UserID = Integer.toString(this.userID);
+
+        String url = server_URL + "delete^projectProjectTeamMember^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+         */
         if(true) {
             this.teamMembers.remove(oldMember);
             return true;
@@ -87,6 +120,36 @@ public class Project {
     public boolean changeTeamLeader (User newTL)
     {
         //httpclient request here
+        /*
+            final String projectMangerUserID = Integer.toString(this.userID);
+            final String projectID = Integer.toString(this.projectID);
+           String url = server_URL + "update^project_manager^set^user_id='"+projectDesc+"'^where^project_id='"+projectID+"';";
+                   RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+         @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+         */
         if(true) {
             this.teamLeader = newTL;
             return true;
@@ -97,10 +160,43 @@ public class Project {
 
     /*
      *  Returns true if all members can now add other members, and false if something went wrong
+     *  dont know which variable to set Neil
      */
     public boolean setTLaddMemsF ()
     {
         //httpclient request here
+        /*
+        final String projectID = Integer.toString(this.project_ID);
+
+        String url = server_URL + "update^project^set^TLaddMems='"+false+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+         */
         if(true) {
             this.TLaddMems = false;
             return true;
@@ -115,6 +211,38 @@ public class Project {
     public boolean setTLaddMemsT ()
     {
         //httpclient request here
+        /*
+        final String projectID = Integer.toString(this.project_ID);
+
+        String url = server_URL + "update^project^set^TLaddMems='"+true+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+         */
         if(true) {
             this.TLaddMems = true;
             return true;
@@ -129,6 +257,38 @@ public class Project {
     public boolean setTLaddTasksF ()
     {
         //httpclient request here
+        /*
+        final String projectID = Integer.toString(this.project_ID);
+
+        String url = server_URL + "update^project^set^TLaddTasks='"+false+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+         */
         if(true) {
             this.TLaddTasks = false;
             return true;
@@ -143,6 +303,38 @@ public class Project {
     public boolean setTLaddTasksT ()
     {
         //httpclient request here
+        /*
+        final String projectID = Integer.toString(this.project_ID);
+
+        String url = server_URL + "update^project^set^TLaddTasks='"+true+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_description", projectDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+         */
         if(true) {
             this.TLaddTasks = true;
             return true;

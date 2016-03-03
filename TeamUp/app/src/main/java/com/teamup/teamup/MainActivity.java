@@ -16,10 +16,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -27,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Button mButton;
     final Context context = this;
     String projName;
+    ArrayAdapter<String> adapter;
+    private ArrayList<String> arrayList;
+    ListView listViewProj;
 
 
     @Override
@@ -35,13 +43,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mLayout = (LinearLayout) findViewById(R.id.linearLayout);
         // components from main.xml
         //result = (EditText) findViewById(R.id.editTextResult);
-
+        listViewProj = (ListView) findViewById(R.id.listViewProject);
+        arrayList = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
+        listViewProj.setAdapter(adapter);
         // add button listener
+
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -59,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 final EditText ProjDesc = (EditText) promptsView.findViewById(R.id.editText4);
                 ProjDesc.setSingleLine();
 
+
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
@@ -66,8 +78,24 @@ public class MainActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,
                                                         int id) {
+                                        adapter.add(ProjName.getText().toString());
+                                        // next thing you have to do is check if your adapter has changed
+                                        adapter.notifyDataSetChanged();
 
-                                        mLayout.addView(createNewTextView(ProjName.getText().toString()));
+
+                                        listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                            @Override
+                                            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                                Intent i = new Intent(
+                                                        MainActivity.this,
+                                                        TaskActivity.class);
+                                                startActivity(i);
+                                            }
+                                        });
+
+
+                                        //mLayout.addView(createNewTextView(ProjName.getText().toString()));
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -133,13 +161,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Log.i("clicks", "You Clicked B1");
+
                 Intent i = new Intent(
                         MainActivity.this,
                         TaskActivity.class);
                 startActivity(i);
             }
         });
+
         return button;
     }
 }

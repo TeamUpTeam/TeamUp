@@ -36,10 +36,10 @@ public class Server {
      * (String projectName, int projectID, String projectDescription, User teamLeader, ArrayList<User> teamMembers, ArrayList<Task> currentTasks, boolean TLaddMems, boolean TLaddTasks) {
 
      */
-    public int createProject (String pName, String pDescription, User creator, Context context)
+    public int createProject (String pName, String pDescription, String creator, Context context)
     {
         final String projectName = pName;
-        final String projectMangerUserID = Integer.toString(creator.userID);
+        final String projectMangerUserID = creator;
         final String projectDescription = pDescription;
 
         String url = server_URL + "insert^into^project^(project_name,project_description,project_manager_user_id)^values^('"+projectName+"','"+projectDescription+"','"+projectMangerUserID+"');";

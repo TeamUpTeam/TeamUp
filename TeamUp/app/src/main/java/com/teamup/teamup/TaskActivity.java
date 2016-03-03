@@ -39,7 +39,7 @@ public class TaskActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
         //result = (EditText) findViewById(R.id.editTextResult);
-
+        mLayout = (LinearLayout) findViewById(R.id.TaskLinearLayout);
         // add button listener
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -55,8 +55,8 @@ public class TaskActivity extends AppCompatActivity {
                 userInput2.setSingleLine();
                 final EditText userInput3 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
                 userInput3.setSingleLine();
-                final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
-                userInput4.setSingleLine();
+                //final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
+                //userInput4.setSingleLine();
 
                 // set dialog message
                 alertDialogBuilder
@@ -67,7 +67,8 @@ public class TaskActivity extends AppCompatActivity {
                                                         int id) {
                                         // get user input and set it to result
                                         // edit text
-                                        TaskName = userInput1.toString();
+                                        //TaskName = userInput1.toString();
+                                        mLayout.addView(createNewTextView(userInput1.getText().toString()));
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -124,7 +125,7 @@ public class TaskActivity extends AppCompatActivity {
     private TextView createNewTextView(String text) {
         final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final Button button = new Button(this);
-        LinearLayout ll = (LinearLayout) findViewById(R.id.linearLayout);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.TaskLinearLayout);
         //textView.setLayoutParams(lparams);
         button.setWidth(ll.getWidth());
         button.setHeight(200);

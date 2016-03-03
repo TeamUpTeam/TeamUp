@@ -161,19 +161,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+
                 Intent i = new Intent(
                         MainActivity.this,
                         TaskActivity.class);
                 startActivity(i);
             }
         });
-        button.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
 
-                return true;
-            }
-        });
         return button;
     }
 }

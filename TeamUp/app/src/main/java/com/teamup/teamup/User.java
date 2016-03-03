@@ -7,47 +7,25 @@ import java.util.ArrayList;
  */
 public class User {
     public String userName;
+    public String firstName;
+    public String lastName;
     public int userID;
     public String userEmail;
+    public String contactPhone;
     public ArrayList <Project> projectList = new ArrayList<>();
 
-    public User(String userName, int userID, String userEmail, ArrayList <Project> projectList)
+    public User(String userName, String firstName, String lastName, int userID, String userEmail, String contactPhone, ArrayList <Project> projectList)
     {
         this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userID = userID;
         this.userEmail = userEmail;
+        this.contactPhone = contactPhone;
         this.projectList = projectList;
     }
 
-    /*
-     *  Returns true if the new project was created, and false if there was a problem
-     */
-    public boolean createProject (String pName, String pDescription)
-    {
-        //httpclient request here
-        if(true) {
-            // Project newProject = new Project(pName,pDescription);
-            // newProject.projectName = pName;
-            // Will finish this portion once I can get ProjectID from database
-            return true;
-        }
 
-        return false;
-    }
-
-    /*
-     *  Returns true if the project was removed, and false if there was a problem
-     */
-    public boolean deleteProject (Project proj)
-    {
-        //httpclient request here
-        if(true) {
-            projectList.remove(proj);
-            return true;
-        }
-
-        return false;
-    }
 
     @Override
     public String toString()

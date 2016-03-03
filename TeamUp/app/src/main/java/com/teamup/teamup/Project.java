@@ -25,12 +25,7 @@ public class Project {
         this.TLaddMems = TLaddMems;
         this.TLaddTasks = TLaddTasks;
     }
-    /*
-     *  Returns the project name
-     */
-    public String getProjectName(Project proj) {
-        return proj.projectName;
-    }
+
 
     /*
      *  Returns the project id
@@ -67,33 +62,10 @@ public class Project {
     {
         return proj.currentTasks;
     }
-    /*
-     *  Returns true if the member was added to the group, and false if there was a problem
-     */
-    public boolean setProjectDescription (String newDescription)
-    {
-        //httpclient request here
-        if(true) {
-            this.projectDescription = newDescription;
-            return true;
-        }
 
-        return false;
-    }
 
-    /*
-     *  Returns true if the member was added to the group, and false if there was a problem
-     */
-    public boolean addMember (User newMember)
-    {
-        //httpclient request here
-        if(true) {
-            this.teamMembers.add(newMember);
-            return true;
-        }
 
-        return false;
-    }
+
 
     /*
      *  Returns true if the member was removed from the group, and false if there was a problem

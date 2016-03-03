@@ -36,13 +36,13 @@ public class Server {
      * (String projectName, int projectID, String projectDescription, User teamLeader, ArrayList<User> teamMembers, ArrayList<Task> currentTasks, boolean TLaddMems, boolean TLaddTasks) {
 
      */
-    public int createProject (String pName, String pDescription, String creator, Context context)
+    public int createProject (String pName, String pDescription, String creatorID, Context context)
     {
         final String projectName = pName;
-        final String projectMangerUserID = creator;
+        final String projectMangerUserID = creatorID;
         final String projectDescription = pDescription;
 
-        String url = server_URL + "insert^into^project^(project_name,project_description,project_manager_user_id)^values^('"+projectName+"','"+projectDescription+"','"+projectMangerUserID+"');";
+        String url = server_URL + "insert^into^project^(project_name,project_description)^values^('"+projectName+"','"+projectDescription+"');";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -66,14 +66,24 @@ public class Server {
                 // the POST parameters:
                 params.put("project_name", projectName);
                 params.put("project_description", projectDescription);
-                params.put("project_manager_user_id",projectMangerUserID );
                 return params;
             }
         };
         queue.add(postRequest);
 
+        return 0;
+    }
+
+    public int setProjectMan(String creatorID, String projectID,Context context){
+        
+        final String project_ID = projectID;
+        final String projectMangerUserID = creatorID;
+
+        String url = server_URL + "insert^into^project_manager^(project_id,user_id)^values^('"+project_ID+"','"+projectMangerUserID+"');";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+
         // prepare the Request
-        url = server_URL + "select^project_id^from^project^where(project_name,project_manager_user_id)^values^('"+projectName+"','"+projectMangerUserID+");";
         JsonObjectRequest getRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -88,20 +98,20 @@ public class Server {
                         }
                     }
                 },
-                new Response.ErrorListener() {
-                @Override
-                 public void onErrorResponse(VolleyError error) {
-                      // Error handling
-                    Log.d("Error.Response", "Response Error" );
-                }
-        });
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
 
         // add it to the RequestQueue
         queue.add(getRequest);
 
-
-        return 0;
     }
+
+
 
     /*
      *  Sets the project description

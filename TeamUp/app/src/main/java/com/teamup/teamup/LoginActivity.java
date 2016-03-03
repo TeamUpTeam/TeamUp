@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private AutoCompleteTextView mUsernameView;
+
     private View mProgressView;
     private View mLoginFormView;
     Button b;
@@ -81,6 +83,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
        // b=(Button)findViewById(R.id.email_sign_in_button);
        // b.setOnClickListener(this);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {

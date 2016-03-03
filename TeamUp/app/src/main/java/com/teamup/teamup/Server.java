@@ -228,9 +228,9 @@ public class Server {
     /*
      *  Returns true if the project was removed, and false if there was a problem
      */
-    public boolean deleteProject (Project proj)
+    public int deleteProject (int project_ID, Context context)
     {
-        /*
+
                 final String projectID = Integer.toString(project_ID);
                 RequestQueue queue = Volley.newRequestQueue(context);
                 String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
@@ -247,37 +247,38 @@ public class Server {
                             e.printStackTrace();
                         }
                     }
-                },
-                        new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // Error handling
                                 Log.d("Error.Response", "Response Error" );
                             }
+
+
                         });
 
         // add it to the RequestQueue
         queue.add(getRequest);
 
-         */
-        //httpclient request here
-        if(true) {
-            //projectList.remove(proj);
-            return true;
-        }
 
-        return false;
+        //httpclient request here
+      //  if(true) {
+            //projectList.remove(proj);
+        //    return true;
+        //}
+
+        return 0;
     }
 
     /*
     *  Returns true if the member was removed from the group, and false if there was a problem
     */
-    public boolean removeMember (User oldMember)
+    public int removeMember (int oldMember_ID, int project_ID, Context context)
     {
         //httpclient request here
-        /*
-        final String projectID = Integer.toString(this.project_ID);
-        final String UserID = Integer.toString(this.userID);
+
+        final String projectID = Integer.toString(project_ID);
+        final String UserID = Integer.toString(oldMember_ID);
 
         String url = server_URL + "delete^projectProjectTeamMember^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -294,23 +295,13 @@ public class Server {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error.Response", "Response Error" );
                     }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<>();
-                // the POST parameters:
-                params.put("project_description", projectDesc);
-                return params;
-            }
-        };
+                });
         queue.add(postRequest);
 
-         */
-        
 
-        return false;
+
+
+        return 0;
     }
 
     /*

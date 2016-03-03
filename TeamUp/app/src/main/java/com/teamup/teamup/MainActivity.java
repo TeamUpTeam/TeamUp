@@ -129,17 +129,17 @@ public class MainActivity extends AppCompatActivity {
         button.setWidth(ll.getWidth());
         button.setHeight(200);
         button.setText(text);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                Log.i("clicks", "You Clicked B1");
-//                Intent i = new Intent(
-//                        TaskActivity.this,
-//                        ProjectActivity.class);
-//                startActivity(i);
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Log.i("clicks", "You Clicked B1");
+                Intent i = new Intent(
+                        MainActivity.this,
+                        TaskActivity.class);
+                startActivity(i);
+            }
+        });
         return button;
     }
 }

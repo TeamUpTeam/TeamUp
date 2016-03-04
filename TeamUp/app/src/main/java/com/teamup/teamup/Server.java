@@ -236,6 +236,48 @@ public class Server {
     }
 
     /*
+    *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
+    */
+    public int getProjectID(String project_Name, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectName = project_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^project_id^from^project^where(project_name='"+projectName+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("project_id");
+                            Log.d("project_id: ",projectID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
      *  Returns true if the project was removed, and false if there was a problem
      */
     public int deleteProject (int project_ID, Context context)

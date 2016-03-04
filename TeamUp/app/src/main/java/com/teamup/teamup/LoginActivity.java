@@ -200,8 +200,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("Email", email);
                 Log.d("Password", password);
 
-                Server yolobolo = new Server();
-                yolobolo.getUserID();
+                //Trying to check userID to check for correct user/password combination
+                //Server yolobolo = new Server();
+                //yolobolo.getUserID();
 
                 if (email.equals("") && password.equals("")) {
                     if (email.equals("")){

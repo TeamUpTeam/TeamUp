@@ -162,6 +162,83 @@ public class Server {
         return 0;
     }
 
+    /*
+     *  Sets the actual start date of the project
+     */
+    public int setActualProjectStart (int project_ID, Date actual_Start_Date, Context context)
+    {
+        final String actualStartDate = actual_Start_Date.toString();
+        final String projectID = Integer.toString(project_ID);
+
+        String url = server_URL + "update^project^set^actual_start_date='"+actualStartDate+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("actual_start_date", actualStartDate);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        return 0;
+    }
+
+    /*
+     *  Sets the actual end date of the project
+     */
+    public int setActualProjectEnd (int project_ID, Date actual_End_Date, Context context)
+    {
+        final String actualEndDate = actual_End_Date.toString();
+        final String projectID = Integer.toString(project_ID);
+
+        String url = server_URL + "update^project^set^actual_end_date='"+actualEndDate+"'^where^project_id='"+projectID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("actual_end_date", actualEndDate);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        return 0;
+    }
 
     // GET METHODS FOR PROJECT------------------------------------------------------------------------------
 

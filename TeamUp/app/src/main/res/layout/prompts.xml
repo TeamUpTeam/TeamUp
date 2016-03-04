@@ -25,16 +25,17 @@
             android:inputType="textPersonName"
             android:hint="Task Name"
             android:ems="10"
+            android:singleLine="true"
             android:id="@+id/editTextDialogUserInput1"
             android:textColor="#d2d2d2" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
+            android:inputType="textPersonName"
+            android:hint="Task Description"
             android:ems="10"
             android:id="@+id/editTextDialogUserInput2"
-            android:hint="Task Description"
             android:textColor="#d2d2d2" />
 
         <EditText
@@ -42,12 +43,42 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
+            android:singleLine="true"
             android:id="@+id/editTextDialogUserInput3"
-            android:hint="Task Description"
+            android:textColor="#d2d2d2"
+            android:hint="End Date" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editTextDialogUserInput4"
+            android:hint="User 1"
             android:textColor="#d2d2d2" />
-
-
-
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editTextDialogUserInput5"
+            android:hint="User 2"
+            android:textColor="#d2d2d2" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editTextDialogUserInput6"
+            android:hint="User 3"
+            android:textColor="#d2d2d2" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editTextDialogUserInput7"
+            android:hint="User 4"
+            android:textColor="#d2d2d2" />
     </LinearLayout>
 
     <TextView

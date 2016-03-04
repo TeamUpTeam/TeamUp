@@ -25,16 +25,17 @@
             android:inputType="textPersonName"
             android:hint="Task Name"
             android:ems="10"
+            android:singleLine="true"
             android:id="@+id/editTextDialogUserInput1"
             android:textColor="#d2d2d2" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
+            android:inputType="textPersonName"
+            android:hint="Task Description"
             android:ems="10"
             android:id="@+id/editTextDialogUserInput2"
-            android:hint="Task Description"
             android:textColor="#d2d2d2" />
 
         <EditText
@@ -42,11 +43,10 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
+            android:singleLine="true"
             android:id="@+id/editTextDialogUserInput3"
-            android:hint="Task Description"
-            android:textColor="#d2d2d2" />
-
-
+            android:textColor="#d2d2d2"
+            android:hint="End Date" />
 
     </LinearLayout>
 

@@ -55,10 +55,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
 
-
-
-
-
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
@@ -105,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 final EditText fname = (EditText) promptsView.findViewById(R.id.firstname);
                 final EditText lname = (EditText) promptsView.findViewById(R.id.lastname);
                 final EditText phone = (EditText) promptsView.findViewById(R.id.phone);
-
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
@@ -123,10 +118,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         dialog.cancel();
                                     }
                                 });
-
                 // create alert dialog
                 AlertDialog alertDialog = alertDialogBuilder.create();
-
                 // show it
                 alertDialog.show();
 
@@ -144,14 +137,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
-
                     return true;
-
                 }
-
                 return false;
-
-
             }
         });
 
@@ -215,7 +203,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.

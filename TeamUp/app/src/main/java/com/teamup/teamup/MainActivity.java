@@ -27,11 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout mLayout;
-    private EditText mEditText;
-    private Button mButton;
     final Context context = this;
-    String projName;
     ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
     ListView listViewProj;
@@ -43,16 +39,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
-        // components from main.xml
-        //result = (EditText) findViewById(R.id.editTextResult);
+
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
         listViewProj.setAdapter(adapter);
-        // add button listener
+
 
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -75,47 +69,63 @@ public class MainActivity extends AppCompatActivity {
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        adapter.add(ProjName.getText().toString());
-                                        // next thing you have to do is check if your adapter has changed
-                                        adapter.notifyDataSetChanged();
-                                        x.createProject(ProjName.getText().toString(),ProjDesc.getText().toString(),context);
+                        .setPositiveButton("OK", null)
+                        .setNegativeButton("Cancel", null);
 
-                                        listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                final AlertDialog mAlertDialog = alertDialogBuilder.create();
+                mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // TODO Do something
+                                if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
+                                    mAlertDialog.dismiss();
+                                    adapter.add(ProjName.getText().toString());
+                                    // next thing you have to do is check if your adapter has changed
+                                    adapter.notifyDataSetChanged();
+                                    x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), context);
 
-                                            @Override
-                                            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                                                Intent i = new Intent(
-                                                        MainActivity.this,
-                                                        TaskActivity.class);
-                                                startActivity(i);
-                                            }
-                                        });
+                                    listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+                                        @Override
+                                        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                            Intent i = new Intent(
+                                                    MainActivity.this,
+                                                    TaskActivity.class);
+                                            startActivity(i);
+                                        }
+                                    });
 
-                                        //mLayout.addView(createNewTextView(ProjName.getText().toString()));
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        dialog.cancel();
-                                    }
-                                });
+                                    listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                                        @Override
+                                        public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                                                       int arg2, long arg3) {
 
-                // show it
-                alertDialog.show();
+                                            // Can't manage to remove an item here
+                                            arrayList.remove(arg2);
+                                            adapter.notifyDataSetChanged();
+                                            return false;
+                                        }
+                                    });
+                                } else if (ProjName.getText().toString().matches("")) {
+                                    ProjName.setError(getString(R.string.error_field_required));
+                                } else if (ProjDesc.getText().toString().matches("")) {
+                                    ProjDesc.setError(getString(R.string.error_field_required));
+                                }
+                            }
+                        });
+                    }
+                });
+                mAlertDialog.show();
 
             }
 
         });
+
 
     }
 
@@ -137,37 +147,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-    private View.OnClickListener onClick() {
-        return new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                mLayout.addView(createNewTextView(mEditText.getText().toString()));
-            }
-        };
-    }
-
-    private TextView createNewTextView(String text) {
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final Button button = new Button(this);
-        LinearLayout ll = (LinearLayout) findViewById(R.id.linearLayout);
-        //textView.setLayoutParams(lparams);
-        button.setWidth(ll.getWidth());
-        button.setHeight(200);
-        button.setText(text);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(
-                        MainActivity.this,
-                        TaskActivity.class);
-                startActivity(i);
-            }
-        });
-
-        return button;
-    }
 }

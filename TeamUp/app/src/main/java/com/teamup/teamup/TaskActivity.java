@@ -37,8 +37,7 @@ public class TaskActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
-        // components from main.xml
-        //result = (EditText) findViewById(R.id.editTextResult);
+
         mLayout = (LinearLayout) findViewById(R.id.TaskLinearLayout);
         // add button listener
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,41 +48,40 @@ public class TaskActivity extends AppCompatActivity {
                 View promptsView = li.inflate(R.layout.prompts, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setView(promptsView);
-                final EditText userInput1 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput1);
-                userInput1.setSingleLine();
-                final EditText userInput2 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput2);
-                userInput2.setSingleLine();
-                final EditText userInput3 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
-                userInput3.setSingleLine();
-                //final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
-                //userInput4.setSingleLine();
+                final EditText taskName = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput1);
+                final EditText taskDesc = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput2);
+                final EditText taskEndDate = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
+
 
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        // get user input and set it to result
-                                        // edit text
-                                        //TaskName = userInput1.toString();
-                                        mLayout.addView(createNewTextView(userInput1.getText().toString()));
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        dialog.cancel();
-                                    }
-                                });
+                        .setPositiveButton("OK",null)
+                        .setNegativeButton("Cancel", null);
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                final AlertDialog mAlertDialog = alertDialogBuilder.create();
+                mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // TODO Do something
+                                if(!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")){
+                                    mAlertDialog.dismiss();
+                                    mLayout.addView(createNewTextView(taskName.getText().toString()));
+                                }else if(taskName.getText().toString().matches("")){
+                                    taskName.setError(getString(R.string.error_field_required));
+                                }else if(taskDesc.getText().toString().matches("")){
+                                    taskDesc.setError(getString(R.string.error_field_required));
+                                }
+                            }
+                        });
+                    }
+                });
+                mAlertDialog.show();
 
-                // show it
-                alertDialog.show();
 
             }
 
@@ -130,17 +128,7 @@ public class TaskActivity extends AppCompatActivity {
         button.setWidth(ll.getWidth());
         button.setHeight(200);
         button.setText(text);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                Log.i("clicks", "You Clicked B1");
-//                Intent i = new Intent(
-//                        TaskActivity.this,
-//                        ProjectActivity.class);
-//                startActivity(i);
-//            }
-//        });
+
         return button;
     }
 }

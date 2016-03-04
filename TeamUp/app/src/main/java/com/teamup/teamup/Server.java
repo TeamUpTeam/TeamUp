@@ -1091,6 +1091,88 @@ public class Server {
     // SET METHODS FOR APPUSER------------------------------------------------------------------------------
 
 
+    /*
+     *   Sets the email for the appuser
+     */
+    public int setEmailAddress(int user_ID, String email_address, Context context)
+    {
+        final String emailAddress = email_address;
+        final String userID = Integer.toString(user_ID);
+
+        String url = server_URL + "update^appuser^set^email_address='"+emailAddress+"'^where^user_id='"+userID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("email_address", emailAddress);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+
+
+        return 0;
+    }
+
+    /*
+     *   Sets the phone number for the appuser
+     */
+    public int setContactPhone(int user_ID, String contact_phone, Context context)
+    {
+        final String contactPhone = contact_phone;
+        final String userID = Integer.toString(user_ID);
+
+        String url = server_URL + "update^appuser^set^email_address='"+contactPhone+"'^where^user_id='"+userID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("contact_phone", contactPhone);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+
+
+        return 0;
+    }
+
     // GET METHODS FOR APPUSER------------------------------------------------------------------------------
 
     /*
@@ -1134,9 +1216,258 @@ public class Server {
     }
 
 
+    /*
+     *  Gets the login name connected to the given userID
+     */
+    public int getLoginName(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^login_name^from^task^where(user_id='"+userID+"');";
 
 
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String login_name = response.getString("login_name");
+                            Log.d("login_name: ",login_name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
 
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+    *  Gets the first name connected to the given userID
+    */
+    public int getFirstName(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^first_name^from^task^where(user_id='"+userID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String first_name = response.getString("first_name");
+                            Log.d("first_name: ",first_name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+    *  Gets the last name connected to the given userID
+    */
+    public int getLastName(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^last_name^from^task^where(user_id='"+userID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String last_name = response.getString("last_name");
+                            Log.d("last_name: ",last_name);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+    *  Gets the email address connected to the given userID
+    */
+    public int getEmailAddress(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^email_address^from^task^where(user_id='"+userID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String email_address = response.getString("email_address");
+                            Log.d("email_address: ",email_address);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+
+    /*
+    *  Gets the contact phone connected to the given userID
+    */
+    public int getContactPhone(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^contact_phone^from^task^where(user_id='"+userID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String contact_phone = response.getString("contact_phone");
+                            Log.d("contact_phone: ",contact_phone);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+    *  Gets the password connected to the given userID
+    */
+    public int getPassword(int user_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String userID = Integer.toString(user_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^password^from^task^where(user_id='"+userID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String password = response.getString("password");
+                            Log.d("password: ",password);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
 
 
 

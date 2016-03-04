@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -78,7 +77,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
-
         Button button = (Button) findViewById(R.id.email_sign_up_button);
         // components from main.xml
         //result = (EditText) findViewById(R.id.editTextResult);
@@ -126,28 +124,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 //Check if any field is NULL
 
                                 if(!email.getText().toString().matches("") && !password.getText().toString().matches("") &&!username.getText().toString().matches("") &&
-                                        !fname.getText().toString().matches("")){
+                                        !fname.getText().toString().matches("")) {
+
                                     mAlertDialog.dismiss();
+
+                                    //Sending Request details for SignUp
                                     Server x = new Server();
                                     x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(), context);
 
-                                }else if(email.getText().toString().matches("")){
+                                } else if (email.getText().toString().matches("")) {
+
                                     email.setError(getString(R.string.error_field_required));
-                                }else if(password.getText().toString().matches("")) {
+
+                                } else if (password.getText().toString().matches("")) {
+
                                     password.setError(getString(R.string.error_field_required));
-                                }else if(username.getText().toString().matches("")){
+
+                                } else if (username.getText().toString().matches("")) {
+
                                     username.setError(getString(R.string.error_field_required));
-                                }else if(fname.getText().toString().matches("")) {
+
+                                } else if(fname.getText().toString().matches("")) {
+
                                     fname.setError(getString(R.string.error_field_required));
+
                                 }
                             }
                         });
                     }
                 });
                 mAlertDialog.show();
-
             }
-
         });
 
 
@@ -199,7 +206,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if (!isValidEmail(email)){
                         eemail.setError("Invalid Email");
                     } else if (password.trim().length() < 5) {
-                        ppassword.setError("Password must be at least 5 characters");
+                        //This should be there during SignUp not SignIn
+                        //SignIn should just check the correct password, not if the password will be correct or not.
+                        //ppassword.setError("Password must be at least 5 characters");
                     } else {
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);

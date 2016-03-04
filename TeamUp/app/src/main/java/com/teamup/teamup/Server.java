@@ -44,6 +44,10 @@ public class Server {
         return uid1;
     }
 
+    public int getuid() {
+        return uid1;
+    }
+
     public void set_passwd(String password) {
         passwd = password;
     }
@@ -1213,13 +1217,15 @@ public class Server {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // Error handling
-                                Log.d("Error.Response", "Response Error" );
+                                Log.d("Error.Response", "Response Error");
+                                Log.d("UID", "" + uid1);
                             }
                         });
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        //int id = getuid();
+        return uid1;
     }
 
 

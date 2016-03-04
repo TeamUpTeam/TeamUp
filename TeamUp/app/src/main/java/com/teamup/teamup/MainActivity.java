@@ -160,8 +160,6 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-
                 Intent i = new Intent(
                         MainActivity.this,
                         TaskActivity.class);

@@ -32,7 +32,7 @@ public class Server {
     }
 
     /*
-     *  Returns the pid if the new project was created, and 1 if there was a problem
+     *  Creates a project with the values given, creates a projectID
      */
     public int createProject (String project_Name, String project_Description, Date plan_Start, Date plan_End, int pm_UserID, Context context)
     {
@@ -80,6 +80,37 @@ public class Server {
 
         return 0;
     }
+
+
+    /*
+     *  Deletes the project from the database
+     */
+    public int deleteProject (int project_ID, Context context)
+    {
+
+        final String projectID = Integer.toString(project_ID);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
+
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                });
+        queue.add(postRequest);
+
+        return 0;
+    }
+
 
     // SET METHODS FOR PROJECT------------------------------------------------------------------------------
 
@@ -284,9 +315,8 @@ public class Server {
     }
 
 
-
     /*
-    *  Returns the project_id
+    *  Returns the project_id using project_manager_user_id
     */
     public int getProjectID(int project_manager_user_id, Context context) {
 
@@ -328,32 +358,170 @@ public class Server {
         return 0;
     }
 
+
     /*
-     *  Returns true if the project was removed, and false if there was a problem
+     *  Returns the actual start date using project_id
      */
-    public int deleteProject (int project_ID, Context context)
-    {
+    public int getActualStartDate(int project_ID, Context context) {
 
-       final String projectID = Integer.toString(project_ID);
-       RequestQueue queue = Volley.newRequestQueue(context);
-       String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
 
-        // Request a string response
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
+        // this url is the query being sent to the database
+        url = server_URL + "select^actual_start_date^from^project^where(project_id='"+projectID+"');";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        Log.d("Response", response);
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String actual_start_date = response.getString("actual_start_date");
+                            Log.d("actual_start_date: ",actual_start_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", "Response Error" );
-                    }
-                });
-        queue.add(postRequest);
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
 
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+     *  Returns the actual end date using project_id
+     */
+    public int getActualEndDate(int project_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^actual_end_date^from^project^where(project_id='"+projectID+"');";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String actual_end_date = response.getString("actual_end_date");
+                            Log.d("actual_end_date: ",actual_end_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+
+    /*
+     *  Returns the planned start date using project_id
+     */
+    public int getPlannedStartDate(int project_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^planned_start_date^from^project^where(project_id='"+projectID+"');";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String planned_start_date = response.getString("planned_start_date");
+                            Log.d("planned_start_date: ",planned_start_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+
+    /*
+     *  Returns the actual end date using project_id
+     */
+    public int getPlannedEndDate(int project_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^planned_end_date^from^project^where(project_id='"+projectID+"');";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String planned_end_date = response.getString("planned_end_date");
+                            Log.d("planned_end_date: ",planned_end_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
         return 0;
     }
 

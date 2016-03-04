@@ -528,7 +528,7 @@ public class Server {
     // METHODS FOR PROJECT TEAM MEMBER------------------------------------------------------------------------------
 
     /*
-     *  Adds a User to a specific Project's TeamMembers ArrayList
+     *  Adds a user ID to projectTeamMember by a projectID
      */
     public int addMember (int project_ID, int user_ID, Context context)
     {
@@ -570,7 +570,7 @@ public class Server {
 
 
     /*
-    *  Returns true if the member was removed from the group, and false if there was a problem
+    *  Removes a user ID from projectTeamMember using projectID
     */
     public int removeMember (int oldMember_ID, int project_ID, Context context)
     {
@@ -579,7 +579,7 @@ public class Server {
         final String projectID = Integer.toString(project_ID);
         final String UserID = Integer.toString(oldMember_ID);
 
-        String url = server_URL + "delete^projectProjectTeamMember^where^project_id='"+projectID+"';";
+        String url = server_URL + "delete^from^projectProjectTeamMember^where^project_id='"+projectID+"'^and^user_id='"+UserID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -602,6 +602,9 @@ public class Server {
 
         return 0;
     }
+
+
+
 
 
     // TASK--------------------------------------------------------------------------------------------

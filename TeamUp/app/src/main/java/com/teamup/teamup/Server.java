@@ -33,8 +33,6 @@ public class Server {
 
     /*
      *  Returns the pid if the new project was created, and 1 if there was a problem
-     * (String projectName, int projectID, String projectDescription, User teamLeader, ArrayList<User> teamMembers, ArrayList<Task> currentTasks, boolean TLaddMems, boolean TLaddTasks) {
-
      */
     public int createProject (String pName, String pDescription, Context context)
     {
@@ -75,6 +73,9 @@ public class Server {
 
         return 0;
     }
+
+
+
     /*
      *  Sets the project_id and user_id in Project_Manager table
      */
@@ -240,7 +241,7 @@ public class Server {
 
 
     /*
-    *  Returns the project name using project_id
+    *  Returns the project_id
     */
     public int getProjectID(Context context) {
 
@@ -287,41 +288,25 @@ public class Server {
     public int deleteProject (int project_ID, Context context)
     {
 
-                final String projectID = Integer.toString(project_ID);
-                RequestQueue queue = Volley.newRequestQueue(context);
-                String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
-                 JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+       final String projectID = Integer.toString(project_ID);
+       RequestQueue queue = Volley.newRequestQueue(context);
+       String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
+
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectID = response.getString("project_id");
-                            Log.d("project_id: ",projectID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
                     }
-                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-
-
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-
-
-        //httpclient request here
-      //  if(true) {
-            //projectList.remove(proj);
-        //    return true;
-        //}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                });
+        queue.add(postRequest);
 
         return 0;
     }
@@ -400,13 +385,57 @@ public class Server {
 
         return false;
     }
+
+    /*
+     *  Creates a new task with the set variables
+    */
+    public int createTask (String task_Name, String task_Desc, Context context)
+    {
+        final String taskName = task_Name;
+        final String taskDesc = task_Desc;
+
+        String url = server_URL + "insert^into^task^(task_name,task_desc)^values^('"+taskName+"','"+taskDesc+"');";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("task_name", taskName);
+                params.put("task_desc", taskDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        // gets the projectID for the Log
+        getProjectID(context);
+
+        return 0;
+    }
+
+
     /*
      *  Gets the TaskID
      */
-    public String getTaskID(int task_ID, Context context)
+    public int getTaskID(Context context)
     {
         String url;
-        final String taskID = Integer.toString(task_ID);
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -436,9 +465,9 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return url;
+        return 0;
     }
-    public String getTaskName(int task_ID, Context context)
+    public int getTaskName(int task_ID, Context context)
     {
         String url;
         final String taskID = Integer.toString(task_ID);
@@ -454,8 +483,8 @@ public class Server {
                         // the response is already constructed as a JSONObject!
                         try {
                             response = response.getJSONObject("args");
-                            String taskID = response.getString("task_id");
-                            Log.d("task_id: ",taskID);
+                            String taskID = response.getString("task_name");
+                            Log.d("task_name: ",taskID);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -471,7 +500,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return url;
+        return 0;
     }
     public String getTaskDescription(int task_ID, Context context) {
         String url;

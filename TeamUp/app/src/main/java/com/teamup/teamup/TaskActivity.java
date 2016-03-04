@@ -27,6 +27,7 @@ public class TaskActivity extends AppCompatActivity {
     private Button mButton;
     final Context context = this;
     String TaskName;
+    Server x = new Server();
 
 
     @Override
@@ -55,8 +56,10 @@ public class TaskActivity extends AppCompatActivity {
                 userInput2.setSingleLine();
                 final EditText userInput3 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
                 userInput3.setSingleLine();
-                //final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
-                //userInput4.setSingleLine();
+                final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
+                userInput4.setSingleLine();
+                //final EditText userInput5 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
+                //userInput5.setSingleLine(); //same for 5,6,7
 
                 // set dialog message
                 alertDialogBuilder
@@ -68,6 +71,7 @@ public class TaskActivity extends AppCompatActivity {
                                         // get user input and set it to result
                                         // edit text
                                         //TaskName = userInput1.toString();
+                                        
                                         mLayout.addView(createNewTextView(userInput1.getText().toString()));
                                     }
                                 })

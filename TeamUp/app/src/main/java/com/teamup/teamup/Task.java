@@ -1,5 +1,7 @@
 package com.teamup.teamup;
 
+import java.util.ArrayList;
+
 /**
  * Created by Robbie on 2/22/2016.
  */
@@ -12,6 +14,7 @@ public class Task {
     public String deadline;
     public boolean complete;
     public boolean approved;
+    private ArrayList <String> users;
 
     public Task(String taskName, int taskID, String taskDescription, User postedBy, User claimedBy, String deadline, boolean complete, boolean approved)
     {

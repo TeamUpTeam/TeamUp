@@ -18,9 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 
-/**
- * Created by Robbie on 2/29/2016.
- */
+
 public class Server {
     private static final Server INSTANCE = new Server();
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";

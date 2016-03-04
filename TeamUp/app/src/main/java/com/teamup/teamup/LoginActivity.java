@@ -134,9 +134,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                         //Check if any field is NULL
 
-                                        if (semail.equals("")) {
+                                        if (semail.trim().equals("") || spassword.trim().equals("")) {
                                             Log.d("Error", "Some Field not filled");
-                                            email.setError("Enter Txt Plzz");
+                                            email.setError("Missing Fields");
                                         } else {
                                             Server x = new Server();
                                             x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(),context);
@@ -209,16 +209,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //Log.d("Password: ", pass);
 
-                if (email.equals("") && password.equals("")) {
-                    if (email.equals("")){
-                        eemail.setError("Fill Field Plzzz");
-                    }
-                    if (password.equals("")) {
-                        ppassword.setError("Fill Field Plzzz");
-                    }
-                } else {
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    startActivity(intent);
+                    if (!isValidEmail(email)){
+                        eemail.setError("Invalid Email");
+                    } else if (password.trim().length() < 5) {
+                        ppassword.setError("Password must be at least 5 characters");
+                    } else {
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        startActivity(intent);
                 }
             }
         });
@@ -228,6 +225,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    public final static boolean isValidEmail(CharSequence target) {
+        if (TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {

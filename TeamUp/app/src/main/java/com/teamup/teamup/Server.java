@@ -95,7 +95,7 @@ public class Server {
         queue.add(postRequest);
 
         // gets the projectID for the Log
-        getProjectID(pm_UserID,projectName, context);
+        getProjectID(pm_UserID, projectName, context);
 
         return 0;
     }
@@ -684,6 +684,43 @@ public class Server {
 
     // SET METHODS FOR TASK------------------------------------------------------------------------------
 
+    public int setTaskDesc (int task_id, String task_desc, Context context)
+    {
+        final String taskDesc = task_desc;
+        final String taskID = Integer.toString(task_id);
+
+        String url = server_URL + "update^task^set^task_desc='"+taskDesc+"'^where^project_id='"+taskID+"';";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("task_desc", taskDesc);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+
+
+        return 0;
+    }
 
 
     // GET METHODS FOR TASK------------------------------------------------------------------------------
@@ -837,17 +874,18 @@ public class Server {
         queue.add(getRequest);
         return uid1;
     }
-    public Date getStartDate(int task_ID, Context context) {
+
+
+    public int getPlannedTaskStartDate(int task_ID, Context context) {
 
         // setup variables to be used
         String url;
-        Date temp=new Date(2016,3,3);//temp
         final String taskID = Integer.toString(task_ID);
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^plannes_start_date^from^task^where(task_id='"+taskID+"');";
+        url = server_URL + "select^planned_start_date^from^task^where(task_id='"+taskID+"');";
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest
@@ -857,8 +895,8 @@ public class Server {
                         // the response is already constructed as a JSONObject!
                         try {
                             response = response.getJSONObject("args");
-                            String projectID = response.getString("task_status_id");// this is wrong
-                            Log.d("task_status_id: ",taskID);
+                            String planned_start_date = response.getString("planned_start_date");
+                            Log.d("planned_start_date: ",planned_start_date);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -874,9 +912,86 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return temp;
+        return 0;
     }
 
+    public int getPlannedTaskEndDate(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^planned_end_date^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String planned_end_date = response.getString("planned_end_date");
+                            Log.d("planned_end_date: ",planned_end_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    public int getPlannedManHours(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^planned_man_hours^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String planned_man_hours = response.getString("planned_man_hours");
+                            Log.d("planned_man_hours: ",planned_man_hours);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
 
 
     // APPUSER------------------------------------------------------------------------------------------------
@@ -934,7 +1049,7 @@ public class Server {
     }
 
     /*
-     *  Gets the UserID
+     *  Checks if the login_name is taken
      */
     public int checkLoginName(String login_Name, Context context)
     {

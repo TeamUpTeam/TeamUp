@@ -22,6 +22,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +115,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     public void onClick(DialogInterface dialog,
                                                         int id) {
                                         mEmailView.setText(email.getText().toString());
+
+                                        //Add checks to if the fields are filled or not
+                                        Log.d("Email", email.getText().toString());
+                                        Log.d("Password", password.getText().toString());
+                                        Log.d("UserName", username.getText().toString());
+                                        Log.d("First Name", fname.getText().toString());
+                                        Log.d("Last Name", lname.getText().toString());
+                                        Log.d("Phone", phone.getText().toString());
+
+
+                                        String semail = email.getText().toString();
+                                        String spassword = password.getText().toString();
+                                        String susername = username.getText().toString();
+                                        String sfname = fname.getText().toString();
+                                        String slname = lname.getText().toString();
+                                        String sphone = phone.getText().toString();
+
+                                        //Check if any field is NULL
+
+                                        if (semail.equals("")) {
+                                            Log.d("Error", "Some Field not filled");
+                                            email.setError("Enter Txt Plzz");
+                                        } else {
+                                            Server x = new Server();
+                                            x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(),context);
+                                        }
+
+
+
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -162,8 +192,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 //attemptLogin(); //removed temporarily
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
+                String email = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
+                EditText eemail = (EditText) findViewById(R.id.email);
+                EditText ppassword = (EditText) findViewById(R.id.password);
+
+                Log.d("Email", email);
+                Log.d("Password", password);
+
+                Server yolobolo = new Server();
+                yolobolo.getUserID();
+
+                if (email.equals("") && password.equals("")) {
+                    if (email.equals("")){
+                        eemail.setError("Fill Field Plzzz");
+                    }
+                    if (password.equals("")) {
+                        ppassword.setError("Fill Field Plzzz");
+                    }
+                } else {
+                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -223,51 +273,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-
-            return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+        Server x = new Server();
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
     }
 
     private boolean isEmailValid(String email) {

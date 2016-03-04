@@ -23,7 +23,7 @@ import java.util.Date;
 public class Server {
     private static final Server INSTANCE = new Server();
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
-
+    //public String pname;
     public Server() { }
 
     /* Only use one server object for entire app */

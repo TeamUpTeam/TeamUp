@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                                 Intent i = new Intent(
                                                         MainActivity.this,
                                                         TaskActivity.class);
+                                                i.putExtra("pname",ProjName.getText().toString());
                                                 startActivity(i);
                                             }
                                         });

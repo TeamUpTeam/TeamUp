@@ -27,6 +27,7 @@ public class Server {
     //public String pname;
     public Server() { }
     String xx;
+    String passwd;
     int uid1;
     int puid1;
     /* Only use one server object for entire app */
@@ -43,6 +44,14 @@ public class Server {
     {
         uid1=yy;
         return uid1;
+    }
+
+    public void set_passwd(String password) {
+        passwd = password;
+    }
+
+    public String get_passwd() {
+        return passwd;
     }
 
     public int setpid1(int yy)
@@ -1470,7 +1479,50 @@ public class Server {
     }
 
 
+    public String getPassword(final String login_name, Context context) {
+        String url;
 
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        Log.d("login_name", login_name);
+
+        url = server_URL + "select^password^from^appuser^where^(login_name='"+login_name+"')";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String password = response.getString("password");
+                            Log.d("Check", "check");
+                            Log.d("password: ",password);
+                            set_passwd(password);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("UserName", login_name);
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+
+        String password = get_passwd();
+        Log.d("Check going on", "");
+
+        Log.d("Check_passwd", "");
+
+        return password;
+    }
 
 
 

@@ -197,12 +197,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 EditText eemail = (EditText) findViewById(R.id.email);
                 EditText ppassword = (EditText) findViewById(R.id.password);
 
-                Log.d("Email", email);
-                Log.d("Password", password);
+                //Log.d("Email", email);
+                //Log.d("Password", password);
 
                 //Trying to check userID to check for correct user/password combination
                 //Server yolobolo = new Server();
                 //yolobolo.getUserID();
+
+                Server x = new Server();
+                String pass = x.getPassword(email, context);
+
+                //Log.d("Password: ", pass);
 
                 if (email.equals("") && password.equals("")) {
                     if (email.equals("")){

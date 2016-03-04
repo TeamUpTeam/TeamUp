@@ -22,9 +22,9 @@ import java.util.Date;
  */
 public class Server {
     private static final Server INSTANCE = new Server();
-    private static String server_URL = "teamupserver3.mybluemix.net/api/query?query=";
+    private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
 
-    private Server() { }
+    public Server() { }
 
     /* Only use one server object for entire app */
     public static Server getInstance() {
@@ -206,6 +206,48 @@ public class Server {
 
         // this url is the query being sent to the database
         url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("project_id");
+                            Log.d("project_id: ",projectID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+    *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
+    */
+    public int getProjectID(String project_Name, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectName = project_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^project_id^from^project^where(project_name='"+projectName+"');";
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest

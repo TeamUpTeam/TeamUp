@@ -25,16 +25,34 @@ public class Server {
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
     //public String pname;
     public Server() { }
-
+    String xx;
+    int uid1;
+    int puid1;
     /* Only use one server object for entire app */
     public static Server getInstance() {
         return INSTANCE;
     }
+    public String setpname(String yy)
+    {
+        xx=yy;
+        return xx;
+    }
 
+    public int setuid1(int yy)
+    {
+        uid1=yy;
+        return uid1;
+    }
+
+    public int setpid1(int yy)
+    {
+        puid1 = yy;
+        return puid1;
+    }
     /*
      *  Creates a project with the values given, creates a projectID
      */
-    public int createProject (String project_Name, String project_Description, Date plan_Start, Date plan_End, int pm_UserID, Context context)
+    public int createProject (String project_Name, String project_Description, String plan_Start, Date plan_End, int pm_UserID, Context context)
     {
         final String projectName = project_Name;
         final String projectDescription = project_Description;
@@ -276,7 +294,7 @@ public class Server {
     /*
      *  Returns the project name using project_id
      */
-    public int getProjectName(int project_ID, Context context) {
+    public String getProjectName(int project_ID, Context context) {
 
         // setup variables to be used
         String url;
@@ -295,6 +313,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String projectName = response.getString("project_name");
+                            setpname(projectName);
                             Log.d("project_name: ",projectName);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -311,7 +330,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return xx;
     }
 
 
@@ -339,6 +358,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String projectID = response.getString("project_id");
+                            setpid1(Integer.parseInt(projectID));
                             Log.d("project_id: ",projectID);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -355,7 +375,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return puid1;
     }
 
 
@@ -528,7 +548,7 @@ public class Server {
     // METHODS FOR PROJECT TEAM MEMBER------------------------------------------------------------------------------
 
     /*
-     *  Adds a user ID to projectTeamMember by a projectID
+     *  Adds a User to a specific Project's TeamMembers ArrayList
      */
     public int addMember (int project_ID, int user_ID, Context context)
     {
@@ -570,7 +590,7 @@ public class Server {
 
 
     /*
-    *  Removes a user ID from projectTeamMember using projectID
+    *  Returns true if the member was removed from the group, and false if there was a problem
     */
     public int removeMember (int oldMember_ID, int project_ID, Context context)
     {
@@ -579,7 +599,7 @@ public class Server {
         final String projectID = Integer.toString(project_ID);
         final String UserID = Integer.toString(oldMember_ID);
 
-        String url = server_URL + "delete^from^projectProjectTeamMember^where^project_id='"+projectID+"'^and^user_id='"+UserID+"';";
+        String url = server_URL + "delete^projectProjectTeamMember^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -600,45 +620,6 @@ public class Server {
 
 
 
-        return 0;
-    }
-
-
-    public int getTeamMembers (int project_ID, Context context)
-    {
-        // setup variables to be used
-        String url;
-        final String projectID = Integer.toString(project_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
-
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectName = response.getString("project_name");
-                            Log.d("project_name: ",projectName);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
         return 0;
     }
 
@@ -848,7 +829,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return uid1;
     }
     public Date getStartDate(int task_ID, Context context) {
 
@@ -964,6 +945,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String taskID = response.getString("user_id");
+                            setuid1(Integer.parseInt(taskID));
                             Log.d("user_id: ",taskID);
                         } catch (JSONException e) {
                             e.printStackTrace();

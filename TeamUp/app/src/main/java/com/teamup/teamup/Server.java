@@ -571,7 +571,7 @@ public class Server {
         final String userID = Integer.toString(user_ID);
 
 
-        String url = server_URL + "insert^into^projectteammember^(user_id,project_id)^values^('"+projectID+"','"+userID+");";
+        String url = server_URL + "insert^into^projectteammember^(user_id,project_id)^values^('"+userID+"','"+projectID+");";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,

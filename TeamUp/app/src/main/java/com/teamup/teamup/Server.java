@@ -423,8 +423,8 @@ public class Server {
         };
         queue.add(postRequest);
 
-        // gets the projectID for the Log
-        getProjectID(context);
+        // gets the TaskID for the Log
+        getTaskID(context);
 
         return 0;
     }
@@ -467,6 +467,10 @@ public class Server {
         queue.add(getRequest);
         return 0;
     }
+
+    /*
+     *  Gets the task name
+     */
     public int getTaskName(int task_ID, Context context)
     {
         String url;
@@ -615,6 +619,86 @@ public class Server {
     }
 
 
+    /*
+     *  Creates a new task with the set variables
+    */
+    public int createAppUser (String login_Name, String first_name, Context context)
+    {
+        final String loginName = login_Name;
+        final String firstName = first_name;
+
+        String url = server_URL + "insert^into^task^(task_name,task_desc)^values^('"+loginName+"','"+firstName+"');";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("login_name", loginName);
+                params.put("first_desc", firstName);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        // gets the projectID for the Log
+        getUserID(context);
+
+        return 0;
+    }
+
+    /*
+     *  Gets the UserID
+     */
+    public int getUserID(Context context)
+    {
+        String url;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^LAST_INSERT_ID();";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("user_id");
+                            Log.d("user_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
 
 
 

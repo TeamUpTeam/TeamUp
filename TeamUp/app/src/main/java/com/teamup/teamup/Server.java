@@ -22,9 +22,9 @@ import java.util.Map;
  */
 public class Server {
     private static final Server INSTANCE = new Server();
-    private static String server_URL = "teamupserver3.mybluemix.net/api/query?query=";
+    private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
 
-    private Server() { }
+    public Server() { }
 
     /* Only use one server object for entire app */
     public static Server getInstance() {

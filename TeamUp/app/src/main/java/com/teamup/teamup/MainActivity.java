@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
     ListView listViewProj;
-
+    Server x = new Server();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                         adapter.add(ProjName.getText().toString());
                                         // next thing you have to do is check if your adapter has changed
                                         adapter.notifyDataSetChanged();
-
+                                        x.createProject(ProjName.getText().toString(),ProjDesc.getText().toString(),context);
 
                                         listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

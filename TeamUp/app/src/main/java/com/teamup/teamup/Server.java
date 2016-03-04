@@ -76,7 +76,7 @@ public class Server {
         queue.add(postRequest);
 
         // gets the projectID for the Log
-        getProjectID(context);
+        getProjectID(pm_UserID, context);
 
         return 0;
     }
@@ -84,14 +84,14 @@ public class Server {
 
 
     /*
-     *  Sets the project_id and user_id in Project_Manager table
+     *  Sets the project_manager_user_id in the Project table
      */
-    public int setProjectMan(int creator_ID, int project_ID, Context context){
+    public int setProjectMananger(int project_manager_user_ID, int project_ID, Context context){
 
         final String projectID = Integer.toString(project_ID);
-        final String projectMangerUserID = Integer.toString(creator_ID);
+        final String projectMangerUserID = Integer.toString(project_manager_user_ID);
 
-        String url = server_URL + "insert^into^project_manager^(project_id,user_id)^values^('"+project_ID+"','"+projectMangerUserID+"');";
+        String url = server_URL + "update^project^set^project_manager_user_id='"+projectMangerUserID+"'^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -113,8 +113,7 @@ public class Server {
             {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
-                params.put("project_id", projectID);
-                params.put("user_id", projectMangerUserID);
+                params.put("project_manager_user_id", projectMangerUserID);
                 return params;
             }
         };
@@ -211,16 +210,17 @@ public class Server {
     /*
     *  Returns the project_id
     */
-    public int getProjectID(Context context) {
+    public int getProjectID(int project_manager_user_id, Context context) {
 
         // setup variables to be used
         String url;
+        final String pmUserID = Integer.toString(project_manager_user_id);
 
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^LAST_INSERT_ID();";
+        url = server_URL + "select^project_id^from^project^where^(project_manager_user_id='"+pmUserID+"');";
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest
@@ -356,54 +356,18 @@ public class Server {
         return 0;
     }
 
-    /*
-     *  Returns true if the team leader was successfully changed to the new one, and false is something went wrong
-     */
-    public boolean changeTeamLeader (User newTL)
-    {
-        //httpclient request here
-        /*
-            final String projectMangerUserID = Integer.toString(this.userID);
-            final String projectID = Integer.toString(this.projectID);
-           String url = server_URL + "update^project_manager^set^user_id='"+projectDesc+"'^where^project_id='"+projectID+"';";
-                   RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Response", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", "Response Error" );
-                    }
-                }
-        ) {
-         @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<>();
-                // the POST parameters:
-                params.put("project_description", projectDesc);
-                return params;
-            }
-        };
-        queue.add(postRequest);
-         */
-
-
-        return false;
-    }
 
     /*
      *  Creates a new task with the set variables
     */
-    public int createTask (String task_Name, String task_Desc, Context context)
+    public int createTask (String task_Name, String task_Desc, int project_id, Date plan_Start, Date plan_End, int plan_man_hours, Context context)
     {
         final String taskName = task_Name;
         final String taskDesc = task_Desc;
+        final String projectID = Integer.toString(project_id);
+        final String planStart = plan_Start.toString();
+        final String planEnd = plan_End.toString();
+        final String planManHours = Integer.toString(plan_man_hours);
 
         String url = server_URL + "insert^into^task^(task_name,task_desc)^values^('"+taskName+"','"+taskDesc+"');";
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -429,13 +393,17 @@ public class Server {
                 // the POST parameters:
                 params.put("task_name", taskName);
                 params.put("task_desc", taskDesc);
+                params.put("project_id", projectID);
+                params.put("planned_start_date", planStart);
+                params.put("planned_end_date", planEnd);
+                params.put("planned_man_hours", planManHours);
                 return params;
             }
         };
         queue.add(postRequest);
 
         // gets the TaskID for the Log
-        getTaskID(context);
+        getTaskID(project_id, context);
 
         return 0;
     }
@@ -444,14 +412,15 @@ public class Server {
     /*
      *  Gets the TaskID
      */
-    public int getTaskID(Context context)
+    public int getTaskID(int project_id, Context context)
     {
         String url;
+        final String projectID = Integer.toString(project_id);
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^LAST_INSERT_ID();";
+        url = server_URL + "select^task_id^from^task^where^(project_id='"+projectID+"');";
         JsonObjectRequest getRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override

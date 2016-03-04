@@ -1067,9 +1067,9 @@ public class Server {
                         // the response is already constructed as a JSONObject!
                         try {
                             response = response.getJSONObject("args");
-                            String taskID = response.getString("user_id");
-                            setuid1(Integer.parseInt(taskID));
-                            Log.d("user_id: ",taskID);
+                            String login_name = response.getString("login_name");
+                            setuid1(Integer.parseInt(login_name));
+                            Log.d("login_name: ",login_name);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

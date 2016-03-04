@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -101,59 +102,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("SIGN UP",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        mEmailView.setText(email.getText().toString());
+                        .setPositiveButton("Sign Up", null)
+                        .setNegativeButton("Cancel", null);
+                // set dialog message
+                final AlertDialog mAlertDialog = alertDialogBuilder.create();
+                mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mEmailView.setText(email.getText().toString());
 
-                                        //Add checks to if the fields are filled or not
-                                        Log.d("Email", email.getText().toString());
-                                        Log.d("Password", password.getText().toString());
-                                        Log.d("UserName", username.getText().toString());
-                                        Log.d("First Name", fname.getText().toString());
-                                        Log.d("Last Name", lname.getText().toString());
-                                        Log.d("Phone", phone.getText().toString());
+                                //Add checks to if the fields are filled or not
+                                Log.d("Email", email.getText().toString());
+                                Log.d("Password", password.getText().toString());
+                                Log.d("UserName", username.getText().toString());
+                                Log.d("First Name", fname.getText().toString());
+                                Log.d("Last Name", lname.getText().toString());
+                                Log.d("Phone", phone.getText().toString());
 
+                                //Check if any field is NULL
 
-                                        String semail = email.getText().toString();
-                                        String spassword = password.getText().toString();
-                                        String susername = username.getText().toString();
-                                        String sfname = fname.getText().toString();
-                                        String slname = lname.getText().toString();
-                                        String sphone = phone.getText().toString();
+                                if(!email.getText().toString().matches("") && !password.getText().toString().matches("") &&!username.getText().toString().matches("") &&
+                                        !fname.getText().toString().matches("")){
+                                    mAlertDialog.dismiss();
+                                    Server x = new Server();
+                                    x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(), context);
 
-                                        //Check if any field is NULL
-
-                                        if (semail.trim().equals("") || spassword.trim().equals("")) {
-                                            Log.d("Error", "Some Field not filled");
-                                            email.setError("Missing Fields");
-                                        } else {
-                                            Server x = new Server();
-                                            x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(),context);
-                                        }
-
-
-
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
+                                }else if(email.getText().toString().matches("")){
+                                    email.setError(getString(R.string.error_field_required));
+                                }else if(password.getText().toString().matches("")) {
+                                    password.setError(getString(R.string.error_field_required));
+                                }else if(username.getText().toString().matches("")){
+                                    username.setError(getString(R.string.error_field_required));
+                                }else if(fname.getText().toString().matches("")) {
+                                    fname.setError(getString(R.string.error_field_required));
+                                }
+                            }
+                        });
+                    }
+                });
+                mAlertDialog.show();
 
             }
 
         });
+
 
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);

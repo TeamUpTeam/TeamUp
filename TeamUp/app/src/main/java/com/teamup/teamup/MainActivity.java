@@ -103,11 +103,24 @@ public class MainActivity extends AppCompatActivity {
 
                                         @Override
                                         public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                       int arg2, long arg3) {
-
-                                            // Can't manage to remove an item here
-                                            arrayList.remove(arg2);
-                                            adapter.notifyDataSetChanged();
+                                                                       final int arg2, long arg3) {
+                                            AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                                            adb.setTitle("Delete entry");
+                                            adb.setMessage("Are you sure you want to delete this entry?");
+                                            adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // continue with delete
+                                                            arrayList.remove(arg2);
+                                                            adapter.notifyDataSetChanged();
+                                                        }
+                                                    })
+                                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // do nothing
+                                                        }
+                                                    })
+                                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                                    .show();
                                             return false;
                                         }
                                     });

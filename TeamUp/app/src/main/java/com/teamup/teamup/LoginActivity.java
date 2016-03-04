@@ -48,8 +48,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
 
+    int uid;
 
-
+    public int setuid(int yy)
+    {
+        uid = yy;
+        return uid;
+    }
 
 
     private static final int REQUEST_READ_CONTACTS = 0;
@@ -99,6 +104,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 final EditText lname = (EditText) promptsView.findViewById(R.id.lastname);
                 final EditText phone = (EditText) promptsView.findViewById(R.id.phone);
 
+                Server x = new Server();
+                int uidw = x.getUserID(username.getText().toString(),context);
+                setuid(uidw);
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)

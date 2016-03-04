@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.Intent;
 
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -32,7 +33,7 @@ public class TaskActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        final Intent i = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,7 +72,8 @@ public class TaskActivity extends AppCompatActivity {
                                         // get user input and set it to result
                                         // edit text
                                         //TaskName = userInput1.toString();
-                                        
+                                       // int pid = x.getProjectID(i.getStringExtra("pname"),context);
+                                        //x.addMember(pid,)
                                         mLayout.addView(createNewTextView(userInput1.getText().toString()));
                                     }
                                 })

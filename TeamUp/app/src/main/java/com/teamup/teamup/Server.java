@@ -70,6 +70,9 @@ public class Server {
         };
         queue.add(postRequest);
 
+        // gets the projectID for the Log
+        getProjectID(context);
+
         return 0;
     }
     /*
@@ -194,7 +197,7 @@ public class Server {
     }
 
     /*
-     *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
+     *  Returns the project name using project_id
      */
     public int getProjectName(int project_ID, Context context) {
 
@@ -207,7 +210,6 @@ public class Server {
         // this url is the query being sent to the database
         url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
 
-
         JsonObjectRequest getRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -215,8 +217,8 @@ public class Server {
                         // the response is already constructed as a JSONObject!
                         try {
                             response = response.getJSONObject("args");
-                            String projectID = response.getString("project_id");
-                            Log.d("project_id: ",projectID);
+                            String projectName = response.getString("project_name");
+                            Log.d("project_name: ",projectName);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -235,19 +237,21 @@ public class Server {
         return 0;
     }
 
+
+
     /*
-    *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
+    *  Returns the project name using project_id
     */
-    public int getProjectID(String project_Name, Context context) {
+    public int getProjectID(Context context) {
 
         // setup variables to be used
         String url;
-        final String projectName = project_Name;
+
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^project_id^from^project^where(project_name='"+projectName+"');";
+        url = server_URL + "select^LAST_INSERT_ID();";
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest
@@ -396,6 +400,206 @@ public class Server {
 
         return false;
     }
+    /*
+     *  Gets the TaskID
+     */
+    public String getTaskID(int task_ID, Context context)
+    {
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^LAST_INSERT_ID();";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_id");
+                            Log.d("task_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return url;
+    }
+    public String getTaskName(int task_ID, Context context)
+    {
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_id^from^task^where(task_id='"+taskID+"');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_id");
+                            Log.d("task_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return url;
+    }
+    public String getTaskDescription(int task_ID, Context context) {
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_desc^from^task^where(task_id='" + taskID + "');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_desc");
+                            Log.d("task_desc: ", taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error");
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return url;
+    }
+    public int getStatusID(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_status_id^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("task_status_id");
+                            Log.d("task_status_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+    public Date getStartDate(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        Date temp=new Date(2016,3,3);//temp
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^plannes_start_date^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("task_status_id");// this is wrong
+                            Log.d("task_status_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return temp;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+       HANDELED IN LATER SPRINT----------------------------------------------------------------------------
+
+     */
 
     /*
      *  Returns true if all members can now add other members, and false if something went wrong
@@ -601,151 +805,5 @@ public class Server {
         }
 
         return false;
-    }
-    public String getTaskName(int task_ID, Context context)
-    {
-        String url;
-        final String taskID = Integer.toString(task_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^task_id^from^task^where(task_id='"+taskID+"');";
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String taskID = response.getString("task_id");
-                            Log.d("task_id: ",taskID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-        return url;
-    }
-    public String getTaskDescription(int task_ID, Context context) {
-        String url;
-        final String taskID = Integer.toString(task_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^task_desc^from^task^where(task_id='" + taskID + "');";
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String taskID = response.getString("task_desc");
-                            Log.d("task_desc: ", taskID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error");
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-        return url;
-    }
-    public int getStatusID(int task_ID, Context context) {
-
-        // setup variables to be used
-        String url;
-        final String taskID = Integer.toString(task_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^task_status_id^from^task^where(task_id='"+taskID+"');";
-
-
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectID = response.getString("task_status_id");
-                            Log.d("task_status_id: ",taskID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-        return 0;
-    }
-    public Date getStartDate(int task_ID, Context context) {
-
-        // setup variables to be used
-        String url;
-        Date temp=new Date(2016,3,3);//temp
-        final String taskID = Integer.toString(task_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^plannes_start_date^from^task^where(task_id='"+taskID+"');";
-
-
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectID = response.getString("task_status_id");// this is wrong
-                            Log.d("task_status_id: ",taskID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-        return temp;
     }
 }

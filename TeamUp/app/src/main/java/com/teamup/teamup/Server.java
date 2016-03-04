@@ -81,7 +81,7 @@ public class Server {
         return 0;
     }
 
-
+    // SET METHODS FOR PROJECT------------------------------------------------------------------------------
 
     /*
      *  Sets the project_manager_user_id in the Project table
@@ -163,6 +163,7 @@ public class Server {
     }
 
 
+    // GET METHODS FOR PROJECT------------------------------------------------------------------------------
 
     /*
      *  Returns the project name using project_id
@@ -279,6 +280,7 @@ public class Server {
         return 0;
     }
 
+    // METHODS FOR PROJECT TEAM MEMBER------------------------------------------------------------------------------
 
     /*
      *  Adds a User to a specific Project's TeamMembers ArrayList
@@ -357,6 +359,8 @@ public class Server {
     }
 
 
+    // TASK--------------------------------------------------------------------------------------------
+
     /*
      *  Creates a new task with the set variables
     */
@@ -408,7 +412,11 @@ public class Server {
         return 0;
     }
 
+    // SET METHODS FOR TASK------------------------------------------------------------------------------
 
+
+
+    // GET METHODS FOR TASK------------------------------------------------------------------------------
     /*
      *  Gets the TaskID
      */
@@ -599,6 +607,10 @@ public class Server {
     }
 
 
+
+    // APPUSER------------------------------------------------------------------------------------------------
+
+
     /*
      *  Creates a new task with the set variables
     */
@@ -641,6 +653,12 @@ public class Server {
 
         return 0;
     }
+
+
+    // SET METHODS FOR APPUSER------------------------------------------------------------------------------
+
+
+    // GET METHODS FOR APPUSER------------------------------------------------------------------------------
 
     /*
      *  Gets the UserID

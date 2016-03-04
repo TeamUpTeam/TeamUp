@@ -83,7 +83,11 @@ public class MainActivity extends AppCompatActivity {
                                         adapter.add(ProjName.getText().toString());
                                         // next thing you have to do is check if your adapter has changed
                                         adapter.notifyDataSetChanged();
+<<<<<<< HEAD
                                         //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),context);
+=======
+                                        x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),StartDate.getText().toString(),EndDate.getText().toString(),/*userID */  ,context);
+>>>>>>> 4d116bafb61d04e815dbc12fa307a2091547647d
 
                                         listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

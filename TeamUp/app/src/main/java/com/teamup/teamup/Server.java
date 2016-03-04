@@ -528,7 +528,7 @@ public class Server {
     // METHODS FOR PROJECT TEAM MEMBER------------------------------------------------------------------------------
 
     /*
-     *  Adds a user ID to projectTeamMember by a projectID
+     *  Adds a User to a specific Project's TeamMembers ArrayList
      */
     public int addMember (int project_ID, int user_ID, Context context)
     {
@@ -570,7 +570,7 @@ public class Server {
 
 
     /*
-    *  Removes a user ID from projectTeamMember using projectID
+    *  Returns true if the member was removed from the group, and false if there was a problem
     */
     public int removeMember (int oldMember_ID, int project_ID, Context context)
     {
@@ -579,7 +579,7 @@ public class Server {
         final String projectID = Integer.toString(project_ID);
         final String UserID = Integer.toString(oldMember_ID);
 
-        String url = server_URL + "delete^from^projectProjectTeamMember^where^project_id='"+projectID+"'^and^user_id='"+UserID+"';";
+        String url = server_URL + "delete^projectProjectTeamMember^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -600,45 +600,6 @@ public class Server {
 
 
 
-        return 0;
-    }
-
-
-    public int getTeamMembers (int project_ID, Context context)
-    {
-        // setup variables to be used
-        String url;
-        final String projectID = Integer.toString(project_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
-
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectName = response.getString("project_name");
-                            Log.d("project_name: ",projectName);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
         return 0;
     }
 

@@ -95,7 +95,7 @@ public class Server {
         queue.add(postRequest);
 
         // gets the projectID for the Log
-        getProjectID(pm_UserID, context);
+        getProjectID(pm_UserID,projectName, context);
 
         return 0;
     }
@@ -338,17 +338,18 @@ public class Server {
     /*
     *  Returns the project_id using project_manager_user_id
     */
-    public int getProjectID(int project_manager_user_id, Context context) {
+    public int getProjectID(int project_manager_user_id, String project_name, Context context) {
 
         // setup variables to be used
         String url;
         final String pmUserID = Integer.toString(project_manager_user_id);
+        final String projectName = project_name;
 
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^project_id^from^project^where^(project_manager_user_id='"+pmUserID+"');";
+        url = server_URL + "select^project_id^from^project^where^project_manager_user_id='"+pmUserID+"'^and^project_name='"+projectName+"';";
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest
@@ -676,7 +677,7 @@ public class Server {
         queue.add(postRequest);
 
         // gets the TaskID for the Log
-        getTaskID(project_id, context);
+        getTaskID(project_id, taskName, context);
 
         return 0;
     }
@@ -689,15 +690,16 @@ public class Server {
     /*
      *  Gets the TaskID
      */
-    public int getTaskID(int project_id, Context context)
+    public int getTaskID(int project_id, String task_name, Context context)
     {
         String url;
         final String projectID = Integer.toString(project_id);
+        final String taskName = task_name;
         // prepare the Request
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = server_URL + "select^task_id^from^task^where^(project_id='"+projectID+"');";
+        url = server_URL + "select^task_id^from^task^where^project_id='"+projectID+"'^and^task_name='"+taskName+"';";
         JsonObjectRequest getRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override

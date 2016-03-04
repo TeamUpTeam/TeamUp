@@ -39,8 +39,11 @@ public class Server {
         final String projectName = project_Name;
         final String projectDescription = project_Description;
         final String planStart = plan_Start.toString();
+        final String planEnd = plan_End.toString();
+        final String pmUserID = Integer.toString(pm_UserID);
 
-        String url = server_URL + "insert^into^project^(project_name,project_description)^values^('"+projectName+"','"+projectDescription+"');";
+
+        String url = server_URL + "insert^into^project^(project_name,planned_start_date,planned_end_date,project_manager_user_id,project_description)^values^('"+projectName+"','"+planStart+"','"+planEnd+"','"+pmUserID+"','"+projectDescription+"');";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -63,6 +66,9 @@ public class Server {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
                 params.put("project_name", projectName);
+                params.put("planned_start_date", planStart);
+                params.put("planned_end_date", planEnd);
+                params.put("project_manager_user_id", pmUserID);
                 params.put("project_description", projectDescription);
                 return params;
             }

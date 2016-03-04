@@ -28,7 +28,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
+    private EditText mEditText;
+    private Button mButton;
     final Context context = this;
+    String projName;
     ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
     private ArrayList<String> projectList;
@@ -41,9 +44,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
+        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        // components from main.xml
+        //result = (EditText) findViewById(R.id.editTextResult);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
@@ -67,65 +72,52 @@ public class MainActivity extends AppCompatActivity {
                 final EditText ProjDesc = (EditText) promptsView.findViewById(R.id.editText4);
                 ProjDesc.setSingleLine();
 
+
+                // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK", null)
-                        .setNegativeButton("Cancel", null);
-                // set dialog message
-                final AlertDialog mAlertDialog = alertDialogBuilder.create();
-                mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialog) {
-                        Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        b.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // TODO Do something
-                                if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
-                                    mAlertDialog.dismiss();
-                                    adapter.add(ProjName.getText().toString());
-                                    // next thing you have to do is check if your adapter has changed
-                                    adapter.notifyDataSetChanged();
-                                    //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),StartDate.getText().toString(),EndDate.getText().toString(),/*userID */  ,context);
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        adapter.add(ProjName.getText().toString());
+                                        adapter.notifyDataSetChanged();
+                                        //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),StartDate.getText().toString(),EndDate.getText().toString(),/*userID */  ,context);
 
-                                    listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                                        @Override
-                                        public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                                            Intent i = new Intent(
-                                                    MainActivity.this,
-                                                    TaskActivity.class);
-                                            startActivity(i);
-                                        }
-                                    });
+                                        listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                                    listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                                Intent i = new Intent(
+                                                        MainActivity.this,
+                                                        TaskActivity.class);
+                                                i.putExtra("pname",ProjName.getText().toString());
+                                                startActivity(i);
+                                            }
+                                        });
 
-                                        @Override
-                                        public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                       int arg2, long arg3) {
 
-                                            // Can't manage to remove an item here
-                                            arrayList.remove(arg2);
-                                            adapter.notifyDataSetChanged();
-                                            return false;
-                                        }
-                                    });
-                                } else if (ProjName.getText().toString().matches("")) {
-                                    ProjName.setError(getString(R.string.error_field_required));
-                                } else if (ProjDesc.getText().toString().matches("")) {
-                                    ProjDesc.setError(getString(R.string.error_field_required));
-                                }
-                            }
-                        });
-                    }
-                });
-                mAlertDialog.show();
+                                        //mLayout.addView(createNewTextView(ProjName.getText().toString()));
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
 
             }
 
         });
-
 
     }
 
@@ -149,5 +141,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private View.OnClickListener onClick() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mLayout.addView(createNewTextView(mEditText.getText().toString()));
+            }
+        };
+    }
+
+    private TextView createNewTextView(String text) {
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final Button button = new Button(this);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.linearLayout);
+        //textView.setLayoutParams(lparams);
+        button.setWidth(ll.getWidth());
+        button.setHeight(200);
+        button.setText(text);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(
+                        MainActivity.this,
+                        TaskActivity.class);
+                startActivity(i);
+            }
+        });
+
+        return button;
     }
 }

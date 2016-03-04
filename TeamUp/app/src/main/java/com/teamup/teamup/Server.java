@@ -25,16 +25,34 @@ public class Server {
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
     //public String pname;
     public Server() { }
-
+    String xx;
+    int uid1;
+    int puid1;
     /* Only use one server object for entire app */
     public static Server getInstance() {
         return INSTANCE;
     }
+    public String setpname(String yy)
+    {
+        xx=yy;
+        return xx;
+    }
 
+    public int setuid1(int yy)
+    {
+        uid1=yy;
+        return uid1;
+    }
+
+    public int setpid1(int yy)
+    {
+        puid1 = yy;
+        return puid1;
+    }
     /*
      *  Creates a project with the values given, creates a projectID
      */
-    public int createProject (String project_Name, String project_Description, Date plan_Start, Date plan_End, int pm_UserID, Context context)
+    public int createProject (String project_Name, String project_Description, String plan_Start, Date plan_End, int pm_UserID, Context context)
     {
         final String projectName = project_Name;
         final String projectDescription = project_Description;
@@ -276,7 +294,7 @@ public class Server {
     /*
      *  Returns the project name using project_id
      */
-    public int getProjectName(int project_ID, Context context) {
+    public String getProjectName(int project_ID, Context context) {
 
         // setup variables to be used
         String url;
@@ -295,6 +313,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String projectName = response.getString("project_name");
+                            setpname(projectName);
                             Log.d("project_name: ",projectName);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -311,7 +330,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return xx;
     }
 
 
@@ -339,6 +358,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String projectID = response.getString("project_id");
+                            setpid1(Integer.parseInt(projectID));
                             Log.d("project_id: ",projectID);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -355,7 +375,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return puid1;
     }
 
 
@@ -812,7 +832,7 @@ public class Server {
 
         // add it to the RequestQueue
         queue.add(getRequest);
-        return 0;
+        return uid1;
     }
     public Date getStartDate(int task_ID, Context context) {
 
@@ -928,6 +948,7 @@ public class Server {
                         try {
                             response = response.getJSONObject("args");
                             String taskID = response.getString("user_id");
+                            setuid1(Integer.parseInt(taskID));
                             Log.d("user_id: ",taskID);
                         } catch (JSONException e) {
                             e.printStackTrace();

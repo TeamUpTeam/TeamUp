@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     String projName;
     ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
+    private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
 
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                         adapter.add(ProjName.getText().toString());
                                         // next thing you have to do is check if your adapter has changed
                                         adapter.notifyDataSetChanged();
-                                        x.createProject(ProjName.getText().toString(),ProjDesc.getText().toString(),context);
+                                        x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),context);
 
                                         listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                                 Intent i = new Intent(
                                                         MainActivity.this,
                                                         TaskActivity.class);
+                                                i.putExtra("pname",ProjName.getText().toString());
                                                 startActivity(i);
                                             }
                                         });

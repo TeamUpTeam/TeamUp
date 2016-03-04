@@ -16,14 +16,14 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Date;
 /**
  * Created by Robbie on 2/29/2016.
  */
 public class Server {
     private static final Server INSTANCE = new Server();
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/query?query=";
-
+    //public String pname;
     public Server() { }
 
     /* Only use one server object for entire app */
@@ -33,15 +33,17 @@ public class Server {
 
     /*
      *  Returns the pid if the new project was created, and 1 if there was a problem
-     * (String projectName, int projectID, String projectDescription, User teamLeader, ArrayList<User> teamMembers, ArrayList<Task> currentTasks, boolean TLaddMems, boolean TLaddTasks) {
-
      */
-    public int createProject (String pName, String pDescription, Context context)
+    public int createProject (String project_Name, String project_Description, Date plan_Start, Date plan_End, int pm_UserID, Context context)
     {
-        final String projectName = pName;
-        final String projectDescription = pDescription;
+        final String projectName = project_Name;
+        final String projectDescription = project_Description;
+        final String planStart = plan_Start.toString();
+        final String planEnd = plan_End.toString();
+        final String pmUserID = Integer.toString(pm_UserID);
 
-        String url = server_URL + "insert^into^project^(project_name,project_description)^values^('"+projectName+"','"+projectDescription+"');";
+
+        String url = server_URL + "insert^into^project^(project_name,planned_start_date,planned_end_date,project_manager_user_id,project_description)^values^('"+projectName+"','"+planStart+"','"+planEnd+"','"+pmUserID+"','"+projectDescription+"');";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -64,23 +66,32 @@ public class Server {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
                 params.put("project_name", projectName);
+                params.put("planned_start_date", planStart);
+                params.put("planned_end_date", planEnd);
+                params.put("project_manager_user_id", pmUserID);
                 params.put("project_description", projectDescription);
                 return params;
             }
         };
         queue.add(postRequest);
 
+        // gets the projectID for the Log
+        getProjectID(pm_UserID, context);
+
         return 0;
     }
-    /*
-     *  Sets the project_id and user_id in Project_Manager table
-     */
-    public int setProjectMan(String creatorID, String projectID,Context context){
-        
-        final String project_ID = projectID;
-        final String projectMangerUserID = creatorID;
 
-        String url = server_URL + "insert^into^project_manager^(project_id,user_id)^values^('"+project_ID+"','"+projectMangerUserID+"');";
+
+
+    /*
+     *  Sets the project_manager_user_id in the Project table
+     */
+    public int setProjectMananger(int project_manager_user_ID, int project_ID, Context context){
+
+        final String projectID = Integer.toString(project_ID);
+        final String projectMangerUserID = Integer.toString(project_manager_user_ID);
+
+        String url = server_URL + "update^project^set^project_manager_user_id='"+projectMangerUserID+"'^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -102,8 +113,7 @@ public class Server {
             {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
-                params.put("project_id", project_ID);
-                params.put("user_id", projectMangerUserID);
+                params.put("project_manager_user_id", projectMangerUserID);
                 return params;
             }
         };
@@ -152,6 +162,124 @@ public class Server {
         return 0;
     }
 
+
+
+    /*
+     *  Returns the project name using project_id
+     */
+    public int getProjectName(int project_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String projectID = Integer.toString(project_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectName = response.getString("project_name");
+                            Log.d("project_name: ",projectName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+
+
+    /*
+    *  Returns the project_id
+    */
+    public int getProjectID(int project_manager_user_id, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String pmUserID = Integer.toString(project_manager_user_id);
+
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^project_id^from^project^where^(project_manager_user_id='"+pmUserID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("project_id");
+                            Log.d("project_id: ",projectID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+     *  Returns true if the project was removed, and false if there was a problem
+     */
+    public int deleteProject (int project_ID, Context context)
+    {
+
+       final String projectID = Integer.toString(project_ID);
+       RequestQueue queue = Volley.newRequestQueue(context);
+       String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
+
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                });
+        queue.add(postRequest);
+
+        return 0;
+    }
+
+
     /*
      *  Adds a User to a specific Project's TeamMembers ArrayList
      */
@@ -193,92 +321,6 @@ public class Server {
         return 0;
     }
 
-    /*
-     *  Returns the project name using proect_id  ****Neil do it like this for all GET methods****
-     */
-    public int getProjectName(int project_ID, Context context) {
-
-        // setup variables to be used
-        String url;
-        final String projectID = Integer.toString(project_ID);
-        // prepare the Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // this url is the query being sent to the database
-        url = server_URL + "select^project_name^from^project^where(project_id='"+projectID+"');";
-
-
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectID = response.getString("project_id");
-                            Log.d("project_id: ",projectID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-        return 0;
-    }
-
-    /*
-     *  Returns true if the project was removed, and false if there was a problem
-     */
-    public int deleteProject (int project_ID, Context context)
-    {
-
-                final String projectID = Integer.toString(project_ID);
-                RequestQueue queue = Volley.newRequestQueue(context);
-                String url = server_URL + "delete^from^project^where^project_id='"+projectID+"';";
-                 JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            response = response.getJSONObject("args");
-                            String projectID = response.getString("project_id");
-                            Log.d("project_id: ",projectID);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Error handling
-                                Log.d("Error.Response", "Response Error" );
-                            }
-
-
-                        });
-
-        // add it to the RequestQueue
-        queue.add(getRequest);
-
-
-        //httpclient request here
-      //  if(true) {
-            //projectList.remove(proj);
-        //    return true;
-        //}
-
-        return 0;
-    }
 
     /*
     *  Returns true if the member was removed from the group, and false if there was a problem
@@ -314,17 +356,22 @@ public class Server {
         return 0;
     }
 
+
     /*
-     *  Returns true if the team leader was successfully changed to the new one, and false is something went wrong
-     */
-    public boolean changeTeamLeader (User newTL)
+     *  Creates a new task with the set variables
+    */
+    public int createTask (String task_Name, String task_Desc, int project_id, Date plan_Start, Date plan_End, int plan_man_hours, Context context)
     {
-        //httpclient request here
-        /*
-            final String projectMangerUserID = Integer.toString(this.userID);
-            final String projectID = Integer.toString(this.projectID);
-           String url = server_URL + "update^project_manager^set^user_id='"+projectDesc+"'^where^project_id='"+projectID+"';";
-                   RequestQueue queue = Volley.newRequestQueue(context);
+        final String taskName = task_Name;
+        final String taskDesc = task_Desc;
+        final String projectID = Integer.toString(project_id);
+        final String planStart = plan_Start.toString();
+        final String planEnd = plan_End.toString();
+        final String planManHours = Integer.toString(plan_man_hours);
+
+        String url = server_URL + "insert^into^task^(task_name,task_desc)^values^('"+taskName+"','"+taskDesc+"');";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -339,21 +386,314 @@ public class Server {
                     }
                 }
         ) {
-         @Override
+            @Override
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
-                params.put("project_description", projectDesc);
+                params.put("task_name", taskName);
+                params.put("task_desc", taskDesc);
+                params.put("project_id", projectID);
+                params.put("planned_start_date", planStart);
+                params.put("planned_end_date", planEnd);
+                params.put("planned_man_hours", planManHours);
                 return params;
             }
         };
         queue.add(postRequest);
-         */
 
+        // gets the TaskID for the Log
+        getTaskID(project_id, context);
 
-        return false;
+        return 0;
     }
+
+
+    /*
+     *  Gets the TaskID
+     */
+    public int getTaskID(int project_id, Context context)
+    {
+        String url;
+        final String projectID = Integer.toString(project_id);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_id^from^task^where^(project_id='"+projectID+"');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_id");
+                            Log.d("task_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+    /*
+     *  Gets the task name
+     */
+    public int getTaskName(int task_ID, Context context)
+    {
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_id^from^task^where(task_id='"+taskID+"');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_name");
+                            Log.d("task_name: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+    public String getTaskDescription(int task_ID, Context context) {
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_desc^from^task^where(task_id='" + taskID + "');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("task_desc");
+                            Log.d("task_desc: ", taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error");
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return url;
+    }
+    public int getStatusID(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^task_status_id^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("task_status_id");
+                            Log.d("task_status_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+    public Date getStartDate(int task_ID, Context context) {
+
+        // setup variables to be used
+        String url;
+        Date temp=new Date(2016,3,3);//temp
+        final String taskID = Integer.toString(task_ID);
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^plannes_start_date^from^task^where(task_id='"+taskID+"');";
+
+
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String projectID = response.getString("task_status_id");// this is wrong
+                            Log.d("task_status_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return temp;
+    }
+
+
+    /*
+     *  Creates a new task with the set variables
+    */
+    public int createAppUser (String login_Name, String first_name, Context context)
+    {
+        final String loginName = login_Name;
+        final String firstName = first_name;
+
+        String url = server_URL + "insert^into^task^(task_name,task_desc)^values^('"+loginName+"','"+firstName+"');";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("login_name", loginName);
+                params.put("first_desc", firstName);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        // gets the projectID for the Log
+        getUserID(loginName, context);
+
+        return 0;
+    }
+
+    /*
+     *  Gets the UserID
+     */
+    public int getUserID(String login_Name, Context context)
+    {
+        String url;
+        final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = server_URL + "select^user_id^from^appuser^where^(login_name='"+login_Name+"');";
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            response = response.getJSONObject("args");
+                            String taskID = response.getString("user_id");
+                            Log.d("user_id: ",taskID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", "Response Error" );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+    /*
+       HANDELED IN LATER SPRINT----------------------------------------------------------------------------
+
+     */
 
     /*
      *  Returns true if all members can now add other members, and false if something went wrong
@@ -560,6 +900,4 @@ public class Server {
 
         return false;
     }
-
-
 }

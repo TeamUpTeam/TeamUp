@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                                                     })
                                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                                     .show();
-                                            return false;
+                                            return true;
                                         }
                                     });
                                 } else if (ProjName.getText().toString().matches("")) {

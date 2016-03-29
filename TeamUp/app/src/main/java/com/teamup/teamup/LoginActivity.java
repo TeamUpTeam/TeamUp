@@ -32,6 +32,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
 
+    int uid;
+    ServerConnect conn = new ServerConnect();
 
-
+    public int setuid(int yy)
+    {
+        uid = yy;
+        return uid;
+    }
 
 
     private static final int REQUEST_READ_CONTACTS = 0;
@@ -97,6 +104,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 final EditText lname = (EditText) promptsView.findViewById(R.id.lastname);
                 final EditText phone = (EditText) promptsView.findViewById(R.id.phone);
 
+                Server x = new Server();
+                int uidw = x.getUserID(username.getText().toString(),context);
+                setuid(uidw);
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
@@ -191,17 +201,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 EditText eemail = (EditText) findViewById(R.id.email);
                 EditText ppassword = (EditText) findViewById(R.id.password);
 
-                //Log.d("Email", email);
-                //Log.d("Password", password);
+                //test response
+                //String pass = x.getPassword(email, context);
+                Context context = getApplicationContext();
+                CharSequence text = conn.newuser("a", "b", "c", "asdf@yahoo.com");
+                int duration = Toast.LENGTH_SHORT;
 
-                //Trying to check userID to check for correct user/password combination
-                //Server yolobolo = new Server();
-                //yolobolo.getUserID();
-
-                Server x = new Server();
-                String pass = x.getPassword(email, context);
-
-                //Log.d("Password: ", pass);
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
 
                     if (!isValidEmail(email)){
                         eemail.setError("Invalid Email");

@@ -64,16 +64,18 @@ public class Server {
     /*
      *  Creates a project with the values given, creates a projectID
      */
-    public int createProject (String project_Name, String project_Description, String plan_Start, Date plan_End, int pm_UserID, Context context)
+    public int createProject (String project_Name, String project_Description, String plan_Start, String plan_End, int pm_UserID, Context context)
     {
         final String projectName = project_Name;
         final String projectDescription = project_Description;
-        final String planStart = plan_Start.toString();
-        final String planEnd = plan_End.toString();
-        final String pmUserID = Integer.toString(pm_UserID);
+        //final String planStart = plan_Start.toString();
+        //final String planEnd = plan_End.toString();
+        //final String pmUserID = Integer.toString(pm_UserID);
 
 
-        String url = server_URL + "insert^into^project^(project_name,planned_start_date,planned_end_date,project_manager_user_id,project_description)^values^('"+projectName+"','"+planStart+"','"+planEnd+"','"+pmUserID+"','"+projectDescription+"');";
+        //String url = server_URL + "insert^into^project^(project_name,planned_start_date,planned_end_date,project_manager_user_id,project_description)^values^('"+projectName+"','"+planStart+"','"+planEnd+"','"+pmUserID+"','"+projectDescription+"');";
+        String url = server_URL + "insert^into^project^(project_name,project_description)^values^('"+projectName+"','"+projectDescription+"');";
+
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -96,9 +98,9 @@ public class Server {
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
                 params.put("project_name", projectName);
-                params.put("planned_start_date", planStart);
-                params.put("planned_end_date", planEnd);
-                params.put("project_manager_user_id", pmUserID);
+                //params.put("planned_start_date", planStart);
+                //params.put("planned_end_date", planEnd);
+                //params.put("project_manager_user_id", pmUserID);
                 params.put("project_description", projectDescription);
                 return params;
             }
@@ -106,7 +108,7 @@ public class Server {
         queue.add(postRequest);
 
         // gets the projectID for the Log
-        getProjectID(pm_UserID, projectName, context);
+        getProjectID(pm_UserID, projectName, context); // not possible
 
         return 0;
     }
@@ -569,7 +571,7 @@ public class Server {
         final String userID = Integer.toString(user_ID);
 
 
-        String url = server_URL + "insert^into^projectteammember^(user_id,project_id)^values^('"+projectID+"','"+userID+");";
+        String url = server_URL + "insert^into^projectteammember^(user_id,project_id)^values^('"+userID+"','"+projectID+");";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,

@@ -1,20 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.chan96.teamup.MainActivity">
+    tools:context="com.example.chan96.teamup.ProjectActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_chat"
         android:orderInCategory="100"
-        android:title="@string/action_profile"
+        android:title="Chat room"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_members"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Members"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_logout"
+        android:id="@+id/action_quit"
         android:orderInCategory="100"
-        android:title="@string/action_logout"
+        android:title="Quit Project"
         app:showAsAction="never" />
 </menu>

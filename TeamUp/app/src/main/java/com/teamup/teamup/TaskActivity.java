@@ -36,7 +36,7 @@ public class TaskActivity extends AppCompatActivity {
         final Intent i = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
@@ -61,7 +61,7 @@ public class TaskActivity extends AppCompatActivity {
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",null)
+                        .setPositiveButton("OK", null)
                         .setNegativeButton("Cancel", null);
 
                 final AlertDialog mAlertDialog = alertDialogBuilder.create();
@@ -73,7 +73,7 @@ public class TaskActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 // TODO Do something
-                                if(!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")){
+                                if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
                                     mLayout.addView(createNewTextView(taskName.getText().toString()));
                                     // get user input and set it to result
@@ -81,9 +81,9 @@ public class TaskActivity extends AppCompatActivity {
                                     //TaskName = userInput1.toString();
                                     // int pid = x.getProjectID(i.getStringExtra("pname"),context);
                                     //x.addMember(pid,)
-                                }else if(taskName.getText().toString().matches("")){
+                                } else if (taskName.getText().toString().matches("")) {
                                     taskName.setError(getString(R.string.error_field_required));
-                                }else if(taskDesc.getText().toString().matches("")){
+                                } else if (taskDesc.getText().toString().matches("")) {
                                     taskDesc.setError(getString(R.string.error_field_required));
                                 }
                             }
@@ -102,7 +102,7 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_project, menu);
         return true;
     }
 
@@ -114,8 +114,15 @@ public class TaskActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_chat) {
+            Intent i = new Intent(
+                    TaskActivity.this,
+                    ChatActivity.class);
+            startActivity(i);
+        } else if(id == R.id.action_members) {
+
+        } else if (id == R.id.action_quit){
+
         }
 
         return super.onOptionsItemSelected(item);

@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
-    String ProjectName;
+    static String ProjectName;
+    static String Description;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                                     LoginActivity ne = new LoginActivity();
                                     int uid = ne.uid;
                                     x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
-
+                                    ProjectName = ProjName.getText().toString();
+                                    Description = ProjDesc.getText().toString();
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 

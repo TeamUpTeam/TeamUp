@@ -204,11 +204,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //test response
                 //String pass = x.getPassword(email, context);
                 Context context = getApplicationContext();
-                CharSequence text = conn.newuser("a", "b", "c", "asdf@yahoo.com");
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                ServerConnect conn = new ServerConnect();
+                conn.login(email, password, context);
+                //CharSequence text = conn.newuser("a", "b", "c", "asdf@yahoo.com");
+                //int duration = Toast.LENGTH_SHORT;
+
+               // Toast toast = Toast.makeText(context, text, duration);
+                //toast.show();
 
                     if (!isValidEmail(email)){
                         eemail.setError("Invalid Email");

@@ -26,57 +26,41 @@ import java.net.URLEncoder;
 public class ServerConnect {
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/";
 
-    public String newuser(String username, String fname, String lname, String email) {
+    public int login(String email, String password, Context context)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
 
-        String finalurl = server_URL + "newuser";
-        String data;
-        String text = "";
-        BufferedReader reader = null;
-        StringBuilder sb = new StringBuilder();
+        // this url is the query being sent to the database
+        url = server_URL + String.format("login?email=%s&password=%s", email, password);
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("login: ",response.toString());
+                        // the response is already constructed as a JSONObject!
+                        /*try {
+                            response = response.getJSONObject("args");
+                            //String login_name = response.getString("login_name");
+                            Log.d("login: ",response.toString());
+                        } catch (JSONException e) {
+                            Log.d("login: ", response.toString());
+                            e.printStackTrace();
+                        }*/
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString() );
+                            }
+                        });
 
-        try {
-            data = URLEncoder.encode("username", "UTF-8")
-                    + "=" + URLEncoder.encode(username, "UTF-8");
-            data += "&" + URLEncoder.encode("firstname", "UTF-8") + "="
-                    + URLEncoder.encode(fname, "UTF-8");
-            data += "&" + URLEncoder.encode("lastname", "UTF-8")
-                    + "=" + URLEncoder.encode(lname, "UTF-8");
-            data += "&" + URLEncoder.encode("email", "UTF-8")
-                    + "=" + URLEncoder.encode(email, "UTF-8");
-
-            // Defined URL  where to send data
-            URL url = new URL(finalurl);
-
-            // Send POST data request
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
-            wr.flush();
-
-            // Get the server response
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = null;
-
-            // Read Server Response
-            while((line = reader.readLine()) != null)
-            {
-                System.out.println(line);
-                // Append server response in string
-                sb.append(line + "\n");
-            }
-
-
-            text = sb.toString();
-        } catch(Exception ex) {
-
-        }finally {
-            try {
-                reader.close();
-            } catch(Exception ex) {}
-        }
-
-        return sb.toString();
+        // add it to the RequestQueue
+        queue.add(getRequest);
+        return 0;
     }
-
 }

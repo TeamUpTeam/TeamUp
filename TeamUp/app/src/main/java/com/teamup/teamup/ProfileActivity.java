@@ -44,12 +44,12 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class ChatActivity extends AppCompatActivity{
+public class ProfileActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chatroom);
+        setContentView(R.layout.profile);
 
 
     }
@@ -69,8 +69,8 @@ public class ChatActivity extends AppCompatActivity{
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_back) {
             Intent i = new Intent(
-                    ChatActivity.this,
-                    TaskActivity.class);
+                    ProfileActivity.this,
+                    MainActivity.class);
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);

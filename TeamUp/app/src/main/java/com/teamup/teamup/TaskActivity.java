@@ -24,10 +24,7 @@ import android.content.Intent;
 
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
-    private EditText mEditText;
-    private Button mButton;
     final Context context = this;
-    String TaskName;
     Server x = new Server();
 
 
@@ -35,9 +32,12 @@ public class TaskActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         final Intent i = getIntent();
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_task);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
         mLayout = (LinearLayout) findViewById(R.id.TaskLinearLayout);
@@ -122,7 +122,10 @@ public class TaskActivity extends AppCompatActivity {
         } else if(id == R.id.action_members) {
 
         } else if (id == R.id.action_quit){
-
+            Intent i = new Intent(
+                    TaskActivity.this,
+                    MainActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
+    String ProjectName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
                                     int uid = ne.uid;
-                                    x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(),StartDate.getText().toString(),EndDate.getText().toString(),uid/*userID */  ,context);
+                                    x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
 
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -111,12 +112,12 @@ public class MainActivity extends AppCompatActivity {
                                             adb.setTitle("Delete entry");
                                             adb.setMessage("Are you sure you want to delete this entry?");
                                             adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            // continue with delete
-                                                            arrayList.remove(arg2);
-                                                            adapter.notifyDataSetChanged();
-                                                        }
-                                                    })
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                    arrayList.remove(arg2);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            })
                                                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
                                                             // do nothing
@@ -160,10 +161,25 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_profile) {
+            Intent i = new Intent(
+                    MainActivity.this,
+                    ProfileActivity.class);
+            startActivity(i);
+        }else if (id == R.id.action_settings) {
+            Intent i = new Intent(
+                    MainActivity.this,
+                    SettingsActivity.class);
+            startActivity(i);
+        }else if (id == R.id.action_logout) {
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public String getProjectName(){
+        return ProjectName;
+    }
+
 }

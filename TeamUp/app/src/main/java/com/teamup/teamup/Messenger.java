@@ -20,7 +20,11 @@ public class Messenger extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        mRef = new Firebase("https://teamup-messenger.firebaseio.com/");
+
+        //Temporary Project Name for testing
+        String pName = "TeamUp";
+
+        mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
 
         mSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +32,10 @@ public class Messenger extends AppCompatActivity {
                 mRef.child("message").setValue("Do you have data? You'll love Firebase.");
             }
         });
+    }
+
+    public void getMessages() {
+        mRef = new Firebase("https://teamup-messenger.firebaseio.com/");
     }
 
 }

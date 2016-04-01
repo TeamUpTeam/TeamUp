@@ -148,8 +148,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     mAlertDialog.dismiss();
 
                                     //Sending Request details for SignUp
-                                    Server x = new Server();
-                                    x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(), context);
+                                    signUp(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), password.getText().toString(), context, view);
 
                                 } else if (email.getText().toString().matches("")) {
 
@@ -231,6 +230,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    public void signUp(String username, String fname, String lname, String email, String password, Context context, final View view)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = Server.server_URL + String.format("newuser?username=%s&firsname=%s&lastname=%s&email=%s&password=%s", username, fname, lname, email, password);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        Log.d("newuser", response.toString());
+
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                if (error.toString().contains("success")) {
+                                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    new AlertDialog.Builder(view.getContext())
+                                            .setTitle("Unable to create new user")
+                                            .setMessage("Are you connected to the internet?")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
+                                Log.d("Error.Response", error.toString() );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
     }
 
     public void login(String email, String password, Context context, final View view)

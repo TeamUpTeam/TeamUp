@@ -1,15 +1,18 @@
 package com.teamup.teamup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +29,7 @@ import java.net.URLEncoder;
 public class ServerConnect {
     private static String server_URL = "http://teamupserver3.mybluemix.net/api/";
 
-    public int login(String email, String password, Context context)
+    public int login(String email, String password, final Context context)
     {
         String url;
         //final String loginName = login_Name;
@@ -35,20 +38,12 @@ public class ServerConnect {
 
         // this url is the query being sent to the database
         url = server_URL + String.format("login?email=%s&password=%s", email, password);
-        JsonObjectRequest getRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("login: ",response.toString());
-                        // the response is already constructed as a JSONObject!
-                        /*try {
-                            response = response.getJSONObject("args");
-                            //String login_name = response.getString("login_name");
-                            Log.d("login: ",response.toString());
-                        } catch (JSONException e) {
-                            Log.d("login: ", response.toString());
-                            e.printStackTrace();
-                        }*/
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+
                     }
                 },
                         new Response.ErrorListener() {

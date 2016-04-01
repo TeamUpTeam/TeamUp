@@ -7,52 +7,67 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#ff444444"
+    android:background="#ffffffff"
     tools:context="com.teamup.teamup.ChatActivity">
 
-    <ListView
-        android:id="@+id/listView1"
+    <TabHost
+        android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="6dp"
-        android:background="#ffffffff"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll"
-        android:divider="#00000000">
-    </ListView>
+        android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffffff" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:inputType="text"
-            android:maxLength="140"
-            android:background="#ffffffff"
-            android:textSize="16sp"
-            android:textColor="#ff000000">
-        </EditText>
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
 
-        <Button
-            android:id="@+id/btnSend"
-            android:layout_width="36dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:text=""
-            android:background="@drawable/send"/>
-    </LinearLayout>
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
+                    <ListView
+                        android:id="@+id/list_chat"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:divider="@null"
+                        android:layout_weight="1" >
+                    </ListView>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <EditText
+                            android:id="@+id/input_chat_message"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:ems="10" >
+
+                            <requestFocus />
+                        </EditText>
+
+                        <Button
+                            android:id="@+id/button_chat_send"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Send" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 </LinearLayout>

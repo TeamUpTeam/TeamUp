@@ -57,8 +57,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
 
+    static String currEmail;
     int uid;
-    ServerConnect conn = new ServerConnect();
 
     public int setuid(int yy)
     {
@@ -232,7 +232,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    public void signUp(String username, String fname, String lname, String email, String password, Context context, final View view)
+    public void signUp(String username, String fname, String lname, final String email, String password, Context context, final View view)
     {
         String url;
         //final String loginName = login_Name;
@@ -258,6 +258,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             public void onErrorResponse(VolleyError error) {
                                 // Error handling
                                 if (error.toString().contains("success")) {
+                                    currEmail = email;
                                     Intent intent = new Intent(view.getContext(), MainActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -280,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         queue.add(getRequest);
     }
 
-    public void login(String email, String password, Context context, final View view)
+    public void login(final String email, String password, Context context, final View view)
     {
         String url;
         //final String loginName = login_Name;
@@ -294,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onResponse(JSONArray response) {
                         //successful row return, so allow login
-
+                        currEmail = email;
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);
 

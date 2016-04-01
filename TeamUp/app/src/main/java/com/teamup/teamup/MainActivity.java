@@ -24,6 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 // TODO Do something
+
+                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), ProjDesc.getText().toString(), LoginActivity.currEmail, context, view);
+
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
                                     adapter.add(ProjName.getText().toString());
@@ -90,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
                                     int uid = ne.uid;
-                                    x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
+                                    //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
                                     ProjectName = ProjName.getText().toString();
                                     Description = ProjDesc.getText().toString();
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,6 +158,67 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void newProject(final String projectName, final String startDate, final String endDate, final String projectDescription, final String email,  Context context, final View view)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = Server.server_URL + String.format("getuserid?email=%s", email);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+
+                        try {
+                            final int projectManagerUserId = response.getJSONObject(0).getInt("user_id");
+                            Log.d("response", response.getJSONObject(0).getString("user_id"));
+                            String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%d&enddate=%s&projectmanageruserid=%d&projectdescription=%d",
+                                    projectName, startDate, endDate, projectManagerUserId, projectDescription);
+                            JsonArrayRequest getRequest = new JsonArrayRequest
+                                    (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                                        @Override
+                                        public void onResponse(JSONArray response) {
+                                            //successful row return, so allow login
+
+                                        }
+                                    },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    // Error handling
+                                                    if (error.toString().contains("success")) {
+                                                        Log.d("Created project", error.toString());
+                                                    } else {
+                                                        
+                                                    }
+                                                    Log.d("Error.Response", error.toString());
+
+
+                                                }
+                                            });
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString());
+
+
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
     }
 
     @Override

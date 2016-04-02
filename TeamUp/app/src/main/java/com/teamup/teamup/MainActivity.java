@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     static String ProjectName;
     static String Description;
     int userId;
+    int projectId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 // TODO Do something
 
-                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), userId, ProjDesc.getText().toString(), context, view);
+                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), userId, ProjDesc.getText().toString(), context);
+                                //newProjectTeamMember(userId, projectId, context, view);
 
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
@@ -196,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(getUserIdRequest);
     }
 
-    public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, Context context, final View view)
+    public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, final Context context)
     {
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -208,6 +210,41 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         //successful row return, so allow login
                         Log.d("Created project", response.toString());
+                        try {
+                            projectId = response.getInt("insertId");
+                            newProjectTeamMember(userId, projectId, context);
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
+
+    }
+
+    public void newProjectTeamMember(int userId, int projectId, Context context)
+    {
+        if (userId == 0|| projectId == 0) {
+            Log.d("error", "userid or projectid is 0");
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newprojectteammember?projectid=%d&userid=%d",
+                projectId, userId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("projectteammember", response.toString());
                         try {
                             int projectId = response.getInt("insertId");
                         } catch (Exception e) {
@@ -226,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
         // this url is the query being sent to the database
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

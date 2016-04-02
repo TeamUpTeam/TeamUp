@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        getUserId(LoginActivity.currEmail);
+        getUserIdAndProjects(LoginActivity.currEmail);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getUserId(String email) {
+    public void getUserIdAndProjects(String email) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String url = Server.server_URL + String.format("getuserid?email=%s", email);
@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Log.d("response a", response.getJSONObject(0).getString("user_id"));
                             userId = response.getJSONObject(0).getInt("user_id");
+                            getProjects(userId, context);
                         } catch (Exception e) {
 
                         }
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     public void newProjectTeamMember(int userId, int projectId, Context context)
     {
         if (userId == 0|| projectId == 0) {
-            Log.d("error", "userid or projectid is 0");
+            Log.d("newProjectTeamMember", "userid or projectid is 0");
         }
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -264,7 +265,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getProjects(int userId, Context context)
+    {
+        if (userId == 0) {
+            Log.d("getProjects error", "userid or projectid is 0");
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
 
+        String url2 = Server.server_URL + String.format("getprojects?userid=%d",
+                userId);
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        Log.d("getprojects", response.toString());
+                        try {
+                            //int projectId = response.getInt("insertId");
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -29,9 +29,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Server x = new Server();
     static String ProjectName;
     static String Description;
+    int userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        getUserId(LoginActivity.currEmail);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 // TODO Do something
 
-                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), ProjDesc.getText().toString(), LoginActivity.currEmail, context, view);
+                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), userId, ProjDesc.getText().toString(), context, view);
 
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
@@ -160,48 +164,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void newProject(final String projectName, final String startDate, final String endDate, final String projectDescription, final String email,  Context context, final View view)
-    {
-        String url;
-        //final String loginName = login_Name;
-        // prepare the Request
+    public void getUserId(String email) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        // this url is the query being sent to the database
-        url = Server.server_URL + String.format("getuserid?email=%s", email);
-        JsonArrayRequest getRequest = new JsonArrayRequest
+        String url = Server.server_URL + String.format("getuserid?email=%s", email);
+        JsonArrayRequest getUserIdRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         //successful row return, so allow login
 
                         try {
-                            final int projectManagerUserId = response.getJSONObject(0).getInt("user_id");
-                            Log.d("response", response.getJSONObject(0).getString("user_id"));
-                            String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%d&enddate=%s&projectmanageruserid=%d&projectdescription=%d",
-                                    projectName, startDate, endDate, projectManagerUserId, projectDescription);
-                            JsonArrayRequest getRequest = new JsonArrayRequest
-                                    (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
-                                        @Override
-                                        public void onResponse(JSONArray response) {
-                                            //successful row return, so allow login
-
-                                        }
-                                    },
-                                            new Response.ErrorListener() {
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-                                                    // Error handling
-                                                    if (error.toString().contains("success")) {
-                                                        Log.d("Created project", error.toString());
-                                                    } else {
-                                                        
-                                                    }
-                                                    Log.d("Error.Response", error.toString());
-
-
-                                                }
-                                            });
+                            Log.d("response a", response.getJSONObject(0).getString("user_id"));
+                            userId = response.getJSONObject(0).getInt("user_id");
                         } catch (Exception e) {
 
                         }
@@ -218,7 +193,38 @@ public class MainActivity extends AppCompatActivity {
                         });
 
         // add it to the RequestQueue
-        queue.add(getRequest);
+        queue.add(getUserIdRequest);
+    }
+
+    public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, Context context, final View view)
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
+                projectName, startDate, endDate, projectManagerUserId, projectDescription);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //successful row return, so allow login
+                        Log.d("Created project", response.toString());
+                        try {
+                            int projectId = response.getInt("insertId");
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
+
     }
 
     @Override

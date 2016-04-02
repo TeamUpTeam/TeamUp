@@ -80,7 +80,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -248,6 +247,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         //successful row return, so allow login
                         Log.d("newuser", response.toString());
 
+                        currEmail = email;
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);
 

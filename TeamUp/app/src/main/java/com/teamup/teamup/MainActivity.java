@@ -35,7 +35,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -265,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getProjects(int userId, Context context)
+    public void getProjects(int userId, final Context context)
     {
         if (userId == 0) {
             Log.d("getProjects error", "userid or projectid is 0");
@@ -281,7 +283,52 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("getprojects", response.toString());
                         try {
-                            //int projectId = response.getInt("insertId");
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("project_name");
+
+                                adapter.add(name);
+                                // next thing you have to do is check if your adapter has changed
+                                adapter.notifyDataSetChanged();
+
+                                listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+                                    @Override
+                                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        Intent i = new Intent(
+                                                MainActivity.this,
+                                                TaskActivity.class);
+                                        startActivity(i);
+                                    }
+                                });
+
+                                listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                                    @Override
+                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                                                   final int arg2, long arg3) {
+                                        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                                        adb.setTitle("Delete entry");
+                                        adb.setMessage("Are you sure you want to delete this entry?");
+                                        adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                arrayList.remove(arg2);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // do nothing
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                        return true;
+                                    }
+                                });
+                            }
                         } catch (Exception e) {
 
                         }

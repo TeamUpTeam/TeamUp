@@ -266,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 } else {
                                     new AlertDialog.Builder(view.getContext())
                                             .setTitle("Unable to create new user")
-                                            .setMessage("Are you connected to the internet?")
+                                            .setMessage("Username or email exists.")
                                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // continue with delete

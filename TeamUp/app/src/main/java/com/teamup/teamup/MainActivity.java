@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     public void getUserIdAndProjects(String email) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        String url = Server.server_URL + String.format("getuserid?email=%s", email);
+        String url = Server.server_URL + String.format("getuserinfo?email=%s", email);
         JsonArrayRequest getUserIdRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
@@ -370,8 +371,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getProjectName(){
-        return ProjectName;
-    }
+
 
 }

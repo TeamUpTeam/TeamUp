@@ -48,15 +48,13 @@
                 android:text="First Name: "
                 android:textSize="@dimen/text_size" />
 
-            <EditText
-                android:id="@+id/changeFirst"
-                android:layout_width="200dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/box"
-                android:inputType="text"
-                android:textSize="@dimen/text_size" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/textView2" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -72,15 +70,12 @@
                 android:text="Last Name: "
                 android:textSize="@dimen/text_size" />
 
-            <EditText
-                android:id="@+id/changeLast"
-                android:layout_width="200dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/box"
-                android:inputType="text"
-                android:textSize="@dimen/text_size" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/textView3" />
 
         </LinearLayout>
 
@@ -90,21 +85,54 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >
-            <TextView
-                android:id="@+id/Username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom"
-                android:text="Username: eprakars"
-                android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom"
-                android:text="Email: edwinprakarsa@yahoo.com"
-                android:textSize="16dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/Username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_bottom"
+                    android:text="Username: "
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Medium Text"
+                    android:id="@+id/textView4"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/Username"
+                    android:layout_toEndOf="@+id/Username" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_bottom"
+                    android:text="Email: "
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Medium Text"
+                    android:id="@+id/textView5"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/tvEmail"
+                    android:layout_toEndOf="@+id/tvEmail"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp" />
+            </RelativeLayout>
 
         </LinearLayout>
 

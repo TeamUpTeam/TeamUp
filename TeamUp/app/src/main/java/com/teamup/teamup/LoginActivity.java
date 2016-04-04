@@ -34,6 +34,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +59,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
 
+    static String currEmail;
     int uid;
-    ServerConnect conn = new ServerConnect();
 
     public int setuid(int yy)
     {
@@ -71,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -139,8 +149,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     mAlertDialog.dismiss();
 
                                     //Sending Request details for SignUp
-                                    Server x = new Server();
-                                    x.createAppUser(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), phone.getText().toString(), password.getText().toString(), context);
+                                    signUp(username.getText().toString(), fname.getText().toString(), lname.getText().toString(), email.getText().toString(), password.getText().toString(), context, view);
 
                                 } else if (email.getText().toString().matches("")) {
 
@@ -203,11 +212,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //test response
                 //String pass = x.getPassword(email, context);
                 Context context = getApplicationContext();
-                CharSequence text = conn.newuser("a", "b", "c", "asdf@yahoo.com");
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                login(email, password, context, view);
 
                     if (!isValidEmail(email)){
                         eemail.setError("Invalid Email");
@@ -216,14 +222,106 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         //SignIn should just check the correct password, not if the password will be correct or not.
                         //ppassword.setError("Password must be at least 5 characters");
                     } else {
-                        Intent intent = new Intent(view.getContext(), MainActivity.class);
-                        startActivity(intent);
+
                 }
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    public void signUp(String username, String fname, String lname, final String email, String password, Context context, final View view)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = Server.server_URL + String.format("newuser?username=%s&firsname=%s&lastname=%s&email=%s&password=%s", username, fname, lname, email, password);
+        JsonObjectRequest getRequest = new JsonObjectRequest
+                (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //successful row return, so allow login
+                        Log.d("newuser", response.toString());
+
+                        currEmail = email;
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                if (error.toString().contains("success")) {
+                                    currEmail = email;
+                                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    new AlertDialog.Builder(view.getContext())
+                                            .setTitle("Unable to create new user")
+                                            .setMessage("Username or email exists.")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
+                                Log.d("Error.Response", error.toString() );
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
+    public void login(final String email, String password, Context context, final View view)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = Server.server_URL + String.format("login?email=%s&password=%s", email, password);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        currEmail = email;
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString() );
+
+                                new AlertDialog.Builder(view.getContext())
+                                        //.setTitle("Delete entry")
+                                        .setMessage("Invalid username or password.")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
     }
 
     public final static boolean isValidEmail(CharSequence target) {

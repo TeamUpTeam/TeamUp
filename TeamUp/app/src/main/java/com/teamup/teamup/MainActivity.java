@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,7 +25,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -34,7 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
+<<<<<<< HEAD
     String ProjectName;
+=======
+    static String ProjectName;
+    static String Description;
+    int userId;
+    int projectId;
+>>>>>>> master
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        getUserIdAndProjects(LoginActivity.currEmail);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
@@ -82,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 // TODO Do something
+
+                                newProject(ProjName.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), userId, ProjDesc.getText().toString(), context);
+                                //newProjectTeamMember(userId, projectId, context, view);
+
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
                                     adapter.add(ProjName.getText().toString());
@@ -89,8 +115,14 @@ public class MainActivity extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
                                     int uid = ne.uid;
+<<<<<<< HEAD
                                     x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
 
+=======
+                                    //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
+                                    ProjectName = ProjName.getText().toString();
+                                    Description = ProjDesc.getText().toString();
+>>>>>>> master
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -146,6 +178,181 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getUserIdAndProjects(String email) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url = Server.server_URL + String.format("getuserinfo?email=%s", email);
+        JsonArrayRequest getUserIdRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+
+                        try {
+                            Log.d("response a", response.getJSONObject(0).getString("user_id"));
+                            userId = response.getJSONObject(0).getInt("user_id");
+                            getProjects(userId, context);
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString());
+
+
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getUserIdRequest);
+    }
+
+    public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, final Context context)
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
+                projectName, startDate, endDate, projectManagerUserId, projectDescription);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //successful row return, so allow login
+                        Log.d("Created project", response.toString());
+                        try {
+                            projectId = response.getInt("insertId");
+                            newProjectTeamMember(userId, projectId, context);
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
+
+    }
+
+    public void newProjectTeamMember(int userId, int projectId, Context context)
+    {
+        if (userId == 0|| projectId == 0) {
+            Log.d("newProjectTeamMember", "userid or projectid is 0");
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newprojectteammember?projectid=%d&userid=%d",
+                projectId, userId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("projectteammember", response.toString());
+                        try {
+                            int projectId = response.getInt("insertId");
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
+
+    }
+
+    public void getProjects(int userId, final Context context)
+    {
+        if (userId == 0) {
+            Log.d("getProjects error", "userid or projectid is 0");
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("getprojects?userid=%d",
+                userId);
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        Log.d("getprojects", response.toString());
+                        try {
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("project_name");
+
+                                adapter.add(name);
+                                // next thing you have to do is check if your adapter has changed
+                                adapter.notifyDataSetChanged();
+
+                                listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+                                    @Override
+                                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        Intent i = new Intent(
+                                                MainActivity.this,
+                                                TaskActivity.class);
+                                        startActivity(i);
+                                    }
+                                });
+
+                                listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                                    @Override
+                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                                                   final int arg2, long arg3) {
+                                        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                                        adb.setTitle("Delete entry");
+                                        adb.setMessage("Are you sure you want to delete this entry?");
+                                        adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                arrayList.remove(arg2);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // do nothing
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                        return true;
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -161,12 +368,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+<<<<<<< HEAD
         if (id == R.id.action_profile) {
             Intent i = new Intent(
                     MainActivity.this,
                     ProfileActivity.class);
             startActivity(i);
         }else if (id == R.id.action_settings) {
+=======
+        if (id == R.id.action_settings) {
+>>>>>>> master
             Intent i = new Intent(
                     MainActivity.this,
                     SettingsActivity.class);
@@ -178,8 +389,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+<<<<<<< HEAD
     public String getProjectName(){
         return ProjectName;
     }
+=======
+
+>>>>>>> master
 
 }

@@ -34,7 +34,12 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_task);
+<<<<<<< HEAD
 
+=======
+        //MainActivity ma = new MainActivity();
+        setTitle(MainActivity.ProjectName);
+>>>>>>> master
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
@@ -126,6 +131,19 @@ public class TaskActivity extends AppCompatActivity {
                     TaskActivity.this,
                     MainActivity.class);
             startActivity(i);
+<<<<<<< HEAD
+=======
+        } else if (id == R.id.action_desc) {
+            new AlertDialog.Builder(context)
+                    .setTitle("Description")
+                    .setMessage(MainActivity.Description)
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .show();
+>>>>>>> master
         }
 
         return super.onOptionsItemSelected(item);

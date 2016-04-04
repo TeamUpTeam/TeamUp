@@ -29,14 +29,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+<<<<<<< HEAD
+=======
+import android.widget.AdapterView;
+>>>>>>> master
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+<<<<<<< HEAD
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+=======
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+>>>>>>> master
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -45,6 +59,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class ChatActivity extends AppCompatActivity{
+<<<<<<< HEAD
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +90,68 @@ public class ChatActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+=======
+    private EditText editTxt;
+    private Button btn;
+    private ListView list;
+    private ArrayAdapter<String> chatAdapter;
+    private ArrayList<String> ChatList;
+
+
+
+    @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.chatroom);
+            editTxt = (EditText) findViewById(R.id.input_chat_message);
+            btn = (Button) findViewById(R.id.button_chat_send);
+            list = (ListView) findViewById(R.id.list_chat);
+            ChatList = new ArrayList<String>();
+
+            final String username = "Edwin Prakarsa";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            Date date = new Date();
+            final String time = dateFormat.format(date);
+
+            chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
+
+            list.setAdapter(chatAdapter);
+            list.setStackFromBottom(true);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    ChatList.add(username + System.lineSeparator()+ editTxt.getText().toString() + System.lineSeparator() + time);
+                    chatAdapter.notifyDataSetChanged();
+                    editTxt.setText("");
+                }
+            });
+
+        }
+
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_chat, menu);
+            return true;
+        }
+
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_back) {
+                Intent i = new Intent(
+                        ChatActivity.this,
+                        TaskActivity.class);
+                startActivity(i);
+            }
+            return super.onOptionsItemSelected(item);
+        }
+>>>>>>> master
 
 }
 

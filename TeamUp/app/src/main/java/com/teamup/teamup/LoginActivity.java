@@ -241,7 +241,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         RequestQueue queue = Volley.newRequestQueue(context);
 
         // this url is the query being sent to the database
-        url = Server.server_URL + String.format("newuser?username=%s&firsname=%s&lastname=%s&email=%s&password=%s", username, fname, lname, email, password);
+        url = Server.server_URL + String.format("newuser?username=%s&firstname=%s&lastname=%s&email=%s&password=%s", username, fname, lname, email, password);
+        Log.d("url: ", url);
         JsonObjectRequest getRequest = new JsonObjectRequest
                 (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                     @Override

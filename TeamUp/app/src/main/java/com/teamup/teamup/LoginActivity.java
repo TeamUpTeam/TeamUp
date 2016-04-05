@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     static String currEmail;
     int uid;
+    static String UserName;
 
     public int setuid(int yy)
     {
@@ -145,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 if(!email.getText().toString().matches("") && !password.getText().toString().matches("") &&!username.getText().toString().matches("") &&
                                         !fname.getText().toString().matches("")) {
-
+                                    UserName = username.getText().toString();
                                     mAlertDialog.dismiss();
 
                                     //Sending Request details for SignUp

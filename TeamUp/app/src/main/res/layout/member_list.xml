@@ -7,7 +7,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#ff444444"
+    android:background="#ffffffff"
     tools:context="com.teamup.teamup.MembersActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/memberEmail"
+        android:hint="Email"
+        android:textColor="#d2d2d2" />
+
+    <Button
+        android:id="@+id/AddMember"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="ADD"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewMembers"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true" />
 
 </LinearLayout>

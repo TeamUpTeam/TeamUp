@@ -33,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +47,32 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class MembersActivity extends AppCompatActivity{
 
+    ArrayAdapter<String> memAdapter;
+    private ArrayList<String> memList;
+    ListView listViewMem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.member_list);
+
+        listViewMem = (ListView) findViewById(R.id.listViewMembers);
+        memList = new ArrayList<String>();
+        memAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, memList);
+        listViewMem.setAdapter(memAdapter);
+        final EditText emailmember = (EditText) findViewById(R.id.memberEmail);
+        Button addmember = (Button) findViewById(R.id.AddMember);
+
+        addmember.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                memList.add(emailmember.getText().toString());
+                memAdapter.notifyDataSetChanged();
+            }
+
+        });
+
 
 
     }

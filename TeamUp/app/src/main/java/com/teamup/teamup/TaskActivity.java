@@ -121,7 +121,8 @@ public class TaskActivity extends AppCompatActivity {
                     ChatActivity.class);
             startActivity(i);
         } else if(id == R.id.action_members) {
-
+            Intent i = new Intent (TaskActivity.this, MembersActivity.class);
+            startActivity(i);
         } else if (id == R.id.action_quit){
             Intent i = new Intent(
                     TaskActivity.this,

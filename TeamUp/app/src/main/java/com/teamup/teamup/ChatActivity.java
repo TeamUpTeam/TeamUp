@@ -69,8 +69,8 @@ public class ChatActivity extends AppCompatActivity{
                 }
             });
 
-            final String fName = SettingsActivity.fName;
-            final String uName = SettingsActivity.uName;
+            final String fName = MainActivity.fName;
+            final String uName = MainActivity.uName;
 
 
             System.out.println("First Name: " + fName);

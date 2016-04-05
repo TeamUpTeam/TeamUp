@@ -22,7 +22,7 @@ import org.json.JSONArray;
  * A login screen that offers login via email/password.
  */
 public class SettingsActivity extends AppCompatActivity{
-String email = LoginActivity.currEmail;
+    String email = LoginActivity.currEmail;
     TextView fn;
     TextView ln;
     TextView em;

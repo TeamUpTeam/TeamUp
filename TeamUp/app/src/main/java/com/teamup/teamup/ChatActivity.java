@@ -88,7 +88,7 @@ public class ChatActivity extends AppCompatActivity{
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChatList.add(LoginActivity.UserName + System.lineSeparator() + editTxt.getText().toString() + System.lineSeparator() + time);
+                    ChatList.add(MainActivity.fName + System.lineSeparator() + editTxt.getText().toString() + System.lineSeparator() + time);
                     chatAdapter.notifyDataSetChanged();
 
                     //Addding the message to Firebase:

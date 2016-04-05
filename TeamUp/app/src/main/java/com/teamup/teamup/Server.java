@@ -73,8 +73,9 @@ public class Server {
         //final String pmUserID = Integer.toString(pm_UserID);
 
 
-        //String url = server_URL + "insert^into^project^(project_name,planned_start_date,planned_end_date,project_manager_user_id,project_description)^values^('"+projectName+"','"+planStart+"','"+planEnd+"','"+pmUserID+"','"+projectDescription+"');";
         String url = server_URL + "insert^into^project^(project_name,project_description)^values^('"+projectName+"','"+projectDescription+"');";
+        //String url = server_URL + "/post";
+
 
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
@@ -113,7 +114,57 @@ public class Server {
         return 0;
     }
 
+    /*
+     *  Creates a project with the values given, creates a projectID
+     */
+    public int NEWcreateProject (String project_Name, String project_Description, String plan_Start, String plan_End, int pm_UserID, Context context)
+    {
+        final String projectName = project_Name;
+        final String projectDescription = project_Description;
+        final String planStart = plan_Start.toString();
+        final String planEnd = plan_End.toString();
+        final String pmUserID = Integer.toString(pm_UserID);
 
+        // THIS PART IS LARGEST CHANGE!  Change long URL to just /post, and then the map posts the information to the database
+        String url = server_URL + "/post";
+
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Request a string response
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", "Response Error" );
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("project_name", projectName);
+                params.put("planned_start_date", planStart);
+                params.put("planned_end_date", planEnd);
+                params.put("project_manager_user_id", pmUserID);
+                params.put("project_description", projectDescription);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+        // gets the projectID for the Log
+        getProjectID(pm_UserID, projectName, context); // not possible
+
+        return 0;
+    }
     /*
      *  Deletes the project from the database
      */
@@ -273,6 +324,7 @@ public class Server {
         final String projectID = Integer.toString(project_ID);
 
         String url = server_URL + "update^project^set^actual_end_date='"+actualEndDate+"'^where^project_id='"+projectID+"';";
+        //String url = server_URL + "update^project^set^actual_end_date='"+actualEndDate+"'^where^project_id='"+projectID+"';";
         RequestQueue queue = Volley.newRequestQueue(context);
         // Request a string response
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,

@@ -1,1 +1,1 @@
-include ':app', ':volley'
+include ':app', ':volley', ':firebase-client-android-2.5.2m'

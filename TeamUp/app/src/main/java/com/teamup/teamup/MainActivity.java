@@ -4,26 +4,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,9 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -52,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     static String Description;
     int userId;
     int projectId;
+    static String pName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -288,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject actor = response.getJSONObject(i);
                                 String name = actor.getString("project_name");
 
+                                System.out.println("Project Name: " + name);
+
                                 adapter.add(name);
                                 // next thing you have to do is check if your adapter has changed
                                 adapter.notifyDataSetChanged();
@@ -297,6 +293,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        System.out.println("I got here!");
+                                        System.out.println("The position is: " + position);
+                                        pName = adapter.getItem(position);
+                                        System.out.println("This is the project name that I got: " + pName);
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);
@@ -370,7 +370,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 }

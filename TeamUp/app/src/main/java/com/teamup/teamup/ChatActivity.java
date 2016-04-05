@@ -1,49 +1,26 @@
 package com.teamup.teamup;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
@@ -55,7 +32,7 @@ public class ChatActivity extends AppCompatActivity{
     private ArrayAdapter<String> chatAdapter;
     private ArrayList<String> ChatList;
 
-
+    Firebase mRef;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +43,39 @@ public class ChatActivity extends AppCompatActivity{
             list = (ListView) findViewById(R.id.list_chat);
             ChatList = new ArrayList<String>();
 
-            final String username = "Edwin Prakarsa";
+            System.out.println("Hello, Sir!");
+
+            Firebase.setAndroidContext(this);
+
+            String pName = MainActivity.pName;
+
+            System.out.println("Bros and remaining Hoes, we got the Project Name, aaaaaand it isssss: " + pName);
+
+            mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
+
+            //Checking for firebase data if it can be retrieved
+
+            //mRef.child("1").setValue("Shreyaansh: Hey Guyz, I didn't fuck up!");
+
+            mRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    System.out.println(dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    System.out.printf("The read failed: " + firebaseError.getMessage());
+                }
+            });
+
+            final String fName = SettingsActivity.fName;
+            final String uName = SettingsActivity.uName;
+
+
+            System.out.println("First Name: " + fName);
+            System.out.println("User Name: " + uName);
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date();
             final String time = dateFormat.format(date);
@@ -79,9 +88,16 @@ public class ChatActivity extends AppCompatActivity{
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    ChatList.add(username + System.lineSeparator()+ editTxt.getText().toString() + System.lineSeparator() + time);
+                    ChatList.add(fName + System.lineSeparator() + editTxt.getText().toString() + System.lineSeparator() + time);
                     chatAdapter.notifyDataSetChanged();
+
+                    //Addding the message to Firebase:
+                    Map<String, String> post = new HashMap<String, String>();
+                    post.put("First Name", fName);
+                    post.put("User Name", uName);
+                    post.put("message", editTxt.getText().toString());
+                    mRef.push().setValue(post);
+                    
                     editTxt.setText("");
                 }
             });

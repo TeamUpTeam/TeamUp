@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Server x = new Server();
     static String ProjectName;
     static String Description;
-    int userId;
+    static int userId;
     int projectId;
     static String pName;
     static String fName;

@@ -6,21 +6,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -109,8 +106,7 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
-    public void newTask(final String taskName, final String taskDesc, final int taskStatusId, final int projectId, final int priorTaskId, int isDel, final Context context)
-    {
+    public void newTask(final String taskName, final String taskDesc, final int taskStatusId, final int projectId, final int priorTaskId, int isDel, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&statusid=%d&projectid=%d&priorid=%d&isdel=%d",

@@ -399,12 +399,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(
+            Intent i = new Intent (
                     MainActivity.this,
                     SettingsActivity.class);
             startActivity(i);
-        }else if (id == R.id.action_logout) {
-
+        } else if (id == R.id.action_logout) {
+            Intent i = new Intent (MainActivity.this, LoginActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

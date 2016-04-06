@@ -1,5 +1,6 @@
 package com.teamup.teamup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class ChatActivity extends AppCompatActivity{
     private ListView list;
     private ArrayAdapter<String> chatAdapter;
     private ArrayList<String> ChatList;
+    int countMessages;
 
     Firebase mRef;
 
@@ -42,43 +44,79 @@ public class ChatActivity extends AppCompatActivity{
             btn = (Button) findViewById(R.id.button_chat_send);
             list = (ListView) findViewById(R.id.list_chat);
             ChatList = new ArrayList<String>();
+            final Context context = this;
+            countMessages = 0;
 
             System.out.println("Hello, Sir!");
 
             Firebase.setAndroidContext(this);
+            RequestQueue queue = Volley.newRequestQueue(context);
 
-            String pName = MainActivity.pName;
+            final String pName = MainActivity.pName;
+            final String fName = MainActivity.fName;
+            final String uName = MainActivity.uName;
 
             System.out.println("Bros and remaining Hoes, we got the Project Name, aaaaaand it isssss: " + pName);
 
             mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
 
+
+            //Trial and Error
+            /*mRef.orderByKey().on("child_added", function(snapshot) {
+                System.out.println(dataSnapshot.key());
+            });*/
+
+
             //Checking for firebase data if it can be retrieved
-
-            //mRef.child("1").setValue("Shreyaansh: Hey Guyz, I didn't fuck up!");
-
-            mRef.addValueEventListener(new ValueEventListener() {
+            /*mRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     System.out.println(dataSnapshot.getValue());
+
                 }
 
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
                     System.out.printf("The read failed: " + firebaseError.getMessage());
                 }
+            });*/
+
+            mRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    countMessages++;
+                    System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
+                    ChatList.add(dataSnapshot.child("First Name").getValue() + System.lineSeparator() + dataSnapshot.child("message").getValue());
+                    chatAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
             });
-
-            final String fName = SettingsActivity.fName;
-            final String uName = SettingsActivity.uName;
-
 
             System.out.println("First Name: " + fName);
             System.out.println("User Name: " + uName);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            Date date = new Date();
-            final String time = dateFormat.format(date);
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            //Date date = new Date();
+            //final String time = dateFormat.format(date);
 
             chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
 
@@ -88,16 +126,16 @@ public class ChatActivity extends AppCompatActivity{
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChatList.add(LoginActivity.UserName + System.lineSeparator() + editTxt.getText().toString() + System.lineSeparator() + time);
-                    chatAdapter.notifyDataSetChanged();
-
                     //Addding the message to Firebase:
                     Map<String, String> post = new HashMap<String, String>();
                     post.put("First Name", fName);
                     post.put("User Name", uName);
                     post.put("message", editTxt.getText().toString());
                     mRef.push().setValue(post);
-                    
+
+                    String postID = mRef.getKey();
+                    System.out.println("postID is: " + postID);
+
                     editTxt.setText("");
                 }
             });
@@ -125,6 +163,5 @@ public class ChatActivity extends AppCompatActivity{
             }
             return super.onOptionsItemSelected(item);
         }
-
 }
 

@@ -43,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
     Server x = new Server();
     static String ProjectName;
     static String Description;
-    int userId;
+    static int userId;
     int projectId;
     static String pName;
+    static String fName;
+    static String uName;
+    String user_info;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +64,46 @@ public class MainActivity extends AppCompatActivity {
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
         listViewProj.setAdapter(adapter);
-        // add button listener
 
+
+        //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = Server.server_URL + String.format("getuserinfo?email=%s",LoginActivity.currEmail);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        user_info = response.toString();
+                        try {
+
+                            fName = response.getJSONObject(0).getString("first_name");
+                            uName = response.getJSONObject(0).getString("login_name");
+
+                            System.out.println("First Name: " + fName);
+                            System.out.println("User Name: " + uName);
+
+                        }
+                        catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString() );
+
+
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+
+
+        // add button listener
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -159,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
     }
 
     public void getUserIdAndProjects(String email) {
@@ -360,12 +399,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(
+            Intent i = new Intent (
                     MainActivity.this,
                     SettingsActivity.class);
             startActivity(i);
-        }else if (id == R.id.action_logout) {
-
+        } else if (id == R.id.action_logout) {
+            Intent i = new Intent (MainActivity.this, LoginActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

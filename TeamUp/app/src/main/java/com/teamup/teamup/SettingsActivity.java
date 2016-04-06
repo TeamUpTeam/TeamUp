@@ -22,7 +22,7 @@ import org.json.JSONArray;
  * A login screen that offers login via email/password.
  */
 public class SettingsActivity extends AppCompatActivity{
-String email = LoginActivity.currEmail;
+    String email = LoginActivity.currEmail;
     TextView fn;
     TextView ln;
     TextView em;
@@ -36,8 +36,6 @@ String email = LoginActivity.currEmail;
     String last_name;
     String email_curr;
     String password;
-    static String fName;
-    static String uName;
     int userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +59,9 @@ String email = LoginActivity.currEmail;
                            first_name = response.getJSONObject(0).getString("first_name");
                            last_name = response.getJSONObject(0).getString("last_name");
                            email_curr = response.getJSONObject(0).getString("email_address");
-                           //password = response.getJSONObject(0).getString("password");
-                           //Log.d("fn %s",first_name);
-                           //Log.d("ln ",last_name);
-                           //Log.d("lognam ", login_name);
-                           //Log.d("email is ", email_curr);
-                           //String temp1 = first_name;
-                           fName = response.getJSONObject(0).getString("first_name");
-                           uName = response.getJSONObject(0).getString("login_name");
+
                            fn.setText(response.getJSONObject(0).getString("first_name"));
-                           // }
+
                            ln.setText(response.getJSONObject(0).getString("last_name"));
 
                            log.setText(response.getJSONObject(0).getString("login_name"));
@@ -81,13 +72,6 @@ String email = LoginActivity.currEmail;
                        {
 
                        }
-
-                       //final String uid = String.format("%d",userid);
-                    //Log.d("user_info is %s",user_info);
-                    //Log.d("login_name is %s",login_name);
-
-
-
 
                     }
                 },

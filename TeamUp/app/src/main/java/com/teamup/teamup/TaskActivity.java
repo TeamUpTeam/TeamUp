@@ -6,21 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.content.Intent;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -97,6 +103,71 @@ public class TaskActivity extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    public void newTask(final String taskName, final String taskDesc, final int taskStatusId, final int projectId, final int priorTaskId, int isDel, final Context context) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&statusid=%d&projectid=%d&priorid=%d&isdel=%d",
+                taskName, taskDesc, taskStatusId, projectId, priorTaskId, isDel);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //successful row return, so allow login
+                        Log.d("Created project", response.toString());
+                        try {
+                            int taskId = response.getInt("insertId");
+                            newUserTask(MainActivity.userId, taskId, context);
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
+
+    }
+
+    public void newUserTask(int userId, int taskId, Context context)
+    {
+        if (userId == 0|| taskId == 0) {
+            Log.d("newUserTask", "userid or projectid is 0");
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("newusertask?userid=%d&taskid=%d",
+                userId, taskId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("newUserTask", response.toString());
+                        try {
+                            int id = response.getInt("insertId");
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+        // this url is the query being sent to the database
 
     }
 

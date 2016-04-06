@@ -10,13 +10,20 @@
     android:background="#ffffffff"
     tools:context="com.teamup.teamup.MembersActivity">
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/memberEmail"
-        android:hint="Email"
-        android:textColor="#d2d2d2" />
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/memberEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/AddMember"

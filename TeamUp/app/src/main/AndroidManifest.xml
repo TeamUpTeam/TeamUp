@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/team_up_final"
         android:installLocation="auto"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="Team Up">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

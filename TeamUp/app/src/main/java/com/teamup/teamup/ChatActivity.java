@@ -61,6 +61,26 @@ public class ChatActivity extends AppCompatActivity{
             mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
 
 
+            //Trial and Error
+            /*mRef.orderByKey().on("child_added", function(snapshot) {
+                System.out.println(dataSnapshot.key());
+            });*/
+
+
+            //Checking for firebase data if it can be retrieved
+            /*mRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    System.out.println(dataSnapshot.getValue());
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    System.out.printf("The read failed: " + firebaseError.getMessage());
+                }
+            });*/
+
             mRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -93,7 +113,10 @@ public class ChatActivity extends AppCompatActivity{
 
             System.out.println("First Name: " + fName);
             System.out.println("User Name: " + uName);
-        
+
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            //Date date = new Date();
+            //final String time = dateFormat.format(date);
 
             chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
 

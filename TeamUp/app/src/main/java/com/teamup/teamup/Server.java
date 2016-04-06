@@ -22,6 +22,7 @@ import java.util.Date;
 public class Server {
     private static final Server INSTANCE = new Server();
     static String server_URL = "http://teamupserver3.mybluemix.net/api/";
+    static String other_URL = "https://teamup-messenger.firebaseio.com/";
     //public String pname;
     public Server() { }
     String xx;

@@ -19,9 +19,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +86,8 @@ public class ChatActivity extends AppCompatActivity{
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     countMessages++;
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
-
+                    ChatList.add(dataSnapshot.child("First Name").getValue() + System.lineSeparator() + dataSnapshot.child("message").getValue());
+                    chatAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -115,9 +114,9 @@ public class ChatActivity extends AppCompatActivity{
             System.out.println("First Name: " + fName);
             System.out.println("User Name: " + uName);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            Date date = new Date();
-            final String time = dateFormat.format(date);
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            //Date date = new Date();
+            //final String time = dateFormat.format(date);
 
             chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
 
@@ -127,9 +126,6 @@ public class ChatActivity extends AppCompatActivity{
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChatList.add(MainActivity.fName + System.lineSeparator() + editTxt.getText().toString() + System.lineSeparator() + time);
-                    chatAdapter.notifyDataSetChanged();
-
                     //Addding the message to Firebase:
                     Map<String, String> post = new HashMap<String, String>();
                     post.put("First Name", fName);

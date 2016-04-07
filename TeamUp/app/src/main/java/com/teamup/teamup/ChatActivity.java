@@ -84,6 +84,8 @@ public class ChatActivity extends AppCompatActivity{
             mRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    //Getting messages from FireBase
+                    //This method gets the messages once the page is initialized and then everytime the server is updated
                     countMessages++;
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
                     ChatList.add(dataSnapshot.child("First Name").getValue() + System.lineSeparator() + dataSnapshot.child("message").getValue());
@@ -127,16 +129,22 @@ public class ChatActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     //Addding the message to Firebase:
-                    Map<String, String> post = new HashMap<String, String>();
-                    post.put("First Name", fName);
-                    post.put("User Name", uName);
-                    post.put("message", editTxt.getText().toString());
-                    mRef.push().setValue(post);
+                    if (!editTxt.getText().toString().equals("")) {
+                        String message = editTxt.getText().toString().trim();
+                        //System.out.printf("This is the formatted string: \"%s\"\n", message);
+                        if (!message.equals("")) {
+                            Map<String, String> post = new HashMap<String, String>();
+                            post.put("First Name", fName);
+                            post.put("User Name", uName);
+                            post.put("message", message);
+                            mRef.push().setValue(post);
 
-                    String postID = mRef.getKey();
-                    System.out.println("postID is: " + postID);
+                            String postID = mRef.getKey();
+                            //System.out.println("postID is: " + postID);
 
-                    editTxt.setText("");
+                            editTxt.setText("");
+                        }
+                    }
                 }
             });
 

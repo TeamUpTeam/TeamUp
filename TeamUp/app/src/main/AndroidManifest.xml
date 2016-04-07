@@ -59,14 +59,11 @@
         <activity
             android:name=".MembersActivity"
             android:label="Members">
-<<<<<<< HEAD
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-=======
->>>>>>> 0f56bda2cf14aa7e9333bb64118086d12b392187
         </activity>
     </application>
 

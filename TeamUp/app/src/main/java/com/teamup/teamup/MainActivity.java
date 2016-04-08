@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     static String fName;
     static String uName;
     String user_info;
+    static ArrayList<JSONObject> projectInfo = new ArrayList<JSONObject>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,7 +158,10 @@ public class MainActivity extends AppCompatActivity {
                                             Intent i = new Intent(
                                                     MainActivity.this,
                                                     TaskActivity.class);
+
+
                                             startActivity(i);
+                                            //startActivity(i);
                                         }
                                     });
 
@@ -316,10 +320,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         Log.d("getprojects", response.toString());
+                        projectInfo.clear();
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
+                                projectInfo.add(actor); //stores jsonobject info for each project to be accessed later.
                                 String name = actor.getString("project_name");
+                                final int projId = actor.getInt("project_id");
+                                Log.d("projID", projId + "");
 
                                 System.out.println("Project Name: " + name);
 
@@ -339,7 +347,16 @@ public class MainActivity extends AppCompatActivity {
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);
+                                        int projectId;
+                                        try {
+                                            projectId = projectInfo.get(position).getInt("project_id");
+                                            i.putExtra("projectId", projectId);
+
+                                        } catch (Exception e) {
+
+                                        }
                                         startActivity(i);
+
                                     }
                                 });
 

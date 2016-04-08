@@ -44,6 +44,14 @@
         <activity
             android:name=".MembersActivity"
             android:label="Members">
+<<<<<<< HEAD
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+=======
+>>>>>>> fa404f9628e3622505ccedf4948059cf0cf08679
         </activity>
     </application>
 

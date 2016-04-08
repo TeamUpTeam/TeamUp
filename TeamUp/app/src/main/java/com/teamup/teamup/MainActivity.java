@@ -428,4 +428,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+        public boolean checkLogin(int userId){
+            
+
+            return false;
+        }
 }

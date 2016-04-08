@@ -39,6 +39,7 @@
 
                     <ListView
                         android:id="@+id/list_chat"
+                        android:transcriptMode="alwaysScroll"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:divider="@null"

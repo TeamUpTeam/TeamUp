@@ -41,15 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
-    static String ProjectName;
-    static String Description;
     static int userId;
-    int projectId;
+    static int projectId;
     static String pName;
     static String fName;
     static String uName;
+    static String Decs;
     String user_info;
     static ArrayList<JSONObject> projectInfo = new ArrayList<JSONObject>();
+    static String startD;
+    static String endD;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,10 +147,9 @@ public class MainActivity extends AppCompatActivity {
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
+                                    Decs = ProjDesc.getText().toString();
                                     int uid = ne.uid;
                                     //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
-                                    ProjectName = ProjName.getText().toString();
-                                    Description = ProjDesc.getText().toString();
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -242,7 +242,8 @@ public class MainActivity extends AppCompatActivity {
     public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, final Context context)
     {
         RequestQueue queue = Volley.newRequestQueue(context);
-
+        startD = startDate;
+        endD = endDate;
         String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
                 projectName, startDate, endDate, projectManagerUserId, projectDescription);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
@@ -429,9 +430,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-        public boolean checkLogin(int userId){
-            
+    public boolean checkLogin(int userId){
 
-            return false;
-        }
+
+        return false;
+    }
 }

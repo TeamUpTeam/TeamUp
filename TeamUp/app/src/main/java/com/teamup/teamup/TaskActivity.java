@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,6 +122,42 @@ public class TaskActivity extends AppCompatActivity {
                                 } else if (taskDesc.getText().toString().matches("")) {
                                     taskDesc.setError(getString(R.string.error_field_required));
                                 }
+
+                                listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+                                    @Override
+                                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+                                    }
+                                });
+
+                                listViewTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                                    @Override
+                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                                                   final int arg2, long arg3) {
+                                        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                                        adb.setTitle("Delete entry");
+                                        adb.setMessage("Are you sure you want to delete this task?");
+                                        adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                taskList.remove(arg2);
+                                                taskAdapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // do nothing
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                        return true;
+                                    }
+                                });
                             }
                         });
                     }

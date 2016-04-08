@@ -201,6 +201,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        mEmailView.setText("max@emerson.com");
+        mPasswordView.setText("maxemerson");
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
 
@@ -211,8 +214,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
 
-                mEmailView.setText("max@emerson.com");
-                mPasswordView.setText("maxemerson");
+
 
                 EditText eemail = (EditText) findViewById(R.id.email);
                 EditText ppassword = (EditText) findViewById(R.id.password);

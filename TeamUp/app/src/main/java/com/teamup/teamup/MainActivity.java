@@ -42,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewProj;
     Server x = new Server();
     static int userId;
-    int projectId;
+    static int projectId;
     static String pName;
     static String fName;
     static String uName;
     static String Decs;
     String user_info;
+    static String startD;
+    static String endD;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -236,7 +238,8 @@ public class MainActivity extends AppCompatActivity {
     public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, final Context context)
     {
         RequestQueue queue = Volley.newRequestQueue(context);
-
+        startD = startDate;
+        endD = endDate;
         String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
                 projectName, startDate, endDate, projectManagerUserId, projectDescription);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
@@ -410,9 +413,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-        public boolean checkLogin(int userId){
-            
+    public boolean checkLogin(int userId){
 
-            return false;
-        }
+
+        return false;
+    }
 }

@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -62,6 +63,8 @@ public class MembersActivity extends AppCompatActivity {
     int uid;
     EditText emailmember;
     final String projName = MainActivity.pName;
+    int global_pid;
+    int global_uid;
 
     int pid;
     ArrayAdapter<String> memAdapter;
@@ -127,7 +130,35 @@ public class MembersActivity extends AppCompatActivity {
 
 
         // uid = 0;
-        //pid = 0;
+        //pid = 0;//fjdjc
+        listViewMem.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                adb.setTitle("Delete selected Member");
+                adb.setMessage("Are you sure you want to delete this member?");
+                adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+
+                        //UserId(memList.get(position));
+
+                        memList.remove(position);
+                        memAdapter.notifyDataSetChanged();
+                    }
+                })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return true;
+            }
+
+        });
 
 
     }
@@ -264,7 +295,6 @@ public class MembersActivity extends AppCompatActivity {
 
     }
 
-    int global_pid;
 
     public void UpdatePid(int xuid) {
         System.out.println("Hello from the other side");
@@ -441,6 +471,47 @@ public class MembersActivity extends AppCompatActivity {
 
 
     }
+    public void UserId(String email)
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url = Server.server_URL + String.format("getuserinfo?email=%s",email);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        user_info = response.toString();
+                        try {
+                            global_uid = response.getJSONObject(0).getInt("user_id");
+                            Log.d("global_uid is ", String.format("%d",global_uid));
+                            deleteUser();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString() );
+
+
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
+public void deleteUser()
+{
+
+}
 }
 
 

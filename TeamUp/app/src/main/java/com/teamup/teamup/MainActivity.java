@@ -41,13 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> projectList;
     ListView listViewProj;
     Server x = new Server();
-    static String ProjectName;
-    static String Description;
     static int userId;
     int projectId;
     static String pName;
     static String fName;
     static String uName;
+    static String Decs;
     String user_info;
 
     @Override
@@ -145,10 +144,9 @@ public class MainActivity extends AppCompatActivity {
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
+                                    Decs = ProjDesc.getText().toString();
                                     int uid = ne.uid;
                                     //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
-                                    ProjectName = ProjName.getText().toString();
-                                    Description = ProjDesc.getText().toString();
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 

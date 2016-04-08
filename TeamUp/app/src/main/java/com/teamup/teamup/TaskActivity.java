@@ -14,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,10 +30,17 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
     Server x = new Server();
+
+    ArrayAdapter<String> taskAdapter;
+    private ArrayList<String> taskList;
+    private ArrayList<String> projectList;
+    ListView listViewTask;
 
 
     @Override
@@ -41,9 +50,14 @@ public class TaskActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_task);
         //MainActivity ma = new MainActivity();
-        setTitle(MainActivity.ProjectName);
+        setTitle(MainActivity.pName);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
+
+        listViewTask = (ListView) findViewById(R.id.listViewTask);
+        taskList = new ArrayList<String>();
+        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+        listViewTask.setAdapter(taskAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
@@ -82,7 +96,10 @@ public class TaskActivity extends AppCompatActivity {
                                 // TODO Do something
                                 if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    mLayout.addView(createNewTextView(taskName.getText().toString()));
+                                    taskAdapter.add(taskName.getText().toString());
+                                    // next thing you have to do is check if your adapter has changed
+                                    taskAdapter.notifyDataSetChanged();
+
                                     // get user input and set it to result
                                     // edit text
                                     //TaskName = userInput1.toString();
@@ -202,7 +219,7 @@ public class TaskActivity extends AppCompatActivity {
         } else if (id == R.id.action_desc) {
             new AlertDialog.Builder(context)
                     .setTitle("Description")
-                    .setMessage(MainActivity.Description)
+                    .setMessage(MainActivity.Decs)
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // do nothing
@@ -214,14 +231,4 @@ public class TaskActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private TextView createNewTextView(String text) {
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final Button button = new Button(this);
-        LinearLayout ll = (LinearLayout) findViewById(R.id.TaskLinearLayout);
-        //textView.setLayoutParams(lparams);
-        button.setWidth(ll.getWidth());
-        button.setHeight(200);
-        button.setText(text);
-        return button;
-    }
 }

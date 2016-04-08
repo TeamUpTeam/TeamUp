@@ -18,6 +18,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".TaskActivity"
@@ -31,11 +36,11 @@
         <activity
             android:name=".LoginActivity"
             android:label="Team Up">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".ChatActivity"
@@ -44,14 +49,12 @@
         <activity
             android:name=".MembersActivity"
             android:label="Members">
-<<<<<<< HEAD
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-=======
->>>>>>> fa404f9628e3622505ccedf4948059cf0cf08679
+
         </activity>
     </application>
 

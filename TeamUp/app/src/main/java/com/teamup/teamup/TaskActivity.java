@@ -51,8 +51,7 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         //MainActivity ma = new MainActivity();
         setTitle(MainActivity.pName);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar);
+
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
@@ -61,7 +60,6 @@ public class TaskActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         // components from main.xml
-        mLayout = (LinearLayout) findViewById(R.id.TaskLinearLayout);
         // add button listener
         fab.setOnClickListener(new View.OnClickListener() {
 

@@ -26,8 +26,7 @@
         </activity>
         <activity
             android:name=".TaskActivity"
-            android:label="@string/project_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/project_name">
         </activity>
         <activity
             android:name=".SettingsActivity"

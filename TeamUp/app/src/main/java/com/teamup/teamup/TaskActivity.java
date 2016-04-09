@@ -174,6 +174,37 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
+    public void getTaskInfo(int taskId) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("gettaskinfo?taskid=%d",
+               taskId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //successful row return, so allow login
+                        Log.d("Created task", response.toString());
+                        int taskId = -1;
+                        try {
+                            taskId = response.getInt("insertId");
+                            newUserTask(MainActivity.userId, taskId, context);
+                        } catch (Exception e) {
+
+                        }
+
+                        newUserTask(MainActivity.userId, taskId, context);
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+    }
+
     public void getTasks(int userId, int projectId, final Context context)
     {
         if (userId == 0) {

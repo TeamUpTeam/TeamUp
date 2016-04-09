@@ -8,7 +8,6 @@
     <string name="title_activity_signup">Sign up</string>
 
 
-
     <!-- Strings related to login -->
 
     <string name="prompt_email">Email</string>
@@ -27,7 +26,6 @@
     <string name="fname">finame</string>
 
 
-
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -36,4 +34,5 @@
         completions."
     </string>
     <string name="title_activity_project">Project</string>
+    <string name="title_activity_task_info">TaskInfoActivity</string>
 </resources>

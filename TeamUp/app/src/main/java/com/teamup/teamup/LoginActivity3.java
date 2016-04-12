@@ -1,6 +1,10 @@
 package com.teamup.teamup;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 
 
 public class LoginActivity3 extends AppCompatActivity {
@@ -22,6 +34,10 @@ public class LoginActivity3 extends AppCompatActivity {
     EditText _passwordText;
     Button _loginButton;
     TextView _signupLink;
+    static String currEmail;
+    View currView;
+    Context currContext;
+
 //
 //    @InjectView(R.id.input_email) EditText _emailText;
 //    @InjectView(R.id.input_password) EditText _passwordText;
@@ -55,6 +71,8 @@ public class LoginActivity3 extends AppCompatActivity {
                 //startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+        currContext = this;
+        currView = ((Activity)currContext).getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
     public void login() {
@@ -78,6 +96,8 @@ public class LoginActivity3 extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
 
+        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
+
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -87,6 +107,49 @@ public class LoginActivity3 extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
+    }
+
+    public void login(final String email, String password, Context context, final View view)
+    {
+        String url;
+        //final String loginName = login_Name;
+        // prepare the Request
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // this url is the query being sent to the database
+        url = Server.server_URL + String.format("login?email=%s&password=%s", email, password);
+        JsonArrayRequest getRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        currEmail = email;
+                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString() );
+
+                                new AlertDialog.Builder(view.getContext())
+                                        //.setTitle("Delete entry")
+                                        .setMessage("Invalid username or password.")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        });
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
     }
 
 

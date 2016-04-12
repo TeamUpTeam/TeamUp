@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.team_up_final);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         getUserIdAndProjects(LoginActivity3.currEmail);

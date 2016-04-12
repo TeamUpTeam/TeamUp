@@ -14,8 +14,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
         ServerConnect conn = new ServerConnect();
 
-        String output = conn.newuser("a", "b", "c", "abc@abc.com");
 
-        Log.d("test", output);
     }
 }

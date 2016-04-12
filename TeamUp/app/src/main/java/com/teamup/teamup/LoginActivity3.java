@@ -75,7 +75,7 @@ public class LoginActivity3 extends AppCompatActivity {
         currContext = this;
         currView = ((Activity)currContext).getWindow().getDecorView().findViewById(android.R.id.content);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        
+
         _emailText.setText("max@emerson.com");
         _passwordText.setText("maxemerson");
     }

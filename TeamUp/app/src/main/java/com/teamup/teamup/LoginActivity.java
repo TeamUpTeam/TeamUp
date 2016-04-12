@@ -95,10 +95,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
 
         Button button = (Button) findViewById(R.id.email_sign_up_button);
+
         // components from main.xml
         //result = (EditText) findViewById(R.id.editTextResult);
         // add button listener
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -113,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 final EditText fname = (EditText) promptsView.findViewById(R.id.firstname);
                 final EditText lname = (EditText) promptsView.findViewById(R.id.lastname);
                 final EditText phone = (EditText) promptsView.findViewById(R.id.phone);
+
 
                 Server x = new Server();
                 int uidw = x.getUserID(username.getText().toString(),context);
@@ -198,6 +201,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        mEmailView.setText("max@emerson.com");
+        mPasswordView.setText("maxemerson");
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
 
@@ -207,6 +213,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //attemptLogin(); //removed temporarily
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
+
+
+
                 EditText eemail = (EditText) findViewById(R.id.email);
                 EditText ppassword = (EditText) findViewById(R.id.password);
 

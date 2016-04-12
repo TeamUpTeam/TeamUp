@@ -67,12 +67,15 @@ public class LoginActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
-              //  Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                //startActivityForResult(intent, REQUEST_SIGNUP);
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
         currContext = this;
         currView = ((Activity)currContext).getWindow().getDecorView().findViewById(android.R.id.content);
+
+        _emailText.setText("max@emerson.com");
+        _passwordText.setText("maxemerson");
     }
 
     public void login() {
@@ -96,13 +99,12 @@ public class LoginActivity3 extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
 
-        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
+                        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
@@ -133,18 +135,7 @@ public class LoginActivity3 extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // Error handling
-                                Log.d("Error.Response", error.toString() );
-
-                                new AlertDialog.Builder(view.getContext())
-                                        //.setTitle("Delete entry")
-                                        .setMessage("Invalid username or password.")
-                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                // continue with delete
-                                            }
-                                        })
-                                        .setIcon(android.R.drawable.ic_dialog_alert)
-                                        .show();
+                                onLoginFailed();
                             }
                         });
 

@@ -73,6 +73,10 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.team_up_final);
+
         // components from main.xml
         // add button listener
         getTasks(MainActivity.userId, projectId, context);

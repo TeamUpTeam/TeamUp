@@ -11,6 +11,7 @@ import android.util.Log;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -73,7 +74,8 @@ public class LoginActivity3 extends AppCompatActivity {
         });
         currContext = this;
         currView = ((Activity)currContext).getWindow().getDecorView().findViewById(android.R.id.content);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        
         _emailText.setText("max@emerson.com");
         _passwordText.setText("maxemerson");
     }
@@ -99,13 +101,13 @@ public class LoginActivity3 extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
 
+        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
-                        // onLoginFailed();
+                         //onLoginFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);

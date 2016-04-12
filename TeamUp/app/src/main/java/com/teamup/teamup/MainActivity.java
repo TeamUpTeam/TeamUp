@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        getUserIdAndProjects(LoginActivity.currEmail);
+        getUserIdAndProjects(LoginActivity3.currEmail);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = Server.server_URL + String.format("getuserinfo?email=%s",LoginActivity.currEmail);
+        String url = Server.server_URL + String.format("getuserinfo?email=%s",LoginActivity3.currEmail);
         JsonArrayRequest getRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override

@@ -35,4 +35,6 @@
     </string>
     <string name="title_activity_project">Project</string>
     <string name="title_activity_task_info">TaskInfoActivity</string>
+    <string name="title_activity_login2">login2</string>
+    <string name="title_activity_login3">LoginActivity3</string>
 </resources>

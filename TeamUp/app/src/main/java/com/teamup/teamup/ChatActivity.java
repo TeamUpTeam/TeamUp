@@ -47,6 +47,7 @@ public class ChatActivity extends AppCompatActivity{
             final Context context = this;
             countMessages = 0;
 
+
             System.out.println("Hello, Sir!");
 
             Firebase.setAndroidContext(this);

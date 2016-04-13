@@ -44,8 +44,9 @@ public class TaskActivity extends AppCompatActivity {
 
     ArrayAdapter<String> taskAdapter;
     private ArrayList<String> taskList;
-    private ArrayList<String> projectList;
+    static ArrayList<String> claimedTaskList;
     ListView listViewTask;
+    ListView listViewTaskClaim;
 
 
     @Override
@@ -57,11 +58,22 @@ public class TaskActivity extends AppCompatActivity {
         //MainActivity ma = new MainActivity();
         setTitle(MainActivity.pName);
 
+//        listViewTask = (ListView) findViewById(R.id.listViewTask);
+//        taskList = new ArrayList<String>();
+//        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+//        listViewTask.setAdapter(taskAdapter);
 
-        listViewTask = (ListView) findViewById(R.id.listViewTask);
+
         taskList = new ArrayList<String>();
-        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+
+
+        //instantiate custom adapter
+        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+
+        //handle listview and assign adapter
+        listViewTask= (ListView)findViewById(R.id.listViewTask);
         listViewTask.setAdapter(taskAdapter);
+
 
         //newTask("test1", "test1", 682, 1, 0, context);
         //newUserTask(402)
@@ -113,7 +125,7 @@ public class TaskActivity extends AppCompatActivity {
                                 // TODO Do something
                                 if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    taskAdapter.add(taskName.getText().toString());
+                                    taskList.add(taskName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
                                     taskAdapter.notifyDataSetChanged();
 
@@ -231,7 +243,7 @@ public class TaskActivity extends AppCompatActivity {
 
                                 System.out.println("task Name: " + name);
 
-                                taskAdapter.add(name);
+                                //taskList.add(name);
                                 // next thing you have to do is check if your adapter has changed
                                 taskAdapter.notifyDataSetChanged();
 

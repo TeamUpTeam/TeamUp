@@ -65,7 +65,7 @@ public class MembersActivity extends AppCompatActivity {
     final String projName = MainActivity.pName;
     int global_pid;
     int global_uid;
-
+    String global_email;
     int pid;
     ArrayAdapter<String> memAdapter;
     private ArrayList<String> memList;
@@ -141,9 +141,8 @@ public class MembersActivity extends AppCompatActivity {
                 adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
-
-                        //UserId(memList.get(position));
-
+                        global_email = memList.get(position);
+                        UserId(memList.get(position));
                         memList.remove(position);
                         memAdapter.notifyDataSetChanged();
                     }
@@ -514,9 +513,37 @@ public class MembersActivity extends AppCompatActivity {
 
 public void deleteUser()
 {
+    RequestQueue queue = Volley.newRequestQueue(context);
+
+    String url = Server.server_URL+String.format("deleteuserinproject?projectid=%d&userid=%d",global_pid,global_uid);
+
+    Log.d("url: ", url);
+    JsonObjectRequest getRequest = new JsonObjectRequest
+            (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //successful row return, so allow login
+                    Log.d("deleted user : ", response.toString());
+                    Toast.makeText(context,String.format("Requested User with email %s deleted",global_email),Toast.LENGTH_LONG).show();
+
+
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Error handling
+
+                        }
+                    });
+
+    // add it to the RequestQueue
+    queue.add(getRequest);
+}
+
 
 }
-}
+
 
 
 

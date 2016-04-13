@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
                     SettingsActivity.class);
             startActivity(i);
         } else if (id == R.id.action_logout) {
-            Intent i = new Intent (MainActivity.this, LoginActivity.class);
+            Intent i = new Intent (MainActivity.this, LoginActivity3.class);
             startActivity(i);
         }
 

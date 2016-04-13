@@ -131,8 +131,11 @@ public class LoginActivity3 extends AppCompatActivity {
                         //successful row return, so allow login
                         currEmail = email;
                         Log.d("login", "success");
+                        _loginButton.setEnabled(true);
+
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);
+
                         pd.dismiss();
 
 

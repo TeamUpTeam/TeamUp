@@ -96,24 +96,26 @@ public class LoginActivity3 extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
+
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
 
-        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView);
+        login(_emailText.getText().toString(), _passwordText.getText().toString(), currContext, currView, progressDialog);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
                          //onLoginFailed();
-                        progressDialog.dismiss();
+
+                        //progressDialog.dismiss();
                     }
                 }, 3000);
     }
 
-    public void login(final String email, String password, Context context, final View view)
+    public void login(final String email, String password, Context context, final View view, final ProgressDialog pd)
     {
         String url;
         //final String loginName = login_Name;
@@ -128,8 +130,11 @@ public class LoginActivity3 extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         //successful row return, so allow login
                         currEmail = email;
+                        Log.d("login", "success");
                         Intent intent = new Intent(view.getContext(), MainActivity.class);
                         startActivity(intent);
+                        pd.dismiss();
+
 
                     }
                 },
@@ -137,8 +142,37 @@ public class LoginActivity3 extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // Error handling
+                                Log.d("login", "failed" + " " + error.toString());
+
+                                if (error.toString().contains("UnknownHostException")) {
+                                    new AlertDialog.Builder(view.getContext())
+                                            //.setTitle("Delete entry")
+                                            .setMessage("Unable to contact server. Please check your connection.")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                } else {
+                                    new AlertDialog.Builder(view.getContext())
+                                            //.setTitle("Delete entry")
+                                            .setMessage("Invalid username or password.")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
                                 onLoginFailed();
+                                pd.dismiss();
+
                             }
+
+
                         });
 
         // add it to the RequestQueue
@@ -170,7 +204,7 @@ public class LoginActivity3 extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _loginButton.setEnabled(true);
     }

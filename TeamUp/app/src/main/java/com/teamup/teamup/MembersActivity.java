@@ -179,7 +179,10 @@ public class MembersActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_back) {
-
+            Intent i = new Intent(
+                    MembersActivity.this,
+                    TaskActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

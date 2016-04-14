@@ -54,21 +54,13 @@ public class TaskActivity extends AppCompatActivity {
         //MainActivity ma = new MainActivity();
         setTitle(MainActivity.pName);
 
-//        listViewTask = (ListView) findViewById(R.id.listViewTask);
-//        taskList = new ArrayList<String>();
-//        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
-//        listViewTask.setAdapter(taskAdapter);
-
-
+        listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
-
-
-        //instantiate custom adapter
-        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
-
-        //handle listview and assign adapter
-        listViewTask= (ListView)findViewById(R.id.listViewTask);
+        //final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
+
+
 
 
         //newTask("test1", "test1", 682, 1, 0, context);

@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    adapter.add(ProjName.getText().toString() + ProjDesc.getText().toString());
+                                    adapter.add(ProjName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();

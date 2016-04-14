@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("getProjects error", "userid or projectid is 0");
         }
         RequestQueue queue = Volley.newRequestQueue(context);
-
+    adapter.clear();
         String url2 = Server.server_URL + String.format("getprojects?userid=%d",
                 userId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -451,11 +451,12 @@ public class MainActivity extends AppCompatActivity {
 
         {
            // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MainActivity.this, MainActivity.class);
+           // Intent i = new Intent(MainActivity.this, MainActivity.class);
+            getProjects(userId, context);
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 20000);
 
-            MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
 
-            startActivity(i);
+            //startActivity(i);
 
         }
 

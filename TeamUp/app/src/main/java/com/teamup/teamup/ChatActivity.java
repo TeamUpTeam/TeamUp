@@ -33,8 +33,8 @@ public class ChatActivity extends AppCompatActivity {
     private EditText editTxt;
     private Button btn;
     private ListView list;
-    private ArrayAdapter<String> chatAdapter;
     private ArrayList<String> ChatList;
+    private ArrayList<String> MemList;
     int countMessages;
 
     Firebase mRef;
@@ -48,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
 
             list = (ListView) findViewById(R.id.list_chat);
             ChatList = new ArrayList<String>();
+            MemList = new ArrayList<String>();
             final Context context = this;
             countMessages = 0;
 
@@ -57,7 +58,12 @@ public class ChatActivity extends AppCompatActivity {
         final DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         final Date date = new Date();
 
+        //instantiate custom adapter
+        final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList, MemList, dateFormat.format(date), ChatActivity.this);
 
+        //handle listview and assign adapter
+
+        list.setAdapter(chatAdapter);
 
 
         System.out.println("Hello, Sir!");
@@ -81,12 +87,7 @@ public class ChatActivity extends AppCompatActivity {
                     //This method gets the messages once the page is initialized and then everytime the server is updated
                     countMessages++;
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
-                    //instantiate custom adapter
-                    final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList,"edwin", dateFormat.format(date), ChatActivity.this);
-
-                    //handle listview and assign adapter
-
-                    list.setAdapter(chatAdapter);
+                    MemList.add(dataSnapshot.child("First Name").getValue().toString());
                     ChatList.add(dataSnapshot.child("message").getValue().toString());
                     chatAdapter.notifyDataSetChanged();
                 }

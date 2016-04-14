@@ -1,6 +1,7 @@
 package com.teamup.teamup;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Edwin Prakarsa on 4/13/2016.
@@ -19,14 +22,15 @@ import java.util.ArrayList;
 public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
+    private ArrayList<String> senderlist = new ArrayList<String>();
     private String user;
     private String time;
 
 
 
-    public ChatCustomAdapter(ArrayList<String> list, String user, String time, Context context) {
+    public ChatCustomAdapter(ArrayList<String> list, ArrayList<String> senderlist, String time, Context context) {
         this.list = list;
-        this.user = user;
+        this.senderlist = senderlist;
         this.time = time;
         this.context = context;
     }
@@ -61,7 +65,7 @@ public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
 
 
         TextView userText = (TextView)view.findViewById(R.id.user);
-        userText.setText(user);
+        userText.setText(senderlist.get(position));
         TextView timeText = (TextView)view.findViewById(R.id.time);
         timeText.setText(time);
 

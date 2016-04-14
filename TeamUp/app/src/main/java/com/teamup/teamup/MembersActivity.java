@@ -180,7 +180,7 @@ public class MembersActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_back) {
+        if (id == R.id.action_chat) {
             Intent i = new Intent(
                     MembersActivity.this,
                     TaskActivity.class);

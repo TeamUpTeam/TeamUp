@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.chan96.teamup.MainActivity">
     <item
-        android:id="@+id/action_back"
+        android:icon="@drawable/chat"
+
+        android:id="@+id/action_chat"
         android:orderInCategory="100"
-        android:title="Back"
-        app:showAsAction="never" />
+        android:title="chat"
+        app:showAsAction="always" />
 
 </menu>

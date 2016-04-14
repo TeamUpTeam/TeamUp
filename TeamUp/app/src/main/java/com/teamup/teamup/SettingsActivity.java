@@ -113,12 +113,12 @@ public class SettingsActivity extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_back) {
-            Intent i = new Intent(
-                    SettingsActivity.this,
-                    MainActivity.class);
-            startActivity(i);
-        }
+//        if (id == R.id.action_back) {
+//            Intent i = new Intent(
+//                    SettingsActivity.this,
+//                    MainActivity.class);
+//            startActivity(i);
+//        }
         return super.onOptionsItemSelected(item);
     }
 

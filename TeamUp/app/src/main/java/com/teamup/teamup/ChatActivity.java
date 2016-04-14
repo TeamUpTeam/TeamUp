@@ -72,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
             final String fName = MainActivity.fName;
             final String uName = MainActivity.uName;
 
-            System.out.println("Bros and remaining Hoes, we got the Project Name, aaaaaand it isssss: " + pName);
+            //System.out.println("Bros and remaining Hoes, we got the Project Name, aaaaaand it isssss: " + pName);
 
             mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
 

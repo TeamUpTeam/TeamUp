@@ -225,7 +225,7 @@ public class LoginActivity3 extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 20) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {

@@ -91,6 +91,9 @@ public class MembersActivity extends AppCompatActivity {
         Button addmember = (Button) findViewById(R.id.AddMember);
         System.out.println("Helloddddddddddddd");
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.team_up_final);
+
         addmember.setOnClickListener(new View.OnClickListener() {
 
             @Override

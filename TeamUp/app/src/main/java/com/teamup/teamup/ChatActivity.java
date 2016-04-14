@@ -51,6 +51,9 @@ public class ChatActivity extends AppCompatActivity {
             final Context context = this;
             countMessages = 0;
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.team_up_final);
+
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
 

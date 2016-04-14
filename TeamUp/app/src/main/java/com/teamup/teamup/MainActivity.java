@@ -177,16 +177,26 @@ public class MainActivity extends AppCompatActivity {
                                     listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                                         @Override
-                                        public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                       final int arg2, long arg3) {
+                                        public boolean onItemLongClick(AdapterView<?> parent, final View view,
+                                                                       final int pos, long id) {
                                             AlertDialog.Builder adb = new AlertDialog.Builder(context);
                                             adb.setTitle("Delete entry");
-                                            adb.setMessage("Are you sure you want to delete this entry?");
+                                            adb.setMessage("Delete this project?");
                                             adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // continue with delete
-                                                    arrayList.remove(arg2);
+                                                    //int pos = (Integer)view.getTag();
+                                                    Log.d("pos", "" + pos);
+                                                    try {
+                                                        deleteProject(projectInfo.get(pos).getInt("project_id"), userId);
+
+                                                    } catch (Exception e) {
+                                                        Toast.makeText(MainActivity.this,"Error deleting project", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                    arrayList.remove(pos);
                                                     adapter.notifyDataSetChanged();
+
                                                 }
                                             })
                                                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -213,6 +223,34 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void deleteProject(int projectId, int userId) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("deleteuserinproject?projectid=%d&userid=%d",
+                projectId, userId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("delete project", response.toString());
+                        try {
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
     }
 
     public void getUserIdAndProjects(String email) {
@@ -315,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getProjects(int userId, final Context context)
+    public void getProjects(final int userId, final Context context)
     {
         if (userId == 0) {
             Log.d("getProjects error", "userid or projectid is 0");
@@ -331,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("getprojects", response.toString());
                         projectInfo.clear();
+                        adapter.clear();
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
@@ -373,15 +412,26 @@ public class MainActivity extends AppCompatActivity {
                                 listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                                     @Override
-                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                   final int arg2, long arg3) {
+                                    public boolean onItemLongClick(AdapterView<?> parent, final View view,
+                                                                   final int pos, long id) {
                                         AlertDialog.Builder adb = new AlertDialog.Builder(context);
                                         adb.setTitle("Delete entry");
                                         adb.setMessage("Are you sure you want to delete this entry?");
                                         adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 // continue with delete
-                                                arrayList.remove(arg2);
+
+
+                                                Log.d("pos", "" + pos);
+                                                try {
+
+                                                    deleteProject(projectInfo.get(pos).getInt("project_id"), userId);
+
+                                                } catch (Exception e) {
+                                                    Toast.makeText(MainActivity.this,"Error deleting project", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                arrayList.remove(pos);
                                                 adapter.notifyDataSetChanged();
                                             }
                                         })
@@ -450,7 +500,9 @@ public class MainActivity extends AppCompatActivity {
         public void run()
 
         {
-            Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+            getProjects(userId, context);
+
 
             MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
         }

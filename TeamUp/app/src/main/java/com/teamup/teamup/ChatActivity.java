@@ -54,15 +54,9 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.team_up_final);
 
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        Date date = new Date();
+        final DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        final Date date = new Date();
 
-        //instantiate custom adapter
-        final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList,MainActivity.uName, dateFormat.format(date), this);
-
-        //handle listview and assign adapter
-
-        list.setAdapter(chatAdapter);
 
 
 
@@ -87,6 +81,12 @@ public class ChatActivity extends AppCompatActivity {
                     //This method gets the messages once the page is initialized and then everytime the server is updated
                     countMessages++;
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
+                    //instantiate custom adapter
+                    final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList,"edwin", dateFormat.format(date), ChatActivity.this);
+
+                    //handle listview and assign adapter
+
+                    list.setAdapter(chatAdapter);
                     ChatList.add(dataSnapshot.child("message").getValue().toString());
                     chatAdapter.notifyDataSetChanged();
                 }

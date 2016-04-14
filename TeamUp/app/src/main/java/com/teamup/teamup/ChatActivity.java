@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * A login screen that offers login via email/password.
  */
-public class ChatActivity extends AppCompatActivity{
+public class ChatActivity extends AppCompatActivity {
     private EditText editTxt;
     private Button btn;
     private ListView list;
@@ -77,26 +77,6 @@ public class ChatActivity extends AppCompatActivity{
             mRef = new Firebase("https://teamup-messenger.firebaseio.com/" + pName);
 
 
-            //Trial and Error
-            /*mRef.orderByKey().on("child_added", function(snapshot) {
-                System.out.println(dataSnapshot.key());
-            });*/
-
-
-            //Checking for firebase data if it can be retrieved
-            /*mRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    System.out.println(dataSnapshot.getValue());
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    System.out.printf("The read failed: " + firebaseError.getMessage());
-                }
-            });*/
-
             mRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -132,12 +112,6 @@ public class ChatActivity extends AppCompatActivity{
             System.out.println("First Name: " + fName);
             System.out.println("User Name: " + uName);
 
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            //Date date = new Date();
-            //final String time = dateFormat.format(date);
-
-            //chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
-
             list.setAdapter(chatAdapter);
             list.setStackFromBottom(true);
 
@@ -154,9 +128,6 @@ public class ChatActivity extends AppCompatActivity{
                             post.put("User Name", uName);
                             post.put("message", message);
                             mRef.push().setValue(post);
-
-                            String postID = mRef.getKey();
-                            //System.out.println("postID is: " + postID);
 
                             editTxt.setText("");
                         }

@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -359,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("getProjects error", "userid or projectid is 0");
         }
         RequestQueue queue = Volley.newRequestQueue(context);
-
+        //adapter.clear();
         String url2 = Server.server_URL + String.format("getprojects?userid=%d",
                 userId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -380,9 +379,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 System.out.println("Project Name: " + name);
 
-                                adapter.add(name);
-                                // next thing you have to do is check if your adapter has changed
-                                adapter.notifyDataSetChanged();
+                                if (arrayList.contains(name)) {
+                                    System.out.println("Bitch already exists, don't add him!");
+                                } else {
+                                    System.out.println("Hey! At least it comes here!");
+                                    arrayList.add(name);
+                                    // next thing you have to do is check if your adapter has changed
+                                    adapter.notifyDataSetChanged();
+                                }
 
                                 listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -400,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
                                         try {
                                             projectId = projectInfo.get(position).getInt("project_id");
                                             i.putExtra("projectId", projectId);
-
                                         } catch (Exception e) {
 
                                         }
@@ -500,11 +503,17 @@ public class MainActivity extends AppCompatActivity {
         public void run()
 
         {
-            //Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+
+
+           // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+           // Intent i = new Intent(MainActivity.this, MainActivity.class);
             getProjects(userId, context);
-
-
             MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
+
+
+            //startActivity(i);
+
+            
         }
 
     };//runnable

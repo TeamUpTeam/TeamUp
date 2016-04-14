@@ -243,7 +243,7 @@ public class TaskActivity extends AppCompatActivity {
 
                                 System.out.println("task Name: " + name);
 
-                                //taskList.add(name);
+                                taskList.add(name);
                                 // next thing you have to do is check if your adapter has changed
                                 taskAdapter.notifyDataSetChanged();
 

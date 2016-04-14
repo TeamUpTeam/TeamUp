@@ -19,7 +19,10 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +45,25 @@ public class ChatActivity extends AppCompatActivity{
             setContentView(R.layout.chatroom);
             editTxt = (EditText) findViewById(R.id.input_chat_message);
             btn = (Button) findViewById(R.id.button_chat_send);
+
             list = (ListView) findViewById(R.id.list_chat);
             ChatList = new ArrayList<String>();
             final Context context = this;
             countMessages = 0;
 
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
 
-            System.out.println("Hello, Sir!");
+        //instantiate custom adapter
+        final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList,MainActivity.uName, dateFormat.format(date), this);
+
+        //handle listview and assign adapter
+
+        list.setAdapter(chatAdapter);
+
+
+
+        System.out.println("Hello, Sir!");
 
             Firebase.setAndroidContext(this);
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -89,7 +104,7 @@ public class ChatActivity extends AppCompatActivity{
                     //This method gets the messages once the page is initialized and then everytime the server is updated
                     countMessages++;
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
-                    ChatList.add(dataSnapshot.child("First Name").getValue() + System.lineSeparator() + dataSnapshot.child("message").getValue());
+                    ChatList.add(dataSnapshot.child("message").getValue().toString());
                     chatAdapter.notifyDataSetChanged();
                 }
 
@@ -121,7 +136,7 @@ public class ChatActivity extends AppCompatActivity{
             //Date date = new Date();
             //final String time = dateFormat.format(date);
 
-            chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
+            //chatAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mychatview, ChatList);
 
             list.setAdapter(chatAdapter);
             list.setStackFromBottom(true);

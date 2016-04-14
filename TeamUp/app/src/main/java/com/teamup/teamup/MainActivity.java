@@ -450,9 +450,13 @@ public class MainActivity extends AppCompatActivity {
         public void run()
 
         {
-            Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this, MainActivity.class);
 
             MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
+
+            startActivity(i);
+
         }
 
     };//runnable

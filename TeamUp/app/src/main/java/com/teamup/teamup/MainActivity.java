@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<JSONObject> projectInfo = new ArrayList<JSONObject>();
     static String startD;
     static String endD;
+    Handler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
         listViewProj.setAdapter(adapter);
 
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable, 5000);
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -438,4 +444,16 @@ public class MainActivity extends AppCompatActivity {
 
         return false;
     }
+
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
+        }
+
+    };//runnable
 }

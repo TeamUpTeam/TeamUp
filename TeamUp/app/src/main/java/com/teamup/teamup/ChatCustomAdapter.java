@@ -23,14 +23,16 @@ public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
     private ArrayList<String> senderlist = new ArrayList<String>();
+    private ArrayList<String> TimeList = new ArrayList<String>();
     private String user;
     private String time;
 
 
 
-    public ChatCustomAdapter(ArrayList<String> list, ArrayList<String> senderlist, String time, Context context) {
+    public ChatCustomAdapter(ArrayList<String> list, ArrayList<String> senderlist, ArrayList<String> TimeList, Context context) {
         this.list = list;
         this.senderlist = senderlist;
+        this.TimeList = TimeList;
         this.time = time;
         this.context = context;
     }
@@ -67,7 +69,7 @@ public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
         TextView userText = (TextView)view.findViewById(R.id.user);
         userText.setText(senderlist.get(position));
         TextView timeText = (TextView)view.findViewById(R.id.time);
-        timeText.setText(time);
+        timeText.setText(TimeList.get(position));
 
         return view;
     }

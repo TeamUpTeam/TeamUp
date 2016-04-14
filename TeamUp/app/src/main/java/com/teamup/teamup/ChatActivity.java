@@ -35,6 +35,7 @@ public class ChatActivity extends AppCompatActivity {
     private ListView list;
     private ArrayList<String> ChatList;
     private ArrayList<String> MemList;
+    private ArrayList<String> TimeList;
     int countMessages;
 
     Firebase mRef;
@@ -49,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
             list = (ListView) findViewById(R.id.list_chat);
             ChatList = new ArrayList<String>();
             MemList = new ArrayList<String>();
+            TimeList = new ArrayList<String>();
             final Context context = this;
             countMessages = 0;
 
@@ -59,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         final Date date = new Date();
 
         //instantiate custom adapter
-        final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList, MemList, dateFormat.format(date), ChatActivity.this);
+        final ChatCustomAdapter chatAdapter = new ChatCustomAdapter(ChatList, MemList, TimeList, ChatActivity.this);
 
         //handle listview and assign adapter
 
@@ -89,6 +91,7 @@ public class ChatActivity extends AppCompatActivity {
                     System.out.println(countMessages + ": This is different: " + dataSnapshot.child("First Name").getValue() + ": " + dataSnapshot.child("message").getValue());
                     MemList.add(dataSnapshot.child("First Name").getValue().toString());
                     ChatList.add(dataSnapshot.child("message").getValue().toString());
+                    TimeList.add(dataSnapshot.child("User Name").getValue().toString());
                     chatAdapter.notifyDataSetChanged();
                 }
 
@@ -129,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
                         if (!message.equals("")) {
                             Map<String, String> post = new HashMap<String, String>();
                             post.put("First Name", fName);
-                            post.put("User Name", uName);
+                            post.put("User Name", dateFormat.format(date));
                             post.put("message", message);
                             mRef.push().setValue(post);
 

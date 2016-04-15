@@ -31,8 +31,8 @@ import java.util.ArrayList;
  */
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     int tpid;
-int pid;
-   int g_uid;
+    int pid;
+    int g_uid;
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
     static int posi;
@@ -86,6 +86,9 @@ int pid;
         claimBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                TaskActivity.claimedList.add(list.get(position));
+                TaskActivity.claimedtaskAdapter.notifyDataSetChanged();
                 //do something
                 Toast.makeText(context,"claimed",Toast.LENGTH_SHORT).show();
                 int uid = MainActivity.userId;
@@ -101,6 +104,7 @@ int pid;
 
                // list.remove(position);
                // notifyDataSetChanged();
+
             }
         });
 

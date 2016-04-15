@@ -44,11 +44,11 @@ public class TaskActivity extends AppCompatActivity {
     static ArrayAdapter<String> taskAdapter;
     static ArrayList<String> taskList;
     static ArrayList<String> claimedTaskList;
-    ArrayAdapter<String> claimedtaskAdapter;
+    static ArrayAdapter<String> claimedtaskAdapter;
     static ArrayList<String>tlist;
     static ArrayList<String>clist;
     ListView listViewTask;
-    ListView listViewTaskClaim;
+    static ArrayList<String> claimedList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -73,20 +73,16 @@ public class TaskActivity extends AppCompatActivity {
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
-<<<<<<< HEAD
+
         final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
-=======
-        claimedTaskList = new ArrayList<String>();
-        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+ 
 
-
->>>>>>> f136e5a4706b8ecbcc59a1a55dde2467d68dd21b
-
-        //update claimed task list !!!!!!!!!!!!!!!!!!
-
-
+        ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
+        claimedList = new ArrayList<String>();
+        claimedtaskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, claimedList);
+        listclaimedTask.setAdapter(claimedtaskAdapter);
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
@@ -120,7 +116,6 @@ public class TaskActivity extends AppCompatActivity {
                 final EditText taskName = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput1);
                 final EditText taskDesc = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput2);
                 final EditText taskEndDate = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput3);
-                final EditText userInput4 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
 
                 //final EditText userInput5 = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput4);
                 //userInput5.setSingleLine(); //same for 5,6,7

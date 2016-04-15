@@ -60,9 +60,6 @@ public class TaskActivity extends AppCompatActivity {
         taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
 
-
-
-
         //newTask("test1", "test1", 682, 1, 0, context);
         //newUserTask(402)
         Bundle extras = getIntent().getExtras();
@@ -76,6 +73,7 @@ public class TaskActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.team_up_final);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // components from main.xml
         // add button listener
@@ -393,6 +391,11 @@ public class TaskActivity extends AppCompatActivity {
                         }
                     })
                     .show();
+        } else if (id == android.R.id.home) {
+            Intent i = new Intent(
+                    TaskActivity.this,
+                    MainActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

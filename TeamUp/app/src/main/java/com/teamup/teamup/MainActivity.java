@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -508,12 +509,12 @@ public class MainActivity extends AppCompatActivity {
            // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
            // Intent i = new Intent(MainActivity.this, MainActivity.class);
             getProjects(userId, context);
-            MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
+            //MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
 
 
             //startActivity(i);
 
-            
+
         }
 
     };//runnable

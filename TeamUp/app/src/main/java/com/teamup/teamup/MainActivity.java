@@ -1,5 +1,6 @@
 package com.teamup.teamup;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,9 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -74,8 +78,15 @@ public class MainActivity extends AppCompatActivity {
         listViewProj.setAdapter(adapter);
 
         this.mHandler = new Handler();
-
         this.mHandler.postDelayed(m_Runnable, 5000);
+
+        SpannableString s = new SpannableString("My Title");
+        s.setSpan(new TypefaceSpan(this, "MyTypeface.otf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Update the action bar title with the TypefaceSpan instance
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(s);
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
         RequestQueue queue = Volley.newRequestQueue(context);

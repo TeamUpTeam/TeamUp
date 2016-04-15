@@ -56,8 +56,8 @@ public class TaskActivity extends AppCompatActivity {
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
-        //final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
-        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+        //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
 
 
@@ -282,6 +282,7 @@ public class TaskActivity extends AppCompatActivity {
                             }
                         });
         queue.add(createProjectRequest);
+
     }
 
     public void newTaskAndUserTask(final String taskName, final String taskDesc, String endDate, final int projectId, int isDel, int isDone, final Context context, final int userId) {

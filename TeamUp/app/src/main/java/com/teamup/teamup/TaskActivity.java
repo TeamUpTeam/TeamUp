@@ -32,6 +32,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
@@ -44,11 +47,21 @@ public class TaskActivity extends AppCompatActivity {
     ListView listViewTask;
     ListView listViewTaskClaim;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         final Intent i = getIntent();
         super.onCreate(savedInstanceState);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
 
         setContentView(R.layout.activity_task);
         //MainActivity ma = new MainActivity();

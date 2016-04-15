@@ -39,6 +39,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
@@ -59,11 +62,24 @@ public class MainActivity extends AppCompatActivity {
     static String endD;
     Handler mHandler;
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -80,13 +96,8 @@ public class MainActivity extends AppCompatActivity {
         this.mHandler = new Handler();
         this.mHandler.postDelayed(m_Runnable, 5000);
 
-        SpannableString s = new SpannableString("My Title");
-        s.setSpan(new TypefaceSpan(this, "MyTypeface.otf"), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        // Update the action bar title with the TypefaceSpan instance
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(s);
+
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -465,6 +476,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
+
                 },
                         new Response.ErrorListener() {
                             @Override

@@ -32,36 +32,64 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
     Server x = new Server();
     int projectId;
-
-    ArrayAdapter<String> taskAdapter;
-    private ArrayList<String> taskList;
+    static Context ctext;
+    static ArrayAdapter<String> taskAdapter;
+    static ArrayList<String> taskList;
     static ArrayList<String> claimedTaskList;
+    ArrayAdapter<String> claimedtaskAdapter;
+    static ArrayList<String>tlist;
+    static ArrayList<String>clist;
     ListView listViewTask;
     ListView listViewTaskClaim;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         final Intent i = getIntent();
         super.onCreate(savedInstanceState);
 
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
+        init();
         setContentView(R.layout.activity_task);
         //MainActivity ma = new MainActivity();
         setTitle(MainActivity.pName);
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
+<<<<<<< HEAD
         final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
+=======
+        claimedTaskList = new ArrayList<String>();
+        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+
+
+>>>>>>> f136e5a4706b8ecbcc59a1a55dde2467d68dd21b
+
+        //update claimed task list !!!!!!!!!!!!!!!!!!
 
 
 
+        //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+        listViewTask.setAdapter(taskAdapter);
 
         //newTask("test1", "test1", 682, 1, 0, context);
         //newUserTask(402)
@@ -76,6 +104,7 @@ public class TaskActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.team_up_final);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // components from main.xml
         // add button listener
@@ -394,9 +423,113 @@ public class TaskActivity extends AppCompatActivity {
                         }
                     })
                     .show();
+        } else if (id == android.R.id.home) {
+            Intent i = new Intent(
+                    TaskActivity.this,
+                    MainActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+   static int global_taskid;
+public void init()
+{
+    ctext = context;
+}
+ public void gettlist()
+ {
+     tlist = taskList;
+     clist = claimedTaskList;
+ }
+
+    public static void ClaimedTask(int userid, final String TaskName)
+    {
+        RequestQueue queue = Volley.newRequestQueue(ctext);
+        String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
+                userid, MainActivity.projectId);
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                         System.out.println("Here am I ");
+                        //Log.d("gettasks", response.toString());
+                        try {
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("task_name");
+
+                                System.out.println("task Name: " + name);
+
+                                if(name.equals(TaskName))
+                                {
+                                    global_taskid = actor.getInt("task_id");
+                                    System.out.println("task Id: " + global_taskid);
+                                    //TaskActivity t = new TaskActivity();
+                                    // TaskActivity.updateLists();
+                                    //t.updateLists();
+
+                                    claimedTaskList.add(taskList.get(MyCustomAdapter.posi));
+                                    Log.d("Added to claim task : ", String.format("%s", taskList.get(MyCustomAdapter.posi)));
+                                    taskList.remove(MyCustomAdapter.posi);
+
+                                    taskAdapter.notifyDataSetChanged();
+
+
+
+                                }
+
+
+                            }
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+
+        /*
+        String url2 = Server.server_URL + String.format("newusertask?userid=%d&taskid=%d",
+                userId, taskId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("newUserTask", response.toString());
+                        try {
+                            int id = response.getInt("insertId");
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);*/
+    }
+
+
+
+    public void updateLists()
+    {
+        claimedTaskList.add(taskList.get(MyCustomAdapter.posi));
+        Log.d("Added to claim task : ", String.format("%s", taskList.get(MyCustomAdapter.posi)));
+        taskList.remove(MyCustomAdapter.posi);
+
+        taskAdapter.notifyDataSetChanged();
+
     }
 
 }

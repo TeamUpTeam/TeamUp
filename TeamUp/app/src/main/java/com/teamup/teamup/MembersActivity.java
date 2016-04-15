@@ -53,6 +53,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -73,11 +76,22 @@ public class MembersActivity extends AppCompatActivity {
     Context context = this;
     String email;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     //static int tempUiD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.member_list);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
         System.out.println("Helloddddddddddddd");
         listViewMem = (ListView) findViewById(R.id.listViewMembers);
         memList = new ArrayList<String>();

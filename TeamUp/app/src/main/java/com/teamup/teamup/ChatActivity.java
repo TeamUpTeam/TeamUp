@@ -26,6 +26,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -41,9 +44,21 @@ public class ChatActivity extends AppCompatActivity {
     Firebase mRef;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.chatroom);
+
+            CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                            .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                            .setFontAttrId(R.attr.fontPath)
+                            .build()
+            );
+
             editTxt = (EditText) findViewById(R.id.input_chat_message);
             btn = (Button) findViewById(R.id.button_chat_send);
 

@@ -18,6 +18,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -37,10 +40,23 @@ public class SettingsActivity extends AppCompatActivity{
     String email_curr;
     String password;
     int userid;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
         RequestQueue queue = Volley.newRequestQueue(context);
         fn = (TextView) this.findViewById(R.id.textView2);
         ln = (TextView) this.findViewById(R.id.textView3);

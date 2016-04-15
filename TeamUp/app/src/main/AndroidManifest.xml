@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:label="Projects"
             android:theme="@style/Theme.AppCompat.Light">
 
             <!-- <intent-filter> -->
@@ -48,7 +48,7 @@
         </activity>
         <activity
             android:name=".ChatActivity"
-            android:label="Chat Room"
+            android:label="Chats"
             android:theme="@style/Theme.AppCompat.Light">
 
 

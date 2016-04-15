@@ -1,5 +1,6 @@
 package com.teamup.teamup;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,9 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +38,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
@@ -54,11 +62,24 @@ public class MainActivity extends AppCompatActivity {
     static String endD;
     Handler mHandler;
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -73,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
         listViewProj.setAdapter(adapter);
 
         this.mHandler = new Handler();
-
         this.mHandler.postDelayed(m_Runnable, 5000);
+
+
+
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -176,16 +199,26 @@ public class MainActivity extends AppCompatActivity {
                                     listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                                         @Override
-                                        public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                       final int arg2, long arg3) {
+                                        public boolean onItemLongClick(AdapterView<?> parent, final View view,
+                                                                       final int pos, long id) {
                                             AlertDialog.Builder adb = new AlertDialog.Builder(context);
                                             adb.setTitle("Delete entry");
-                                            adb.setMessage("Are you sure you want to delete this entry?");
+                                            adb.setMessage("Delete this project?");
                                             adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // continue with delete
-                                                    arrayList.remove(arg2);
+                                                    //int pos = (Integer)view.getTag();
+                                                    Log.d("pos", "" + pos);
+                                                    try {
+                                                        deleteProject(projectInfo.get(pos).getInt("project_id"), userId);
+
+                                                    } catch (Exception e) {
+                                                        Toast.makeText(MainActivity.this,"Error deleting project", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                    arrayList.remove(pos);
                                                     adapter.notifyDataSetChanged();
+
                                                 }
                                             })
                                                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -212,6 +245,34 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void deleteProject(int projectId, int userId) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("deleteuserinproject?projectid=%d&userid=%d",
+                projectId, userId);
+        JsonObjectRequest createProjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("delete project", response.toString());
+                        try {
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
     }
 
     public void getUserIdAndProjects(String email) {
@@ -314,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getProjects(int userId, final Context context)
+    public void getProjects(final int userId, final Context context)
     {
         if (userId == 0) {
             Log.d("getProjects error", "userid or projectid is 0");
@@ -330,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("getprojects", response.toString());
                         projectInfo.clear();
+                        adapter.clear();
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
@@ -376,15 +438,26 @@ public class MainActivity extends AppCompatActivity {
                                 listViewProj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                                     @Override
-                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                                   final int arg2, long arg3) {
+                                    public boolean onItemLongClick(AdapterView<?> parent, final View view,
+                                                                   final int pos, long id) {
                                         AlertDialog.Builder adb = new AlertDialog.Builder(context);
                                         adb.setTitle("Delete entry");
                                         adb.setMessage("Are you sure you want to delete this entry?");
                                         adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 // continue with delete
-                                                arrayList.remove(arg2);
+
+
+                                                Log.d("pos", "" + pos);
+                                                try {
+
+                                                    deleteProject(projectInfo.get(pos).getInt("project_id"), userId);
+
+                                                } catch (Exception e) {
+                                                    Toast.makeText(MainActivity.this,"Error deleting project", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                arrayList.remove(pos);
                                                 adapter.notifyDataSetChanged();
                                             }
                                         })
@@ -403,6 +476,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
+
                 },
                         new Response.ErrorListener() {
                             @Override
@@ -453,13 +527,16 @@ public class MainActivity extends AppCompatActivity {
         public void run()
 
         {
+
+
            // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
            // Intent i = new Intent(MainActivity.this, MainActivity.class);
             getProjects(userId, context);
-            MainActivity.this.mHandler.postDelayed(m_Runnable, 3000);
+            //MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
 
 
             //startActivity(i);
+
 
         }
 

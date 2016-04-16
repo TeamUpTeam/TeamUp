@@ -7,16 +7,7 @@
         android:orderInCategory="100"
         android:title="Description"
         app:showAsAction="never" />
-    <!--<item-->
-        <!--android:id="@+id/action_chat"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="Chat room"-->
-        <!--app:showAsAction="never" />-->
-    <!--<item-->
-        <!--android:id="@+id/action_members"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="Members"-->
-        <!--app:showAsAction="never" />-->
+
     <item
         android:id="@+id/action_quit"
         android:orderInCategory="100"

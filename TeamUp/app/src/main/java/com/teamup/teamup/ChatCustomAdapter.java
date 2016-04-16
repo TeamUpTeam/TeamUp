@@ -24,7 +24,6 @@ public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
     private ArrayList<String> senderlist = new ArrayList<String>();
     private ArrayList<String> TimeList = new ArrayList<String>();
-    private String user;
     private String time;
 
 
@@ -33,7 +32,6 @@ public class ChatCustomAdapter extends BaseAdapter implements ListAdapter {
         this.list = list;
         this.senderlist = senderlist;
         this.TimeList = TimeList;
-        this.time = time;
         this.context = context;
     }
 

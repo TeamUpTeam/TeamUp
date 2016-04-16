@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     static String startD;
     static String endD;
     Handler mHandler;
+    static String fontPath = "fonts/Raleway-Medium.ttf";
 
 
     @Override
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
@@ -314,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         startD = startDate;
         endD = endDate;
         String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
-                projectName, startDate, endDate, projectManagerUserId, projectDescription);
+                projectName.replace(' ', '_'), startDate, endDate, projectManagerUserId, projectDescription);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -396,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
                                 projectInfo.add(actor); //stores jsonobject info for each project to be accessed later.
-                                String name = actor.getString("project_name");
+                                String name = actor.getString("project_name").replace('_', ' ');
                                 final int projId = actor.getInt("project_id");
                                 Log.d("projID", projId + "");
 

@@ -102,8 +102,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 //System.out.println("BFbilfnbasdfnsdinfaskjldfnakslfjnfkalsjnkajnv");
 
-               // list.remove(position);
-               // notifyDataSetChanged();
+                list.remove(position);
+                notifyDataSetChanged();
 
             }
         });
@@ -139,12 +139,12 @@ int x;
                                     // TaskActivity.updateLists();
                                     //t.updateLists();
 
-                                     callnewusertask(x,global_task_id);
+                                    callnewusertask(x,global_task_id);
 
 
 
 
-                                     list.remove(posi);
+                                     //list.remove(posi);
                                      notifyDataSetChanged();
 
 

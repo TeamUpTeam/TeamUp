@@ -53,7 +53,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(MainActivity.fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

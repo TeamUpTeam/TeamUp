@@ -20,7 +20,9 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -88,7 +90,7 @@ public class MembersActivity extends AppCompatActivity {
         setContentView(R.layout.member_list);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(MainActivity.fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
@@ -107,6 +109,22 @@ public class MembersActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.team_up_final);
+
+        emailmember.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+                // you can call or do what you want with your EditText here
+
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
 
         addmember.setOnClickListener(new View.OnClickListener() {
 
@@ -178,6 +196,12 @@ public class MembersActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void validate() {
+        if (emailmember.getText().toString().equals("")) {
+            return;
+        }
     }
 
 

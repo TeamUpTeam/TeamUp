@@ -61,7 +61,7 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(MainActivity.fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
@@ -466,7 +466,7 @@ public void init()
 
                                     claimedTaskList.add(taskList.get(MyCustomAdapter.posi));
                                     Log.d("Added to claim task : ", String.format("%s", taskList.get(MyCustomAdapter.posi)));
-                                    taskList.remove(MyCustomAdapter.posi);
+                                    //taskList.remove(MyCustomAdapter.posi);
 
                                     taskAdapter.notifyDataSetChanged();
 
@@ -521,7 +521,7 @@ public void init()
     {
         claimedTaskList.add(taskList.get(MyCustomAdapter.posi));
         Log.d("Added to claim task : ", String.format("%s", taskList.get(MyCustomAdapter.posi)));
-        taskList.remove(MyCustomAdapter.posi);
+        //taskList.remove(MyCustomAdapter.posi);
 
         taskAdapter.notifyDataSetChanged();
 

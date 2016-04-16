@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity{
         setContentView(R.layout.settings);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(MainActivity.fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

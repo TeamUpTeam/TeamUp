@@ -58,7 +58,7 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(MainActivity.fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

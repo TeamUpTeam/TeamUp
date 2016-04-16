@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     static String startD;
     static String endD;
     Handler mHandler;
+    static String fontPath = "fonts/Raleway-Medium.ttf";
 
 
     @Override
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Raleway-Medium.ttf")
+                        .setDefaultFontPath(fontPath)
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

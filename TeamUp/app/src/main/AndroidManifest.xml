@@ -31,6 +31,7 @@
             android:name=".TaskActivity"
             android:label="@string/project_name"
             android:theme="@style/Theme.AppCompat.Light"/>
+
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"

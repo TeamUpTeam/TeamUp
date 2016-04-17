@@ -39,7 +39,7 @@ public class TaskActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
     Server x = new Server();
-    int projectId;
+    static int projectId;
     static Context ctext;
     static ArrayAdapter<String> taskAdapter;
     static ArrayList<String> taskList;
@@ -402,6 +402,8 @@ public class TaskActivity extends AppCompatActivity {
             startActivity(i);
         } else if(id == R.id.action_members) {
             Intent i = new Intent (TaskActivity.this, MembersActivity.class);
+           // i.putExtra("projectId", projectId);
+
             startActivity(i);
         } else if (id == R.id.action_quit){
             Intent i = new Intent(
@@ -516,9 +518,7 @@ public void init()
     }
 
 
-
-    public void updateLists()
-    {
+    public void updateLists() {
         claimedTaskList.add(taskList.get(MyCustomAdapter.posi));
         Log.d("Added to claim task : ", String.format("%s", taskList.get(MyCustomAdapter.posi)));
         //taskList.remove(MyCustomAdapter.posi);

@@ -126,7 +126,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        //Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
@@ -143,6 +143,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (fname.isEmpty() || fname.length() < 3) {
             _fnameText.setError("at least 3 characters");
+            //Toast.makeText(getBaseContext(), "Login fname", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _fnameText.setError(null);
@@ -150,6 +152,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (lname.isEmpty() || lname.length() < 3) {
             _lnameText.setError("at least 3 characters");
+            //Toast.makeText(getBaseContext(), "Login lname", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _lnameText.setError(null);
@@ -157,6 +161,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (username.isEmpty() || username.length() < 3) {
             _usernameText.setError("at least 3 characters");
+            //Toast.makeText(getBaseContext(), "Login uname", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _usernameText.setError(null);
@@ -164,6 +170,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
+           // Toast.makeText(getBaseContext(), "Login email", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _emailText.setError(null);
@@ -171,6 +179,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
+           // Toast.makeText(getBaseContext(), "Login pass", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _passwordText.setError(null);
@@ -178,6 +188,8 @@ public class SignupActivity extends AppCompatActivity {
 
         if (!password.equals(confirmpassword)) {
             _confpasswordText.setError("The password is not the same");
+            //Toast.makeText(getBaseContext(), "Login confpass", Toast.LENGTH_LONG).show();
+
             valid = false;
         } else {
             _passwordText.setError(null);

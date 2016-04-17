@@ -94,7 +94,9 @@ public class MembersActivity extends AppCompatActivity {
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
-        System.out.println("Helloddddddddddddd");
+
+        getTeamMemberEmails(TaskActivity.projectId, context);
+
         listViewMem = (ListView) findViewById(R.id.listViewMembers);
         memList = new ArrayList<String>();
         memAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, memList);
@@ -102,7 +104,7 @@ public class MembersActivity extends AppCompatActivity {
         emailmember = (EditText) findViewById(R.id.memberEmail);
 
         //update1();
-           UpdatePid(MainActivity.userId);
+         //  UpdatePid(MainActivity.userId);
 
         Button addmember = (Button) findViewById(R.id.AddMember);
         System.out.println("Helloddddddddddddd");
@@ -583,6 +585,79 @@ public void deleteUser()
 }
 
 
+    public void getTeamMemberEmails(int projectId, final Context context) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("getteammembers?projectid=%d",
+                projectId);
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        Log.d("getTeamMemberEmails", response.toString());
+                        try {
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("email_address");
+
+                                System.out.println("email: " + name);
+
+                                memList.add(response.getJSONObject(i).getString("email_address"));
+                                memAdapter.notifyDataSetChanged();
+
+                                /*
+                                listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+                                    @Override
+                                    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+                                    }
+                                });
+
+                                listViewTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                                    @Override
+                                    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                                                   final int arg2, long arg3) {
+                                        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+                                        adb.setTitle("Delete entry");
+                                        adb.setMessage("Are you sure you want to delete this entry?");
+                                        adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                taskList.remove(arg2);
+                                                taskAdapter.notifyDataSetChanged();
+                                            }
+                                        })
+                                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // do nothing
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                        return true;
+                                    }
+                                });*/
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+
+    }
 
 
 }

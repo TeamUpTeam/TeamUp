@@ -93,7 +93,7 @@ public class TaskActivity extends AppCompatActivity {
             Log.d("Task projectID", projectId + "");
 
         }
-
+        updateclaimedList();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -523,6 +523,62 @@ public void init()
 
         taskAdapter.notifyDataSetChanged();
 
+    }
+ArrayList <String> taskName = new ArrayList<String>();
+    ArrayList <Integer> taskid = new ArrayList<Integer>();
+ArrayList <Integer> taskcl = new ArrayList<Integer>();
+
+    public void updateclaimedList()
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = Server.server_URL+String.format("gettasks?projectid=%d",projectId);
+        Log.d("the url for names ",url);
+
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("Here am I ");
+                        //Log.d("gettasks", response.toString());
+                        try {
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("task_name");
+                                taskid.add(response.getInt(i));
+                               // System.out.println("task Name: " + name);
+                                taskName.add(name);
+                                taskcl.add(0);
+                            }
+
+                            for(String j : taskName)
+                            {
+                                System.out.println(j);
+                                System.out.println(taskid.get(taskid.indexOf(j)));
+
+                            }
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+
+    queue.add(createProjectRequest);
+    }
+
+
+    public void getclaimedtask()
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+    // String url = Server.server_URL+String.format();
     }
 
 }

@@ -43,7 +43,7 @@ public class TaskActivity extends AppCompatActivity {
     static MyCustomAdapter taskAdapter;
     static ArrayList<String> taskList;
     static ArrayList<String> claimedTaskList;
-    static ArrayAdapter<String> claimedtaskAdapter;
+    static MyClaimedTaskAdapter claimedtaskAdapter;
     static ArrayList<String>tlist;
     static ArrayList<String>clist;
     ListView listViewTask;
@@ -79,7 +79,7 @@ public class TaskActivity extends AppCompatActivity {
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
-        claimedtaskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, claimedList);
+        claimedtaskAdapter = new MyClaimedTaskAdapter(claimedList, this);
         listclaimedTask.setAdapter(claimedtaskAdapter);
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);

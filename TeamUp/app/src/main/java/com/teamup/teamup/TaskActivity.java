@@ -36,12 +36,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TaskActivity extends AppCompatActivity {
-    private LinearLayout mLayout;
     final Context context = this;
     Server x = new Server();
     static int projectId;
     static Context ctext;
-    static ArrayAdapter<String> taskAdapter;
+    static MyCustomAdapter taskAdapter;
     static ArrayList<String> taskList;
     static ArrayList<String> claimedTaskList;
     static ArrayAdapter<String> claimedtaskAdapter;
@@ -74,8 +73,7 @@ public class TaskActivity extends AppCompatActivity {
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
 
-        final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
-        //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+        taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
  
 

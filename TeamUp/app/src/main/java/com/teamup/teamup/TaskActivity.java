@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,12 +48,17 @@ public class TaskActivity extends AppCompatActivity {
     static ArrayList<String>tlist;
     static ArrayList<String>clist;
     ListView listViewTask;
+<<<<<<< Updated upstream
     static ArrayList<String> claimedList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+=======
+    ListView listViewTaskClaim;
+    Handler mHandler;
+>>>>>>> Stashed changes
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,7 @@ public class TaskActivity extends AppCompatActivity {
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
+<<<<<<< Updated upstream
 
         taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
@@ -81,6 +88,15 @@ public class TaskActivity extends AppCompatActivity {
         claimedList = new ArrayList<String>();
         claimedtaskAdapter = new MyClaimedTaskAdapter(claimedList, this);
         listclaimedTask.setAdapter(claimedtaskAdapter);
+=======
+        //final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
+        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
+        listViewTask.setAdapter(taskAdapter);
+
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable, 1000);
+>>>>>>> Stashed changes
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
@@ -252,16 +268,28 @@ taskList.clear();
                                 String name = actor.getString("task_name");
 
                                 System.out.println("task Name: " + name);
+<<<<<<< Updated upstream
                                 if(actor.getInt("claimed_user_id")==-1) {
+=======
+
+                                if (taskList.contains(name)) {
+                                    System.out.println("The task already exists, bitch!");
+                                } else {
+                                    System.out.println("The task wasn't there! Adding it to the list!");
+>>>>>>> Stashed changes
                                     taskList.add(name);
                                     // next thing you have to do is check if your adapter has changed
                                     taskAdapter.notifyDataSetChanged();
                                 }
+<<<<<<< Updated upstream
                                 else
                                 {
                                     claimedList.add(name);
                                     claimedtaskAdapter.notifyDataSetChanged();
                                 }
+=======
+
+>>>>>>> Stashed changes
                                 listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -360,7 +388,6 @@ taskList.clear();
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         Log.d("newUserTask", response.toString());
                         try {
                             int id = response.getInt("insertId");
@@ -376,9 +403,6 @@ taskList.clear();
                             }
                         });
         queue.add(createProjectRequest);
-
-        // this url is the query being sent to the database
-
     }
 
     @Override
@@ -433,6 +457,7 @@ taskList.clear();
 
         return super.onOptionsItemSelected(item);
     }
+<<<<<<< Updated upstream
    static int global_taskid;
 public void init()
 {
@@ -631,6 +656,20 @@ ArrayList <String> taskName = new ArrayList<String>();
 
 
         }
+=======
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
+            // Intent i = new Intent(MainActivity.this, MainActivity.class);
+            System.out.println("It comes here!!!!!!!!!");
+            getTasks(MainActivity.userId, MainActivity.projectId, context);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 1000);
+            //startActivity(i);
+>>>>>>> Stashed changes
         }
 
+    };//runnable
 }

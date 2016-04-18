@@ -95,7 +95,12 @@ public class MainActivity extends AppCompatActivity {
         listViewProj.setAdapter(adapter);
 
         this.mHandler = new Handler();
+<<<<<<< Updated upstream
         this.mHandler.postDelayed(m_Runnable, 5000);
+=======
+
+        this.mHandler.postDelayed(m_Runnable, 1000);
+>>>>>>> Stashed changes
 
 
 
@@ -517,9 +522,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public boolean checkLogin(int userId){
-
-
+    public boolean checkLogin(int userId) {
         return false;
     }
 
@@ -533,12 +536,17 @@ public class MainActivity extends AppCompatActivity {
            // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
            // Intent i = new Intent(MainActivity.this, MainActivity.class);
             getProjects(userId, context);
+<<<<<<< Updated upstream
             //MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
 
 
             //startActivity(i);
 
 
+=======
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 1000);
+            //startActivity(i);
+>>>>>>> Stashed changes
         }
 
     };//runnable

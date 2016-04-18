@@ -253,7 +253,7 @@ taskList.clear();
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
-                                String name = actor.getString("task_name");
+                                String name = actor.getString("task_name").replace('_', ' ');
 
                                 System.out.println("task Name: " + name);
                                 if(actor.getInt("claimed_user_id")==-1) {
@@ -328,7 +328,7 @@ taskList.clear();
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&isdone=%d&projectid=%d&isdel=%d&enddate=%s",
-                taskName, taskDesc, isDone, projectId, isDel, endDate);
+                taskName.replace(' ', '_'), taskDesc, isDone, projectId, isDel, endDate);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override

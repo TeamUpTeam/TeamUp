@@ -86,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
         System.out.println("Hello, Sir!");
 
             Firebase.setAndroidContext(this);
-            RequestQueue queue = Volley.newRequestQueue(context);
+            RequestQueue queue = MainActivity.volleyQueue;
 
             final String pName = MainActivity.pName;
             final String fName = MainActivity.fName;

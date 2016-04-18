@@ -237,7 +237,7 @@ public class MembersActivity extends AppCompatActivity {
         String start = MainActivity.startD;
         String end = MainActivity.endD;
 
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
         String url = Server.server_URL + String.format("getuserinfo?email=%s", email);
         Log.d("url is", url);
         JsonArrayRequest getRequest = new JsonArrayRequest
@@ -291,7 +291,7 @@ public class MembersActivity extends AppCompatActivity {
 
     public int getPid(int xuid) {
         System.out.println("Hello from the other side");
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("getprojects?userid=%d", xuid);
         Log.d("url2 is ", url2);
@@ -344,7 +344,7 @@ public class MembersActivity extends AppCompatActivity {
 
     public void UpdatePid(int xuid) {
         System.out.println("Hello from the other side");
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("getprojects?userid=%d", xuid);
         Log.d("url2 in Update_Pid is ", url2);
@@ -397,7 +397,7 @@ public class MembersActivity extends AppCompatActivity {
 
 
     public void update() {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url3 = Server.server_URL + String.format("newprojectteammember?projectid=%d&userid=%d", pid, tuid);
         Log.d("Url 3 is ", url3);
@@ -427,7 +427,7 @@ public class MembersActivity extends AppCompatActivity {
 
 
     public void update1() {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
         //int ttpid =MainActivity.projectId;
         getPid(MainActivity.userId);
         int ttpid = global_pid;
@@ -469,7 +469,7 @@ public class MembersActivity extends AppCompatActivity {
     public void updateScreen() {
 
 
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         for (int j = 0; j < users.size(); j++) {
             String url2 = Server.server_URL + String.format("getuserwid?userid=%d", users.get(j));
@@ -519,7 +519,7 @@ public class MembersActivity extends AppCompatActivity {
     }
     public void UserId(String email)
     {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url = Server.server_URL + String.format("getuserinfo?email=%s",email);
         JsonArrayRequest getRequest = new JsonArrayRequest
@@ -556,7 +556,7 @@ public class MembersActivity extends AppCompatActivity {
 
 public void deleteUser()
 {
-    RequestQueue queue = Volley.newRequestQueue(context);
+    RequestQueue queue = MainActivity.volleyQueue;
 
     String url = Server.server_URL+String.format("deleteuserinproject?projectid=%d&userid=%d",global_pid,global_uid);
 
@@ -587,7 +587,7 @@ public void deleteUser()
 
     public void getTeamMemberEmails(int projectId, final Context context) {
 
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("getteammembers?projectid=%d",
                 projectId);

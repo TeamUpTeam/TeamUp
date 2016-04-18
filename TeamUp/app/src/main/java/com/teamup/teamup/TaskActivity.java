@@ -205,7 +205,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void getTaskInfo(int taskId) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("gettaskinfo?taskid=%d",
                taskId);
@@ -239,7 +239,7 @@ public class TaskActivity extends AppCompatActivity {
         if (userId == 0) {
             Log.d("gettasks error", "userid or projectid is 0");
         }
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 taskList.clear();
         claimedList.clear();
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
@@ -325,7 +325,7 @@ taskList.clear();
     }
 
     public void newTaskAndUserTask(final String taskName, final String taskDesc, String endDate, final int projectId, int isDel, int isDone, final Context context, final int userId) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&isdone=%d&projectid=%d&isdel=%d&enddate=%s",
                 taskName.replace(' ', '_'), taskDesc, isDone, projectId, isDel, endDate);
@@ -363,7 +363,7 @@ taskList.clear();
         if (userId == 0|| taskId == 0) {
             Log.d("newUserTask", "userid or projectid is 0");
         }
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newusertask?userid=%d&taskid=%d",
                 userId, taskId);
@@ -543,7 +543,7 @@ ArrayList <String> taskName = new ArrayList<String>();
 
     public void updateclaimedList()
     {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
         String url = Server.server_URL+String.format("gettasks?projectid=%d",projectId);
         Log.d("the url for names ",url);
 
@@ -584,7 +584,7 @@ ArrayList <String> taskName = new ArrayList<String>();
 
     public void getclaimedtask() {
         System.out.println("I feel blessed !!!!!!");
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         for (int i = 0; i < taskid.size(); i++) {
             String url = Server.server_URL + String.format("gettaskinfo?taskid=%d", taskid.get(i));

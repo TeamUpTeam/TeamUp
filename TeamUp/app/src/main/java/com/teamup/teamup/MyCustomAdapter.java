@@ -70,6 +70,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
+
+        System.out.println("the name at current position is "+list.get(position));
         posi = position;
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
@@ -102,8 +104,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 //System.out.println("BFbilfnbasdfnsdinfaskjldfnakslfjnfkalsjnkajnv");
 
-                list.remove(position);
-                notifyDataSetChanged();
+                //list.remove(position);
+                //notifyDataSetChanged();
 
             }
         });
@@ -129,7 +131,7 @@ int x;
                                 JSONObject actor = response.getJSONObject(i);
                                 String name = actor.getString("task_name");
 
-                                System.out.println("task Name: " + name);
+                                System.out.println("the task Name in ClaimTask is : " + name);
 
                                 if(name.equals(list.get(posi)))
                                 {
@@ -174,10 +176,10 @@ int x;
 
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        String url2 = Server.server_URL + String.format("newusertask?userid=%d&taskid=%d",
+        String url2 = Server.server_URL + String.format("claimtask?claimeduserid=%d&taskid=%d",
                 uid, task_id);
 
-           Log.d("URL2 is ", url2);
+           Log.d("URL2Hello is ", url2);
         JsonObjectRequest createTaskRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -188,7 +190,8 @@ int x;
                                 //int projectId = response.getInt("insertId");
 
                                 System.out.println("aobgklesbrglsdbglarbglaerbfgks");
-
+                            list.remove(posi);
+                            notifyDataSetChanged();
 
                         } catch (Exception e) {
 
@@ -223,7 +226,7 @@ int x;
                                 String pname = act.getString("project_name");
                                 if (pname.equals(MainActivity.pName)) {
                                     pid = act.getInt("project_id");
-                                    Log.d("project-id is ", String.format("%d", pid));
+                                    Log.d("project-id MyCustom", String.format("%d", pid));
                                     ClaimTask(g_uid, pid);
 
                                     //update();

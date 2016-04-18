@@ -84,7 +84,7 @@ public class TaskActivity extends AppCompatActivity {
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
-
+        //updateclaimedList();
         //newTask("test1", "test1", 682, 1, 0, context);
         //newUserTask(402)
         Bundle extras = getIntent().getExtras();
@@ -93,7 +93,7 @@ public class TaskActivity extends AppCompatActivity {
             Log.d("Task projectID", projectId + "");
 
         }
-        updateclaimedList();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -236,7 +236,8 @@ public class TaskActivity extends AppCompatActivity {
             Log.d("gettasks error", "userid or projectid is 0");
         }
         RequestQueue queue = Volley.newRequestQueue(context);
-
+taskList.clear();
+        claimedList.clear();
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
                 userId, projectId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -251,11 +252,16 @@ public class TaskActivity extends AppCompatActivity {
                                 String name = actor.getString("task_name");
 
                                 System.out.println("task Name: " + name);
-
-                                taskList.add(name);
-                                // next thing you have to do is check if your adapter has changed
-                                taskAdapter.notifyDataSetChanged();
-
+                                if(actor.getInt("claimed_user_id")==-1) {
+                                    taskList.add(name);
+                                    // next thing you have to do is check if your adapter has changed
+                                    taskAdapter.notifyDataSetChanged();
+                                }
+                                else
+                                {
+                                    claimedList.add(name);
+                                    claimedtaskAdapter.notifyDataSetChanged();
+                                }
                                 listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -526,7 +532,7 @@ public void init()
     }
 ArrayList <String> taskName = new ArrayList<String>();
     ArrayList <Integer> taskid = new ArrayList<Integer>();
-ArrayList <Integer> taskcl = new ArrayList<Integer>();
+//ArrayList <Integer> taskcl = new ArrayList<Integer>();
 
     public void updateclaimedList()
     {
@@ -534,7 +540,7 @@ ArrayList <Integer> taskcl = new ArrayList<Integer>();
         String url = Server.server_URL+String.format("gettasks?projectid=%d",projectId);
         Log.d("the url for names ",url);
 
-        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+        JsonArrayRequest createTRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -547,16 +553,11 @@ ArrayList <Integer> taskcl = new ArrayList<Integer>();
                                 taskid.add(response.getInt(i));
                                // System.out.println("task Name: " + name);
                                 taskName.add(name);
-                                taskcl.add(0);
+                                //taskcl.add(0);
                             }
 
-                            for(String j : taskName)
-                            {
-                                System.out.println(j);
-                                System.out.println(taskid.get(taskid.indexOf(j)));
-
-                            }
-
+                            System.out.println("I still feel blessed entering getclaimedlist() ");
+                    getclaimedtask();
 
                         } catch (Exception e) {
 
@@ -570,15 +571,66 @@ ArrayList <Integer> taskcl = new ArrayList<Integer>();
                             }
                         });
 
-    queue.add(createProjectRequest);
+    queue.add(createTRequest);
     }
 
 
     public void getclaimedtask()
     {
+        System.out.println("I feel blessed !!!!!!");
         RequestQueue queue = Volley.newRequestQueue(context);
 
-    // String url = Server.server_URL+String.format();
-    }
+        for (int i = 0; i < taskid.size(); i++) {
+            String url = Server.server_URL+String.format("gettaskinfo?taskid=%d",taskid.get(i));
+            Log.d("url for tasks is ", url);
+
+            JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            System.out.println("Here am I tooooooooooo ");
+                            //Log.d("gettasks", response.toString());
+                            try {
+
+                                JSONObject actor = response.getJSONObject(0);
+                                int o = actor.getInt("claimed_user_id");
+                                if(o==-1)
+                                {
+                                    taskList.add(actor.getString("task_name"));
+                                    System.out.println("Added tasklist "+taskList.get(taskList.indexOf(actor.getString("task_name"))));
+                                }
+                                else
+                                {
+                                    claimedTaskList.add(actor.getString("task_name"));
+                                    System.out.println("Added claimedTaskList " + claimedTaskList.get(claimedTaskList.indexOf(actor.getString("task_name"))));
+
+                                }
+
+
+                                taskAdapter.notifyDataSetChanged();
+                                claimedtaskAdapter.notifyDataSetChanged();
+                                System.out.println(o);
+
+
+                                //                               }
+
+
+                            } catch (Exception e) {
+
+                            }
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("Error.Response", error.toString());
+                                }
+                            });
+
+            queue.add(createProjectRequest);
+
+
+        }
+        }
 
 }

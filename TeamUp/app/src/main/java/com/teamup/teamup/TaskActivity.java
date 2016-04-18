@@ -48,17 +48,15 @@ public class TaskActivity extends AppCompatActivity {
     static ArrayList<String>tlist;
     static ArrayList<String>clist;
     ListView listViewTask;
-<<<<<<< Updated upstream
     static ArrayList<String> claimedList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-=======
+
     ListView listViewTaskClaim;
     Handler mHandler;
->>>>>>> Stashed changes
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,25 +76,15 @@ public class TaskActivity extends AppCompatActivity {
 
         listViewTask = (ListView) findViewById(R.id.listViewTask);
         taskList = new ArrayList<String>();
-<<<<<<< Updated upstream
 
         taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
- 
+
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
         claimedtaskAdapter = new MyClaimedTaskAdapter(claimedList, this);
         listclaimedTask.setAdapter(claimedtaskAdapter);
-=======
-        //final MyCustomAdapter taskAdapter = new MyCustomAdapter(taskList, this);
-        taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
-        listViewTask.setAdapter(taskAdapter);
-
-        this.mHandler = new Handler();
-
-        this.mHandler.postDelayed(m_Runnable, 1000);
->>>>>>> Stashed changes
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
         listViewTask.setAdapter(taskAdapter);
@@ -268,28 +256,23 @@ taskList.clear();
                                 String name = actor.getString("task_name");
 
                                 System.out.println("task Name: " + name);
-<<<<<<< Updated upstream
                                 if(actor.getInt("claimed_user_id")==-1) {
-=======
 
-                                if (taskList.contains(name)) {
-                                    System.out.println("The task already exists, bitch!");
-                                } else {
-                                    System.out.println("The task wasn't there! Adding it to the list!");
->>>>>>> Stashed changes
-                                    taskList.add(name);
-                                    // next thing you have to do is check if your adapter has changed
-                                    taskAdapter.notifyDataSetChanged();
+                                    if (taskList.contains(name)) {
+                                        System.out.println("The task already exists, bitch!");
+                                    } else {
+                                        System.out.println("The task wasn't there! Adding it to the list!");
+                                        taskList.add(name);
+                                        // next thing you have to do is check if your adapter has changed
+                                        taskAdapter.notifyDataSetChanged();
+                                    }
                                 }
-<<<<<<< Updated upstream
                                 else
                                 {
                                     claimedList.add(name);
                                     claimedtaskAdapter.notifyDataSetChanged();
                                 }
-=======
 
->>>>>>> Stashed changes
                                 listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
@@ -457,7 +440,6 @@ taskList.clear();
 
         return super.onOptionsItemSelected(item);
     }
-<<<<<<< Updated upstream
    static int global_taskid;
 public void init()
 {
@@ -600,13 +582,12 @@ ArrayList <String> taskName = new ArrayList<String>();
     }
 
 
-    public void getclaimedtask()
-    {
+    public void getclaimedtask() {
         System.out.println("I feel blessed !!!!!!");
         RequestQueue queue = Volley.newRequestQueue(context);
 
         for (int i = 0; i < taskid.size(); i++) {
-            String url = Server.server_URL+String.format("gettaskinfo?taskid=%d",taskid.get(i));
+            String url = Server.server_URL + String.format("gettaskinfo?taskid=%d", taskid.get(i));
             Log.d("url for tasks is ", url);
 
             JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -619,13 +600,10 @@ ArrayList <String> taskName = new ArrayList<String>();
 
                                 JSONObject actor = response.getJSONObject(0);
                                 int o = actor.getInt("claimed_user_id");
-                                if(o==-1)
-                                {
+                                if (o == -1) {
                                     taskList.add(actor.getString("task_name"));
-                                    System.out.println("Added tasklist "+taskList.get(taskList.indexOf(actor.getString("task_name"))));
-                                }
-                                else
-                                {
+                                    System.out.println("Added tasklist " + taskList.get(taskList.indexOf(actor.getString("task_name"))));
+                                } else {
                                     claimedTaskList.add(actor.getString("task_name"));
                                     System.out.println("Added claimedTaskList " + claimedTaskList.get(claimedTaskList.indexOf(actor.getString("task_name"))));
 
@@ -656,7 +634,8 @@ ArrayList <String> taskName = new ArrayList<String>();
 
 
         }
-=======
+    }
+
     private final Runnable m_Runnable = new Runnable()
     {
         public void run()
@@ -668,7 +647,6 @@ ArrayList <String> taskName = new ArrayList<String>();
             getTasks(MainActivity.userId, MainActivity.projectId, context);
             TaskActivity.this.mHandler.postDelayed(m_Runnable, 1000);
             //startActivity(i);
->>>>>>> Stashed changes
         }
 
     };//runnable

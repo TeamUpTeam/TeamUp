@@ -60,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<JSONObject> projectInfo = new ArrayList<JSONObject>();
     static String startD;
     static String endD;
-    static Handler mHandler;
+    static Handler mHandler = null;
     static String fontPath = "fonts/Raleway-Medium.ttf";
+    static RequestQueue volleyQueue = null;
 
 
     @Override
@@ -88,15 +89,20 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        if (this.mHandler == null) {
+            this.mHandler = new Handler();
+        }
+        if (volleyQueue == null) {
+            volleyQueue = Volley.newRequestQueue(context);
+        }
+
         getUserIdAndProjects(LoginActivity3.currEmail);
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
         listViewProj.setAdapter(adapter);
 
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
-        }
+
         this.mHandler.postDelayed(m_Runnable, 5000);
 
 
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Get the First Name and User Name of the logged in User at the start of the application after the user has logged in
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
         String url = Server.server_URL + String.format("getuserinfo?email=%s",LoginActivity3.currEmail);
         JsonArrayRequest getRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -252,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteProject(int projectId, int userId) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
 
         String url2 = Server.server_URL + String.format("deleteuserinproject?projectid=%d&userid=%d",
                 projectId, userId);
@@ -280,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUserIdAndProjects(String email) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
 
         String url = Server.server_URL + String.format("getuserinfo?email=%s", email);
         JsonArrayRequest getUserIdRequest = new JsonArrayRequest
@@ -314,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void newProject(final String projectName, final String startDate, final String endDate, final int projectManagerUserId, final String projectDescription, final Context context)
     {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
         startD = startDate;
         endD = endDate;
         String url2 = Server.server_URL + String.format("newproject?projectname=%s&startdate=%s&enddate=%s&projectmanageruserid=%d&projectdescription=%s",
@@ -350,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         if (userId == 0|| projectId == 0) {
             Log.d("newProjectTeamMember", "userid or projectid is 0");
         }
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
 
         String url2 = Server.server_URL + String.format("newprojectteammember?projectid=%d&userid=%d",
                 projectId, userId);
@@ -384,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         if (userId == 0) {
             Log.d("getProjects error", "userid or projectid is 0");
         }
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = volleyQueue;
         //adapter.clear();
         String url2 = Server.server_URL + String.format("getprojects?userid=%d",
                 userId);

@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     final Context context = this;
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> DecsAdapter;
     private ArrayList<String> arrayList;
-    private ArrayList<String> projectList;
+    private ArrayList<String> DescList;
     ListView listViewProj;
     Server x = new Server();
     static int userId;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         listViewProj = (ListView) findViewById(R.id.listViewProject);
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
+
+        DescList = new ArrayList<String>();
         listViewProj.setAdapter(adapter);
 
 
@@ -403,6 +406,7 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject actor = response.getJSONObject(i);
                                 projectInfo.add(actor); //stores jsonobject info for each project to be accessed later.
                                 String name = actor.getString("project_name").replace('_', ' ');
+                                String description = actor.getString("project_description").replace('_',' ');
                                 final int projId = actor.getInt("project_id");
                                 Log.d("projID", projId + "");
 
@@ -413,6 +417,7 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     System.out.println("Hey! At least it comes here!");
                                     arrayList.add(name);
+                                    DescList.add(description);
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
                                 }
@@ -425,6 +430,10 @@ public class MainActivity extends AppCompatActivity {
                                         System.out.println("I got here!");
                                         System.out.println("The position is: " + position);
                                         pName = adapter.getItem(position);
+                                        Decs = DescList.get(position);
+
+
+
                                         System.out.println("This is the project name that I got: " + pName);
                                         Intent i = new Intent(
                                                 MainActivity.this,

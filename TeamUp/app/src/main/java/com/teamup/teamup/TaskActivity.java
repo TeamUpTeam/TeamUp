@@ -241,11 +241,8 @@ public class TaskActivity extends AppCompatActivity {
         if (userId == 0) {
             Log.d("gettasks error", "userid or projectid is 0");
         }
-<<<<<<< HEAD
-        RequestQueue queue = Volley.newRequestQueue(context);
-=======
+
         RequestQueue queue = MainActivity.volleyQueue;
->>>>>>> d4ad8110925c513b4f99f4a774649bb821ade13a
         taskList.clear();
         claimedList.clear();
         System.out.println("The project ID is: " + projectId);

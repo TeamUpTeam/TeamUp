@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -80,6 +78,10 @@ public class TaskActivity extends AppCompatActivity {
         taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
 
+        if (this.mHandler == null) {
+            this.mHandler = new Handler();
+        }
+        this.mHandler.postDelayed(m_Runnable, 5000);
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
@@ -93,7 +95,7 @@ public class TaskActivity extends AppCompatActivity {
         //newUserTask(402)
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-             projectId = extras.getInt("projectId");
+            projectId = extras.getInt("projectId");
             Log.d("Task projectID", projectId + "");
 
         }
@@ -139,9 +141,9 @@ public class TaskActivity extends AppCompatActivity {
                                 // TODO Do something
                                 if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    taskList.add(taskName.getText().toString());
+                                    //taskList.add(taskName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
-                                    taskAdapter.notifyDataSetChanged();
+                                    //taskAdapter.notifyDataSetChanged();
 
                                     // get user input and set it to result
                                     // edit text
@@ -205,7 +207,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void getTaskInfo(int taskId) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("gettaskinfo?taskid=%d",
                taskId);
@@ -239,9 +241,14 @@ public class TaskActivity extends AppCompatActivity {
         if (userId == 0) {
             Log.d("gettasks error", "userid or projectid is 0");
         }
+<<<<<<< HEAD
         RequestQueue queue = Volley.newRequestQueue(context);
+=======
+        RequestQueue queue = MainActivity.volleyQueue;
+>>>>>>> d4ad8110925c513b4f99f4a774649bb821ade13a
         taskList.clear();
         claimedList.clear();
+        System.out.println("The project ID is: " + projectId);
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
                 userId, projectId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -326,7 +333,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void newTaskAndUserTask(final String taskName, final String taskDesc, String endDate, final int projectId, int isDel, int isDone, final Context context, final int userId) {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&isdone=%d&projectid=%d&isdel=%d&enddate=%s",
                 taskName.replace(' ', '_'), taskDesc, isDone, projectId, isDel, endDate);
@@ -364,7 +371,7 @@ public class TaskActivity extends AppCompatActivity {
         if (userId == 0|| taskId == 0) {
             Log.d("newUserTask", "userid or projectid is 0");
         }
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newusertask?userid=%d&taskid=%d",
                 userId, taskId);
@@ -544,7 +551,7 @@ ArrayList <String> taskName = new ArrayList<String>();
 
     public void updateclaimedList()
     {
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
         String url = Server.server_URL+String.format("gettasks?projectid=%d",projectId);
         Log.d("the url for names ",url);
 
@@ -585,7 +592,7 @@ ArrayList <String> taskName = new ArrayList<String>();
 
     public void getclaimedtask() {
         System.out.println("I feel blessed !!!!!!");
-        RequestQueue queue = Volley.newRequestQueue(context);
+        RequestQueue queue = MainActivity.volleyQueue;
 
         for (int i = 0; i < taskid.size(); i++) {
             String url = Server.server_URL + String.format("gettaskinfo?taskid=%d", taskid.get(i));
@@ -646,7 +653,7 @@ ArrayList <String> taskName = new ArrayList<String>();
             // Intent i = new Intent(MainActivity.this, MainActivity.class);
             System.out.println("It comes here!!!!!!!!!");
             getTasks(MainActivity.userId, MainActivity.projectId, context);
-            TaskActivity.this.mHandler.postDelayed(m_Runnable, 1000);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 10000);
             //startActivity(i);
         }
 

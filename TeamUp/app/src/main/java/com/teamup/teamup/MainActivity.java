@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                             fName = response.getJSONObject(0).getString("first_name");
                             uName = response.getJSONObject(0).getString("login_name");
 
-                            System.out.println("First Name: " + fName);
-                            System.out.println("User Name: " + uName);
+                            //system.out.println("First Name: " + fName);
+                            //system.out.println("User Name: " + uName);
 
                         }
                         catch (Exception e) {
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     // continue with delete
                                                     //int pos = (Integer)view.getTag();
-                                                    Log.d("pos", "" + pos);
+                                                    //log.d("pos", "" + pos);
                                                     try {
                                                         deleteProject(projectInfo.get(pos).getInt("project_id"), userId);
 
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                         //successful row return, so allow login
 
                         try {
-                            Log.d("response a", response.getJSONObject(0).getString("user_id"));
+                            //log.d("response a", response.getJSONObject(0).getString("user_id"));
                             userId = response.getJSONObject(0).getInt("user_id");
                             getProjects(userId, context);
                         } catch (Exception e) {
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        Log.d("getprojects", response.toString());
+                        //log.d("getprojects", response.toString());
                         projectInfo.clear();
                         adapter.clear();
                         try {
@@ -404,14 +404,14 @@ public class MainActivity extends AppCompatActivity {
                                 projectInfo.add(actor); //stores jsonobject info for each project to be accessed later.
                                 String name = actor.getString("project_name").replace('_', ' ');
                                 final int projId = actor.getInt("project_id");
-                                Log.d("projID", projId + "");
+                                //log.d("projID", projId + "");
 
-                                System.out.println("Project Name: " + name);
+                                //system.out.println("Project Name: " + name);
 
                                 if (arrayList.contains(name)) {
-                                    System.out.println("Bitch already exists, don't add him!");
+                                    //system.out.println("Bitch already exists, don't add him!");
                                 } else {
-                                    System.out.println("Hey! At least it comes here!");
+                                    //system.out.println("Hey! At least it comes here!");
                                     arrayList.add(name);
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
@@ -422,10 +422,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                                        System.out.println("I got here!");
-                                        System.out.println("The position is: " + position);
+                                        //system.out.println("I got here!");
+                                        //system.out.println("The position is: " + position);
                                         pName = adapter.getItem(position);
-                                        System.out.println("This is the project name that I got: " + pName);
+                                        //system.out.println("This is the project name that I got: " + pName);
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);
@@ -454,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
                                                 // continue with delete
 
 
-                                                Log.d("pos", "" + pos);
+                                                //log.d("pos", "" + pos);
                                                 try {
 
                                                     deleteProject(projectInfo.get(pos).getInt("project_id"), userId);

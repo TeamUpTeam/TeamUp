@@ -73,7 +73,6 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         System.out.println("the name at current position is "+list.get(position));
-        posi = position;
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
         Button claimBtn = (Button)view.findViewById(R.id.claim_btn);
@@ -84,6 +83,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 Toast.makeText(context,"removed",Toast.LENGTH_SHORT).show();
                 g_uid = MainActivity.userId;
                 deletepid(g_uid);
+                posi = position;
 
 
                 // list.remove(position); //or some other task
@@ -96,6 +96,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 TaskActivity.claimedList.add(list.get(position));
                 TaskActivity.claimedtaskAdapter.notifyDataSetChanged();
+                posi = position;
 
                 //do something
                 Toast.makeText(context,"claimed",Toast.LENGTH_SHORT).show();

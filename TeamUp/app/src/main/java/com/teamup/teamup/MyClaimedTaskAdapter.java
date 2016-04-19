@@ -12,9 +12,6 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/**
- * Created by Edwin Prakarsa on 4/13/2016.
- */
 public class MyClaimedTaskAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
@@ -57,7 +54,7 @@ public class MyClaimedTaskAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         TextView listclaimedby = (TextView) view.findViewById(R.id.claimedby);
-        listclaimedby.setText("Claimed by " + claimedby);
+        listclaimedby.setText(" ");
 
         final Button Complete = (Button)view.findViewById(R.id.complete);
 

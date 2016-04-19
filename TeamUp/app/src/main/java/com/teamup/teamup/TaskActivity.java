@@ -362,7 +362,7 @@ public class TaskActivity extends AppCompatActivity {
         RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&isdone=%d&projectid=%d&isdel=%d&enddate=%s",
-                taskName.replace(' ', '_'), taskDesc, isDone, projectId, isDel, endDate);
+                taskName.replace(' ', '_'), taskDesc.replace(' ','_'), isDone, projectId, isDel, endDate);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -679,7 +679,7 @@ ArrayList <String> taskName = new ArrayList<String>();
             // Intent i = new Intent(MainActivity.this, MainActivity.class);
             System.out.println("It comes here!!!!!!!!!");
             getTasks(MainActivity.userId, MainActivity.projectId, context);
-            TaskActivity.this.mHandler.postDelayed(m_Runnable, 10000);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 2000);
             //startActivity(i);
         }
 

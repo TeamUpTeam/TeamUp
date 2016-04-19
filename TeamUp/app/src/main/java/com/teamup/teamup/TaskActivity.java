@@ -286,9 +286,9 @@ public class TaskActivity extends AppCompatActivity {
                                         System.out.println("The task already exists, bitch!");
                                     //} else {
                                         System.out.println("The task wasn't there! Adding it to the list!");
-                                        taskList.add(name);
+                                        //taskList.add(name);
                                         // next thing you have to do is check if your adapter has changed
-                                        taskAdapter.notifyDataSetChanged();
+                                        //taskAdapter.notifyDataSetChanged();
                                     //}
 
                                 }

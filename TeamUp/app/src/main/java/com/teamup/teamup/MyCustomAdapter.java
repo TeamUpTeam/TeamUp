@@ -34,6 +34,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     int pid;
     int g_uid;
     private ArrayList<String> list = new ArrayList<String>();
+
     private Context context;
     static int posi;
     static int global_task_id;
@@ -76,13 +77,18 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
         Button claimBtn = (Button)view.findViewById(R.id.claim_btn);
-
+        posi = position;
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //do something
-                list.remove(position); //or some other task
-                notifyDataSetChanged();
+                Toast.makeText(context,"removed",Toast.LENGTH_SHORT).show();
+                g_uid = MainActivity.userId;
+                deletepid(g_uid);
+
+
+                // list.remove(position); //or some other task
+                // notifyDataSetChanged();
             }
         });
         claimBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +106,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 g_uid = MainActivity.userId;
                 getPid(MainActivity.userId);
 
-               // ClaimTask(uid,pid);
+                // ClaimTask(uid,pid);
 
                 //System.out.println("BFbilfnbasdfnsdinfaskjldfnakslfjnfkalsjnkajnv");
 
@@ -112,7 +118,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
         return view;
     }
-int x;
+    int x;
     public void ClaimTask(int uid,int pid)
     {
         x = uid;
@@ -146,8 +152,8 @@ int x;
 
 
 
-                                     //list.remove(posi);
-                                     notifyDataSetChanged();
+                                    //list.remove(posi);
+                                    //notifyDataSetChanged();
 
 
                                 }
@@ -179,7 +185,7 @@ int x;
         String url2 = Server.server_URL + String.format("claimtask?claimeduserid=%d&taskid=%d",
                 uid, task_id);
 
-           Log.d("URL2Hello is ", url2);
+        Log.d("URL2Hello is ", url2);
         JsonObjectRequest createTaskRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -187,9 +193,9 @@ int x;
 
                         //Log.d("projectteammember", response.toString());
                         try {
-                                //int projectId = response.getInt("insertId");
+                            //int projectId = response.getInt("insertId");
 
-                                System.out.println("aobgklesbrglsdbglarbglaerbfgks");
+                            System.out.println("aobgklesbrglsdbglarbglaerbfgks");
                             list.remove(posi);
                             notifyDataSetChanged();
 
@@ -264,4 +270,151 @@ int x;
     }
 
 
+    public void deletepid(int uid)
+    {
+        System.out.println("Hello from the other side");
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url2 = Server.server_URL + String.format("getprojects?userid=%d", uid);
+        Log.d("url2 is ", url2);
+        JsonArrayRequest getProjects = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //successful row return, so allow login
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject act = response.getJSONObject(i);
+                                String pname = act.getString("project_name");
+                                if (pname.equals(MainActivity.pName)) {
+                                    pid = act.getInt("project_id");
+                                    Log.d("project-id MyCustom", String.format("%d", pid));
+                                    //ClaimTask(g_uid, pid);
+                                    delete_task(g_uid, pid);
+                                    //update();
+                                    break;
+                                } else {
+                                    continue;
+                                }
+                            }
+
+                        } catch (Exception e) {
+
+                        }
+
+                        //final String uid = String.format("%d",userid);
+                        //Log.d("user_info is %s",user_info);
+                        //Log.d("login_name is %s",login_name);
+
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Error handling
+                                Log.d("Error.Response", error.toString());
+
+
+                            }
+                        });
+        // String url1 = Server.server_URL + String.format("newprojectteammember?projectid=%d&userid=%d",,uid);
+
+        queue.add(getProjects);
+
+    }
+
+    public void delete_task(int uid, int pid)
+    {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
+                uid, pid);
+        System.out.println("URL2 is " + url2);
+        JsonArrayRequest createProjectRequest = new JsonArrayRequest
+                (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("Her am I ");
+                        //Log.d("gettasks", response.toString());
+                        try {
+                            for (int i=0; i < response.length(); i++) {
+                                JSONObject actor = response.getJSONObject(i);
+                                String name = actor.getString("task_name");
+
+                                System.out.println("the task Name in ClaimTask is : " + name);
+
+                                if(name.equals(list.get(posi)))
+                                {
+                                    global_task_id = actor.getInt("task_id");
+                                    System.out.println("task Id: " + global_task_id);
+                                    //TaskActivity t = new TaskActivity();
+                                    // TaskActivity.updateLists();
+                                    //t.updateLists();
+
+                                    //callnewusertask(x,global_task_id);
+
+                                    calldeltask(g_uid,global_task_id);
+
+
+                                    //list.remove(posi);
+                                    //  notifyDataSetChanged();
+
+
+                                }
+
+
+                            }
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createProjectRequest);
+    }
+
+
+    public void calldeltask(int uid, int tid)
+    {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        String url = Server.server_URL+String.format("deletetask?taskid=%d&userid=%d",tid,uid);
+//     list.remove(position); //or some other task
+        //   notifyDataSetChanged();
+
+        Log.d("url in delete is ", url);
+        JsonObjectRequest createTaskRequest = new JsonObjectRequest
+                (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //Log.d("projectteammember", response.toString());
+
+                        //int projectId = response.getInt("insertId");
+
+                        System.out.println("aobgklesbrglsdbglarbglaerbfgks");
+                        list.remove(posi);
+                        notifyDataSetChanged();
+
+
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        });
+        queue.add(createTaskRequest);
+
+
+    }
 }

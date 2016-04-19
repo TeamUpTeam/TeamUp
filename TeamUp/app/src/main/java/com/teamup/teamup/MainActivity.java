@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<JSONObject> projectInfo = new ArrayList<JSONObject>();
     static String startD;
     static String endD;
-    static Handler mHandler;
+    Handler mHandler;
     static String fontPath = "fonts/Raleway-Medium.ttf";
 
 
@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, arrayList);
         listViewProj.setAdapter(adapter);
 
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
-        }
+        this.mHandler = new Handler();
         this.mHandler.postDelayed(m_Runnable, 5000);
 
 
@@ -535,7 +533,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+<<<<<<< HEAD
             MainActivity.this.mHandler.postDelayed(m_Runnable, 6000);
+=======
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 1000);
+>>>>>>> parent of f679f74... can create task with spaces
             //startActivity(i);
         }
 

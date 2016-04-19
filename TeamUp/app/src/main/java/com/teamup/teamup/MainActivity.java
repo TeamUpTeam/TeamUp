@@ -1,6 +1,5 @@
 package com.teamup.teamup;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,9 +9,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -117,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
                             fName = response.getJSONObject(0).getString("first_name");
                             uName = response.getJSONObject(0).getString("login_name");
 
-                            System.out.println("First Name: " + fName);
-                            System.out.println("User Name: " + uName);
+                            //System.out.println("First Name: " + fName);
+                            //System.out.println("User Name: " + uName);
 
                         }
                         catch (Exception e) {
@@ -178,16 +174,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (!ProjName.getText().toString().matches("") && !ProjDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    adapter.add(ProjName.getText().toString());
+                                    //adapter.add(ProjName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
-                                    adapter.notifyDataSetChanged();
+                                    //adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
                                     Decs = ProjDesc.getText().toString();
                                     int uid = ne.uid;
                                     //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
                                         @Override
                                         public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                                             Intent i = new Intent(
@@ -392,8 +386,7 @@ public class MainActivity extends AppCompatActivity {
                 (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
-                        Log.d("getprojects", response.toString());
+                        //Log.d("getprojects", response.toString());
                         projectInfo.clear();
                         adapter.clear();
                         try {
@@ -402,14 +395,14 @@ public class MainActivity extends AppCompatActivity {
                                 projectInfo.add(actor); //stores jsonobject info for each project to be accessed later.
                                 String name = actor.getString("project_name").replace('_', ' ');
                                 final int projId = actor.getInt("project_id");
-                                Log.d("projID", projId + "");
+                                //Log.d("projID", projId + "");
 
-                                System.out.println("Project Name: " + name);
+                                //System.out.println("Project Name: " + name);
 
                                 if (arrayList.contains(name)) {
-                                    System.out.println("Bitch already exists, don't add him!");
+                                    //System.out.println("Bitch already exists, don't add him!");
                                 } else {
-                                    System.out.println("Hey! At least it comes here!");
+                                    //System.out.println("Hey! At least it comes here!");
                                     arrayList.add(name);
                                     // next thing you have to do is check if your adapter has changed
                                     adapter.notifyDataSetChanged();
@@ -420,16 +413,17 @@ public class MainActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                                        System.out.println("I got here!");
-                                        System.out.println("The position is: " + position);
+                                        //System.out.println("I got here!");
+                                        //System.out.println("The position is: " + position);
                                         pName = adapter.getItem(position);
-                                        System.out.println("This is the project name that I got: " + pName);
+                                        //System.out.println("This is the project name that I got: " + pName);
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);
-                                        int projectId;
+                                        //int projectId;
                                         try {
                                             projectId = projectInfo.get(position).getInt("project_id");
+                                            System.out.println("The project ID obtained on clicking is: " + projectId);
                                             i.putExtra("projectId", projectId);
                                         } catch (Exception e) {
 
@@ -541,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            MainActivity.this.mHandler.postDelayed(m_Runnable, 3000);
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 6000);
             //startActivity(i);
         }
 

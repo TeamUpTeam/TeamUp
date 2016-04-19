@@ -303,7 +303,15 @@ public class TaskActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(TaskActivity.this);
+                                        alertDialog2.setTitle("Description");
+                                        alertDialog2.setPositiveButton("OK",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
 
+                                                    }
+                                                });
+                                        alertDialog2.show();
 
                                     }
                                 });

@@ -77,7 +77,6 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
         Button claimBtn = (Button)view.findViewById(R.id.claim_btn);
-        posi = position;
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -97,6 +96,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 TaskActivity.claimedList.add(list.get(position));
                 TaskActivity.claimedtaskAdapter.notifyDataSetChanged();
+
                 //do something
                 Toast.makeText(context,"claimed",Toast.LENGTH_SHORT).show();
                 int uid = MainActivity.userId;

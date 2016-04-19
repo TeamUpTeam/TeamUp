@@ -430,15 +430,12 @@ public class MainActivity extends AppCompatActivity {
                                         //system.out.println("I got here!");
                                         //system.out.println("The position is: " + position);
                                         pName = adapter.getItem(position);
-<<<<<<< HEAD
                                         Decs = DescList.get(position);
 
-
-
                                         System.out.println("This is the project name that I got: " + pName);
-=======
+
                                         //system.out.println("This is the project name that I got: " + pName);
->>>>>>> dba0b0b1fed4132291543b44d421777dbd607730
+
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);

@@ -13,6 +13,14 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/listclaimedtask"
+        android:textSize="8dp"
+        android:textStyle="bold"
+        android:id="@+id/claimedby"/>
+
     <Button
         android:id="@+id/complete"
         android:layout_width="wrap_content"

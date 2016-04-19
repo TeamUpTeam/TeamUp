@@ -87,7 +87,7 @@ public class TaskActivity extends AppCompatActivity {
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
-        claimedtaskAdapter = new MyClaimedTaskAdapter(claimedList, this);
+        claimedtaskAdapter = new MyClaimedTaskAdapter(claimedList, MainActivity.fName, this);
         listclaimedTask.setAdapter(claimedtaskAdapter);
 
         //taskAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.mytextview, taskList);
@@ -269,7 +269,7 @@ public class TaskActivity extends AppCompatActivity {
 
                                 System.out.println("task Name: " + name);
                                 if(actor.getInt("claimed_user_id")==-1) {
-<<<<<<< HEAD
+
                                     taskList.add(name);
                                     taskAdapter.notifyDataSetChanged();
 //                                    if (taskList.contains(name)) {
@@ -280,7 +280,7 @@ public class TaskActivity extends AppCompatActivity {
 //                                        // next thing you have to do is check if your adapter has changed
 //                                        taskAdapter.notifyDataSetChanged();
 //                                    }
-=======
+
 
                                   //  if (taskList.contains(name)) {
                                         System.out.println("The task already exists, bitch!");
@@ -290,7 +290,7 @@ public class TaskActivity extends AppCompatActivity {
                                         // next thing you have to do is check if your adapter has changed
                                         taskAdapter.notifyDataSetChanged();
                                     //}
->>>>>>> dba0b0b1fed4132291543b44d421777dbd607730
+
                                 }
                                 else
                                 {

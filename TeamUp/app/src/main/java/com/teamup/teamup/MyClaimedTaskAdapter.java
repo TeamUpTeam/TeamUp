@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -17,12 +18,13 @@ import java.util.ArrayList;
 public class MyClaimedTaskAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
+    private String claimedby;
 
 
 
-
-    public MyClaimedTaskAdapter(ArrayList<String> list, Context context) {
+    public MyClaimedTaskAdapter(ArrayList<String> list, String claimedby, Context context) {
         this.list = list;
+        this.claimedby = claimedby;
         this.context = context;
     }
 
@@ -53,6 +55,9 @@ public class MyClaimedTaskAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.listclaimedtask);
         listItemText.setText(list.get(position));
+
+        TextView listclaimedby = (TextView) view.findViewById(R.id.claimedby);
+        listclaimedby.setText("Claimed by " + claimedby);
 
         final Button Complete = (Button)view.findViewById(R.id.complete);
 

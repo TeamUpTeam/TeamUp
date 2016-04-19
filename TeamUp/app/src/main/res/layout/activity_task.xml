@@ -18,7 +18,7 @@
         <ListView
             android:id="@+id/listViewTask"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="175dp"
             android:layout_marginTop="10dip" >
         </ListView>
 
@@ -32,7 +32,7 @@
         <ListView
             android:id="@+id/listViewTaskClaimed"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="175dp"
             android:layout_marginTop="10dip" >
         </ListView>
 

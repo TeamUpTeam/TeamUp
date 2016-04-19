@@ -59,10 +59,8 @@ public class MyClaimedTaskAdapter extends BaseAdapter implements ListAdapter {
         Complete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
-                Complete.setBackgroundResource(R.drawable.tickmark1);
-                Complete.setOnClickListener(null);
-                Complete.setText("");
+                Complete.setText("Completed");
+                Complete.setClickable(false);
 
             }
         });

@@ -240,7 +240,7 @@ public class TaskActivity extends AppCompatActivity {
             Log.d("gettasks error", "userid or projectid is 0");
         }
         RequestQueue queue = Volley.newRequestQueue(context);
-taskList.clear();
+        taskList.clear();
         claimedList.clear();
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
                 userId, projectId);
@@ -257,15 +257,16 @@ taskList.clear();
 
                                 System.out.println("task Name: " + name);
                                 if(actor.getInt("claimed_user_id")==-1) {
-
-                                    if (taskList.contains(name)) {
-                                        System.out.println("The task already exists, bitch!");
-                                    } else {
-                                        System.out.println("The task wasn't there! Adding it to the list!");
-                                        taskList.add(name);
-                                        // next thing you have to do is check if your adapter has changed
-                                        taskAdapter.notifyDataSetChanged();
-                                    }
+                                    taskList.add(name);
+                                    taskAdapter.notifyDataSetChanged();
+//                                    if (taskList.contains(name)) {
+//                                        System.out.println("The task already exists, bitch!");
+//                                    } else {
+//                                        System.out.println("The task wasn't there! Adding it to the list!");
+//                                        taskList.add(name);
+//                                        // next thing you have to do is check if your adapter has changed
+//                                        taskAdapter.notifyDataSetChanged();
+//                                    }
                                 }
                                 else
                                 {

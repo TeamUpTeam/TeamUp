@@ -14,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -45,7 +47,6 @@ public class TaskActivity extends AppCompatActivity {
     static MyClaimedTaskAdapter claimedtaskAdapter;
     static ArrayList<String>tlist;
     static ArrayList<String>clist;
-    //static Handler mHandler;
     ListView listViewTask;
     static ArrayList<String> claimedList;
 
@@ -90,12 +91,6 @@ public class TaskActivity extends AppCompatActivity {
         //updateclaimedList();
         //newTask("test1", "test1", 682, 1, 0, context);
         //newUserTask(402)
-
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
-        }
-        this.mHandler.postDelayed(m_Runnable, 5000);
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
              projectId = extras.getInt("projectId");
@@ -144,9 +139,9 @@ public class TaskActivity extends AppCompatActivity {
                                 // TODO Do something
                                 if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    //taskList.add(taskName.getText().toString());
+                                    taskList.add(taskName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
-                                    //taskAdapter.notifyDataSetChanged();
+                                    taskAdapter.notifyDataSetChanged();
 
                                     // get user input and set it to result
                                     // edit text
@@ -249,18 +244,12 @@ taskList.clear();
         claimedList.clear();
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
                 userId, projectId);
-        System.out.printf("UserID: %d\nProjectID: %d\n", userId, projectId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
                 (Request.Method.GET, url2, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            System.out.println("Hey, it comes here too!");
-                            Log.d("gettasks", response.getJSONObject(0).toString());
-                        } catch (Exception e) {
-                            //e.printStackTrace();
-                        }
 
+                        Log.d("gettasks", response.toString());
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);
@@ -268,6 +257,7 @@ taskList.clear();
 
                                 System.out.println("task Name: " + name);
                                 if(actor.getInt("claimed_user_id")==-1) {
+
                                     if (taskList.contains(name)) {
                                         System.out.println("The task already exists, bitch!");
                                     } else {
@@ -450,15 +440,16 @@ taskList.clear();
 
         return super.onOptionsItemSelected(item);
     }
-    static int global_taskid;
-    public void init()
+   static int global_taskid;
+public void init()
 {
     ctext = context;
 }
-    public void gettlist() {
+ public void gettlist()
+ {
      tlist = taskList;
      clist = claimedTaskList;
-    }
+ }
 
     public static void ClaimedTask(int userid, final String TaskName)
     {
@@ -546,8 +537,9 @@ taskList.clear();
         taskAdapter.notifyDataSetChanged();
 
     }
-    ArrayList <String> taskName = new ArrayList<String>();
+ArrayList <String> taskName = new ArrayList<String>();
     ArrayList <Integer> taskid = new ArrayList<Integer>();
+//ArrayList <Integer> taskcl = new ArrayList<Integer>();
 
     public void updateclaimedList()
     {
@@ -652,9 +644,8 @@ taskList.clear();
             // Toast.makeText(MainActivity.this,"in runnable", Toast.LENGTH_SHORT).show();
             // Intent i = new Intent(MainActivity.this, MainActivity.class);
             System.out.println("It comes here!!!!!!!!!");
-            System.out.println("The projectID is: " + MainActivity.projectId);
             getTasks(MainActivity.userId, MainActivity.projectId, context);
-            TaskActivity.this.mHandler.postDelayed(m_Runnable, 10000);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 1000);
             //startActivity(i);
         }
 

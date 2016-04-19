@@ -1,6 +1,5 @@
 package com.teamup.teamup;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,9 +9,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -433,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
                                         Intent i = new Intent(
                                                 MainActivity.this,
                                                 TaskActivity.class);
-                                        int projectId;
+                                        //int projectId;
                                         try {
                                             projectId = projectInfo.get(position).getInt("project_id");
                                             i.putExtra("projectId", projectId);

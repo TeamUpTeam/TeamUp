@@ -14,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -80,6 +78,10 @@ public class TaskActivity extends AppCompatActivity {
         taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
 
+        if (this.mHandler == null) {
+            this.mHandler = new Handler();
+        }
+        this.mHandler.postDelayed(m_Runnable, 5000);
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
@@ -93,7 +95,7 @@ public class TaskActivity extends AppCompatActivity {
         //newUserTask(402)
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-             projectId = extras.getInt("projectId");
+            projectId = extras.getInt("projectId");
             Log.d("Task projectID", projectId + "");
 
         }
@@ -139,9 +141,9 @@ public class TaskActivity extends AppCompatActivity {
                                 // TODO Do something
                                 if (!taskName.getText().toString().matches("") && !taskDesc.getText().toString().matches("")) {
                                     mAlertDialog.dismiss();
-                                    taskList.add(taskName.getText().toString());
+                                    //taskList.add(taskName.getText().toString());
                                     // next thing you have to do is check if your adapter has changed
-                                    taskAdapter.notifyDataSetChanged();
+                                    //taskAdapter.notifyDataSetChanged();
 
                                     // get user input and set it to result
                                     // edit text
@@ -240,8 +242,9 @@ public class TaskActivity extends AppCompatActivity {
             Log.d("gettasks error", "userid or projectid is 0");
         }
         RequestQueue queue = MainActivity.volleyQueue;
-taskList.clear();
+        taskList.clear();
         claimedList.clear();
+        System.out.println("The project ID is: " + projectId);
         String url2 = Server.server_URL + String.format("gettasks?userid=%d&projectid=%d",
                 userId, projectId);
         JsonArrayRequest createProjectRequest = new JsonArrayRequest
@@ -645,7 +648,7 @@ ArrayList <String> taskName = new ArrayList<String>();
             // Intent i = new Intent(MainActivity.this, MainActivity.class);
             System.out.println("It comes here!!!!!!!!!");
             getTasks(MainActivity.userId, MainActivity.projectId, context);
-            TaskActivity.this.mHandler.postDelayed(m_Runnable, 1000);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 10000);
             //startActivity(i);
         }
 

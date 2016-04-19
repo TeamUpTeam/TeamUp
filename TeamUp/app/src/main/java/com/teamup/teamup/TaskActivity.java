@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     ListView listViewTaskClaim;
-    Handler mHandler;
+    static Handler mHandler = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,10 +79,11 @@ public class TaskActivity extends AppCompatActivity {
         taskAdapter = new MyCustomAdapter(taskList, this);
         listViewTask.setAdapter(taskAdapter);
 
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
+        if (mHandler == null) {
+            mHandler = new Handler();
+            mHandler.postDelayed(m_Runnable, 5000);
         }
-        this.mHandler.postDelayed(m_Runnable, 5000);
+
 
         ListView listclaimedTask = (ListView) findViewById(R.id.listViewTaskClaimed);
         claimedList = new ArrayList<String>();
@@ -253,14 +255,21 @@ public class TaskActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
+
                         Log.d("gettasks", response.toString());
                         try {
+
                             for (int i=0; i < response.length(); i++) {
+                                Log.d("i", "" + i);
+
+
                                 JSONObject actor = response.getJSONObject(i);
                                 String name = actor.getString("task_name").replace('_', ' ');
+                                System.out.println("id: " + actor.getInt("claimed_user_id"));
 
                                 System.out.println("task Name: " + name);
                                 if(actor.getInt("claimed_user_id")==-1) {
+<<<<<<< HEAD
                                     taskList.add(name);
                                     taskAdapter.notifyDataSetChanged();
 //                                    if (taskList.contains(name)) {
@@ -271,6 +280,17 @@ public class TaskActivity extends AppCompatActivity {
 //                                        // next thing you have to do is check if your adapter has changed
 //                                        taskAdapter.notifyDataSetChanged();
 //                                    }
+=======
+
+                                  //  if (taskList.contains(name)) {
+                                        System.out.println("The task already exists, bitch!");
+                                    //} else {
+                                        System.out.println("The task wasn't there! Adding it to the list!");
+                                        taskList.add(name);
+                                        // next thing you have to do is check if your adapter has changed
+                                        taskAdapter.notifyDataSetChanged();
+                                    //}
+>>>>>>> dba0b0b1fed4132291543b44d421777dbd607730
                                 }
                                 else
                                 {
@@ -314,7 +334,8 @@ public class TaskActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                        } catch (Exception e) {
+                        } catch (JSONException error) {
+                            Log.d("Error.Response", error.toString());
 
                         }
                     }

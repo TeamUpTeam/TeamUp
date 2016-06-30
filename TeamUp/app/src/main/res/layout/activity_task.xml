@@ -19,6 +19,7 @@
             android:id="@+id/listViewTask"
             android:layout_width="match_parent"
             android:layout_height="175dp"
+            android:clickable="true"
             android:layout_marginTop="10dip" >
         </ListView>
 

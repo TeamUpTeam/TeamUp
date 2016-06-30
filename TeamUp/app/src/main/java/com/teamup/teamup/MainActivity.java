@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
                                     LoginActivity ne = new LoginActivity();
                                     Decs = ProjDesc.getText().toString();
+                                    DescList.add(Decs);
                                     int uid = ne.uid;
                                     //x.createProject(ProjName.getText().toString(), ProjDesc.getText().toString(), StartDate.getText().toString(), EndDate.getText().toString(), uid/*userID */, context);
                                     listViewProj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -401,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
                         //log.d("getprojects", response.toString());
                         projectInfo.clear();
                         adapter.clear();
+                        DescList.clear();
                         try {
                             for (int i=0; i < response.length(); i++) {
                                 JSONObject actor = response.getJSONObject(i);

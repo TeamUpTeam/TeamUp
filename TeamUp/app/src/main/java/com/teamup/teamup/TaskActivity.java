@@ -286,9 +286,9 @@ public class TaskActivity extends AppCompatActivity {
                                         System.out.println("The task already exists, bitch!");
                                     //} else {
                                         System.out.println("The task wasn't there! Adding it to the list!");
-                                        taskList.add(name);
+                                        //taskList.add(name);
                                         // next thing you have to do is check if your adapter has changed
-                                        taskAdapter.notifyDataSetChanged();
+                                        //taskAdapter.notifyDataSetChanged();
                                     //}
 
                                 }
@@ -303,7 +303,15 @@ public class TaskActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(TaskActivity.this);
+                                        alertDialog2.setTitle("Description");
+                                        alertDialog2.setPositiveButton("OK",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
 
+                                                    }
+                                                });
+                                        alertDialog2.show();
 
                                     }
                                 });
@@ -354,7 +362,7 @@ public class TaskActivity extends AppCompatActivity {
         RequestQueue queue = MainActivity.volleyQueue;
 
         String url2 = Server.server_URL + String.format("newtask?taskname=%s&taskdesc=%s&isdone=%d&projectid=%d&isdel=%d&enddate=%s",
-                taskName.replace(' ', '_'), taskDesc, isDone, projectId, isDel, endDate);
+                taskName.replace(' ', '_'), taskDesc.replace(' ','_'), isDone, projectId, isDel, endDate);
         JsonObjectRequest createProjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url2, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -671,7 +679,7 @@ ArrayList <String> taskName = new ArrayList<String>();
             // Intent i = new Intent(MainActivity.this, MainActivity.class);
             System.out.println("It comes here!!!!!!!!!");
             getTasks(MainActivity.userId, MainActivity.projectId, context);
-            TaskActivity.this.mHandler.postDelayed(m_Runnable, 10000);
+            TaskActivity.this.mHandler.postDelayed(m_Runnable, 2000);
             //startActivity(i);
         }
 
